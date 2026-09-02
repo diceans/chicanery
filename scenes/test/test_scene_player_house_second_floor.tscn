@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dh68vm7fg57xj"]
+
+[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE_placeholder.tscn" id="2_tdwxl"]
+[ext_resource type="Script" uid="uid://cd04ysb0pdxld" path="res://scenes/test/camera_2d.gd" id="3_vxgq1"]
+[ext_resource type="Script" uid="uid://c7nu01eoi0qlo" path="res://scenes/test/transition_node_oto1.gd" id="3_wmtd4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7okt"]
+size = Vector2(199.5, 22.5)
+
+[node name="TestSceneTilemap" type="Node2D" unique_id=2142147069]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=917496493]
+offset_left = -990.0
+offset_top = -568.0
+offset_right = 2960.0
+offset_bottom = 1665.0
+
+[node name="AePlaceholder" parent="." unique_id=2014605289 instance=ExtResource("2_tdwxl")]
+position = Vector2(718, 889)
+
+[node name="Camera2D" type="Camera2D" parent="AePlaceholder" unique_id=1300459940]
+script = ExtResource("3_vxgq1")
+
+[node name="TransitionNode" type="Area2D" parent="." unique_id=1575585029]
+script = ExtResource("3_wmtd4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionNode" unique_id=664416180]
+position = Vector2(717, 1069)
+shape = SubResource("RectangleShape2D_i7okt")
+
+[connection signal="body_entered" from="TransitionNode" to="TransitionNode" method="_on_body_entered"]
