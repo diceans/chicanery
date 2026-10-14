@@ -1,7 +1,7 @@
 extends Node
 
-var current_WN = 80
-var max_WN = 80
+var current_WN = 60
+var max_WN = 60
 var VHM = 12
 var ERL = 16
 var EB = 0

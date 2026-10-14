@@ -7,7 +7,7 @@
 script = ExtResource("1_ebvco")
 name = "Anfugel"
 texture = ExtResource("2_puokv")
-WN = 60.0
+WN = 30.0
 VHM = 8.0
 ERL = 15.0
 exertions = ["PINK", "PINK", "PINK", "ROCK"]
