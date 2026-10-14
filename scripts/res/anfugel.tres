@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3 uid="uid://6wchkbuvjdmx"]
+
+[ext_resource type="Script" uid="uid://fmpfei7rq57s" path="res://scripts/stats/base_enemy.gd" id="1_ebvco"]
+[ext_resource type="Texture2D" uid="uid://dllkvflk62kli" path="res://assets/characters/stinky.png" id="2_puokv"]
+
+[resource]
+script = ExtResource("1_ebvco")
+name = "Anfugel"
+texture = ExtResource("2_puokv")
+WN = 60.0
+VHM = 8.0
+ERL = 15.0
+exertions = ["PINK", "PINK", "PINK", "ROCK"]

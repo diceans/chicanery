@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c1gywu3noqrhl"]
+
+[ext_resource type="Texture2D" uid="uid://dc47brn8nouuq" path="res://assets/characters/enemy_spritesheet.webp" id="1_qaghh"]
+[ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="2_dvkl2"]
+[ext_resource type="Script" uid="uid://b50t0kr0gclog" path="res://scenes/characters/NPC/idle_state.gd" id="3_0x7ap"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvkl2"]
+atlas = ExtResource("1_qaghh")
+region = Rect2(0, 0, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0x7ap"]
+atlas = ExtResource("1_qaghh")
+region = Rect2(256, 0, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxqds"]
+atlas = ExtResource("1_qaghh")
+region = Rect2(512, 0, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3qp3o"]
+atlas = ExtResource("1_qaghh")
+region = Rect2(768, 0, 256, 255)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i7okt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvkl2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0x7ap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxqds")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3qp3o")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7okt"]
+size = Vector2(20, 174)
+
+[node name="AnfugelPlaceholder" type="CharacterBody2D" unique_id=1558658514]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1912445074]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_i7okt")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.85743296
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1603411969]
+position = Vector2(0, 77)
+shape = SubResource("RectangleShape2D_i7okt")
+
+[node name="StateMachine" type="Node" parent="." unique_id=106757555]
+script = ExtResource("2_dvkl2")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1315428296]
+script = ExtResource("3_0x7ap")

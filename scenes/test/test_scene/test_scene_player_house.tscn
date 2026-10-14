@@ -1,7 +1,7 @@
-[gd_scene format=4 uid="uid://dcvmwxrxi3lhp"]
+[gd_scene format=4 uid="uid://g7km12gmyley"]
 
 [ext_resource type="TileSet" uid="uid://bmqnxkdodtv0i" path="res://tilesets/game_tile_set.tres" id="1_53ief"]
-[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE_placeholder.tscn" id="2_iom6j"]
+[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE/AE_placeholder.tscn" id="2_iom6j"]
 
 [node name="TestSceneTilemap" type="Node2D" unique_id=2142147069]
 
