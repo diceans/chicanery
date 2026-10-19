@@ -125,7 +125,17 @@ func _on_assault_pressed() -> void:
 		$AnimationPlayer.play("enemy_dead")
 		await $AnimationPlayer.animation_finished
 		
-		await get_tree().create_timer(0.25).timeout
-		get_tree().quit()
+		State.defeated_enemy_id = State.active_enemy_id
+		var scene_tree: SceneTree = get_tree()
+		await scene_tree.create_timer(0.25).timeout
+		State.return_player_to_anfugel = true
+		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/test_scene/test_scene_player_house_outside.tscn")
+		if scene_change_error != OK:
+			State.return_player_to_anfugel = false
+			State.defeated_enemy_id = &""
+			push_error("Failed to load the outside scene: %s" % scene_change_error)
+			return
+
+		return
 	
 	enemy_turn()

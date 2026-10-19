@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://c1gywu3noqrhl"]
+
+[ext_resource type="Texture2D" uid="uid://c2rqseh5xuymb" path="res://assets/characters/Anfugel/idle_1-removebg-preview.png" id="1_1heab"]
+[ext_resource type="Script" uid="uid://b2pve5ukoalnt" path="res://scenes/characters/NPC/anfugel.gd" id="1_pvcxy"]
+[ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="2_dvkl2"]
+[ext_resource type="Texture2D" uid="uid://bn7nlb8rfhdne" path="res://assets/characters/Anfugel/idle_2-removebg-preview.png" id="2_pvcxy"]
+[ext_resource type="Script" uid="uid://b50t0kr0gclog" path="res://scenes/characters/NPC/idle_state.gd" id="3_0x7ap"]
+[ext_resource type="Texture2D" uid="uid://bo3gh64kmpq7q" path="res://assets/characters/Anfugel/idle_4-removebg-preview.png" id="3_iul0a"]
+[ext_resource type="Texture2D" uid="uid://1espy5s0dvuw" path="res://assets/characters/Anfugel/idle_3-removebg-preview.png" id="4_xnapl"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i7okt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_1heab")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_pvcxy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_iul0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xnapl")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i7okt"]
+radius = 35.014282
+
+[node name="Anfugel" type="CharacterBody2D" unique_id=1558658514]
+script = ExtResource("1_pvcxy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1912445074]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_i7okt")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.85743296
+
+[node name="StateMachine" type="Node" parent="." unique_id=106757555]
+script = ExtResource("2_dvkl2")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1315428296]
+script = ExtResource("3_0x7ap")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1144470731]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1603411969]
+position = Vector2(0, 15)
+shape = SubResource("CircleShape2D_i7okt")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

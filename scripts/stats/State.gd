@@ -9,3 +9,6 @@ var EM = 1
 var pi_ACM = 1
 var pi_DIM = 1
 var exertions = ["CLUTCH", "COUNTERSTROKE", "FINGER SALUTE", "IMPLODE", "INQUIRE", "JEST", "PERUSE"]
+var return_player_to_anfugel = false
+var active_enemy_id: StringName = &""
+var defeated_enemy_id: StringName = &""
