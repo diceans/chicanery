@@ -65,33 +65,31 @@ func display_text(text):
 func enemy_turn():
 	display_text("%s attacks" % enemy.name)
 	await textbox_closed
-	
-	if is_bracing:
-		is_bracing = false
-		display_text("You braced successfully")
+	enemy_exertion = enemy.exertions.pick_random()
+	if enemy_exertion == "ROCK":
+		display_text("%s used ROCK" % [enemy.name])
 		await textbox_closed
-	else:
-		enemy_exertion = enemy.exertions.pick_random()
-		if enemy_exertion == "ROCK":
-			display_text("%s used ROCK" % [enemy.name])
-			await textbox_closed
-			var available_exertions = enemy.exertions.filter(func(exertion): return exertion != "ROCK")
-			if available_exertions.is_empty():
-				push_error("Enemy %s has no non-ROCK exertions to select" % enemy.name)
-				$ControlPanel.show()
-				return
-			enemy_exertion = available_exertions.pick_random()
-			player_constricted = true
-			constricted()
-
-		if enemy_exertion == "PINK":
+		var available_exertions = enemy.exertions.filter(func(exertion): return exertion != "ROCK")
+		if available_exertions.is_empty():
+			push_error("Enemy %s has no non-ROCK exertions to select" % enemy.name)
+			$ControlPanel.show()
+			return
+		enemy_exertion = available_exertions.pick_random()
+		player_constricted = true
+		constricted()
+	if enemy_exertion == "PINK":
+		if is_bracing:
+			is_bracing = false
+			enemy.pi_tDIM = randf_range(0.46, 0.54)
+			enemy_damage = int(enemy.VHM * enemy.pi_tDIM)
+		else:
 			enemy_damage = int(enemy.VHM)
-			current_player_WN = max(0, current_player_WN - enemy_damage)
-			set_WN($PlayerPanel/PlayerData/ProgressBar, current_player_WN, State.max_WN)
-			display_text("%s used PINK" % [enemy.name])
-			await textbox_closed
-			player_constricted = false
-			constricted()
+		current_player_WN = max(0, current_player_WN - enemy_damage)
+		set_WN($PlayerPanel/PlayerData/ProgressBar, current_player_WN, State.max_WN)
+		display_text("%s used PINK" % [enemy.name])
+		await textbox_closed
+		player_constricted = false
+		constricted()
 
 func constricted():
 	var condition_label: Label = $PlayerPanel/PlayerData/PlayerNameContainer/Condition
@@ -125,17 +123,29 @@ func _on_assault_pressed() -> void:
 		$AnimationPlayer.play("enemy_dead")
 		await $AnimationPlayer.animation_finished
 		
-		State.defeated_enemy_id = State.active_enemy_id
+		if State.active_enemy_id.is_empty():
+			push_error("Cannot record victory: active enemy ID is empty")
+			return
+
 		var scene_tree: SceneTree = get_tree()
 		await scene_tree.create_timer(0.25).timeout
 		State.return_player_to_anfugel = true
 		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/test_scene/test_scene_player_house_outside.tscn")
 		if scene_change_error != OK:
 			State.return_player_to_anfugel = false
-			State.defeated_enemy_id = &""
 			push_error("Failed to load the outside scene: %s" % scene_change_error)
 			return
 
+		State.defeated_enemy_ids[State.active_enemy_id] = true
 		return
 	
+	enemy_turn()
+
+
+func _on_brace_pressed() -> void:
+	display_text("U braced successfully")
+	await textbox_closed
+	is_bracing = true
+	var condition_label: Label = $PlayerPanel/PlayerData/PlayerNameContainer/Condition
+	set_condition(condition_label, "BRACING")
 	enemy_turn()

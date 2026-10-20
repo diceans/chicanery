@@ -309,3 +309,4 @@ text = ">"
 libraries/ = SubResource("AnimationLibrary_a37co")
 
 [connection signal="pressed" from="ControlPanel/HBoxContainer/Assault" to="." method="_on_assault_pressed"]
+[connection signal="pressed" from="ControlPanel/HBoxContainer/Brace" to="." method="_on_brace_pressed"]
