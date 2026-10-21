@@ -17,7 +17,7 @@ var enemy_constricted = false
 
 func _ready():
 	set_WN($EnemyContainer/ProgressBar, enemy.WN, enemy.WN)
-	set_WN($PlayerPanel/PlayerData/ProgressBar, State.current_WN, State.max_WN)
+	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, State.current_WN, State.max_WN)
 	$EnemyContainer/Enemy.texture = enemy.texture
 
 	current_player_WN = State.current_WN
@@ -26,11 +26,17 @@ func _ready():
 	current_enemy_ERL = enemy.ERL
 	
 	$Textbox.hide()
+	$PlayerName.show()
 	$ControlPanel.show()
 	
 	display_text("%s appears" % enemy.name.to_upper())
 	await textbox_closed
+	if current_player_WN <= 0:
+		await player_defeated()
+		return
+
 	if current_player_ERL > current_enemy_ERL:
+		$PlayerName.show()
 		$ControlPanel.show()
 	elif current_player_ERL < current_enemy_ERL:
 		enemy_turn()
@@ -39,6 +45,7 @@ func _ready():
 			d30_player = randi_range(1, 30)
 			d30_enemy = randi_range(1, 30)
 			if d30_player > d30_enemy:
+				$PlayerName.show()
 				$ControlPanel.show()
 			elif d30_player < d30_enemy:
 				enemy_turn()
@@ -47,10 +54,13 @@ func _ready():
 func set_WN(progress_bar, WN, max_WN):
 	progress_bar.value = WN
 	progress_bar.max_value = max_WN
-	progress_bar.get_node("Label").text = "WN: %d/%d" % [WN, max_WN]
+	progress_bar.get_node("Label").text = "%d/%d" % [WN, max_WN]
+
+func set_player_WN(condition_label: Label, WN: int, max_WN: int) -> void:
+	condition_label.text = "WN: %d/%d" % [WN, max_WN]
 	
 func set_condition(condition_label: Label, condition: String) -> void:
-	condition_label.text = "Condition: %s" % condition
+	condition_label.text = "%s" % condition
 	
 func _input(event):
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and $Textbox.visible:
@@ -59,6 +69,7 @@ func _input(event):
 
 func display_text(text):
 	$ControlPanel.hide()
+	$PlayerName.hide()
 	$Textbox.show()
 	$Textbox/Message.text = text
 	
@@ -72,6 +83,7 @@ func enemy_turn():
 		var available_exertions = enemy.exertions.filter(func(exertion): return exertion != "ROCK")
 		if available_exertions.is_empty():
 			push_error("Enemy %s has no non-ROCK exertions to select" % enemy.name)
+			$PlayerName.show()
 			$ControlPanel.show()
 			return
 		enemy_exertion = available_exertions.pick_random()
@@ -85,20 +97,34 @@ func enemy_turn():
 		else:
 			enemy_damage = int(enemy.VHM)
 		current_player_WN = max(0, current_player_WN - enemy_damage)
-		set_WN($PlayerPanel/PlayerData/ProgressBar, current_player_WN, State.max_WN)
+		set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
 		display_text("%s used PINK" % [enemy.name])
 		await textbox_closed
+		if current_player_WN <= 0:
+			await player_defeated()
+			return
 		player_constricted = false
 		constricted()
 
+func player_defeated() -> void:
+	display_text("u is slimed out")
+	await textbox_closed
+
+	State.current_WN = State.max_WN
+	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/test_scene/test_scene_player_house_first_floor.tscn")
+	if scene_change_error != OK:
+		push_error("Failed to load the first-floor scene: %s" % scene_change_error)
+
 func constricted():
-	var condition_label: Label = $PlayerPanel/PlayerData/PlayerNameContainer/Condition
+	var condition_label: Label = $AeContainer/PlayerPanel/PlayerData/Condition
 	if player_constricted:
 		set_condition(condition_label, "CONSTRICTED")
 		$ControlPanel.hide()
+		$PlayerName.hide()
 	else:
-		set_condition(condition_label, "NONE")
+		set_condition(condition_label, "")
 		$ControlPanel.show()
+		$PlayerName.hide()
 		
 
 func _on_assault_pressed() -> void:
@@ -130,6 +156,7 @@ func _on_assault_pressed() -> void:
 		var scene_tree: SceneTree = get_tree()
 		await scene_tree.create_timer(0.25).timeout
 		State.return_player_to_anfugel = true
+		State.current_WN = current_player_WN
 		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/test_scene/test_scene_player_house_outside.tscn")
 		if scene_change_error != OK:
 			State.return_player_to_anfugel = false
@@ -146,6 +173,6 @@ func _on_brace_pressed() -> void:
 	display_text("U braced successfully")
 	await textbox_closed
 	is_bracing = true
-	var condition_label: Label = $PlayerPanel/PlayerData/PlayerNameContainer/Condition
+	var condition_label: Label = $AeContainer/PlayerPanel/PlayerData/Condition
 	set_condition(condition_label, "BRACING")
 	enemy_turn()

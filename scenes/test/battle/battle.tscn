@@ -3,37 +3,45 @@
 [ext_resource type="Texture2D" uid="uid://dllkvflk62kli" path="res://assets/characters/stinky.png" id="1_2p6i4"]
 [ext_resource type="Script" uid="uid://dm3gpvt05111u" path="res://scenes/test/battle/battle.gd" id="1_o02fv"]
 [ext_resource type="Resource" uid="uid://6wchkbuvjdmx" path="res://scripts/res/anfugel.tres" id="2_iw1lj"]
+[ext_resource type="FontFile" uid="uid://t86kcugym3ie" path="res://uxui/font/SpecialElite-Regular.ttf" id="4_ngeuj"]
+[ext_resource type="Texture2D" uid="uid://q77krs3skau6" path="res://assets/characters/AE.png" id="5_3imsn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvkl2"]
-bg_color = Color(0.7019608, 0, 0.06666667, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0x7ap"]
-bg_color = Color(0, 0.7254979, 0.19895592, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_bottom = 2
+bg_color = Color(0, 0.7254902, 0.2, 0)
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7okt"]
-bg_color = Color(0.36810192, 0.36810198, 0.36810184, 0.83137256)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw7al"]
+bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5e3ng"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
+bg_color = Color(0, 0, 0, 0)
 border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvmkm"]
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8rks"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0mol"]
+bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+expand_margin_left = 120.0
+expand_margin_top = 12.0
+expand_margin_right = 120.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
 bg_color = Color(0, 0, 0, 1)
@@ -95,6 +103,16 @@ _data = {
 &"enemy_dead": SubResource("Animation_f10or")
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8qng1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7okt"]
+bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
 [node name="Battle" type="Control" unique_id=1340519752]
 layout_mode = 3
 anchors_preset = 0
@@ -138,6 +156,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 60
 text = "HP: 25/50"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -147,88 +168,32 @@ layout_mode = 2
 texture = ExtResource("1_2p6i4")
 stretch_mode = 3
 
-[node name="PlayerPanel" type="Panel" parent="." unique_id=92603390]
+[node name="ControlPanel" type="Panel" parent="." unique_id=1273226477]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -180.0
-offset_bottom = -32.0
+offset_left = 1412.0
+offset_top = -394.0
+offset_right = -21.0
+offset_bottom = -56.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_vw7al")
 
-[node name="PlayerData" type="HBoxContainer" parent="PlayerPanel" unique_id=127064955]
+[node name="HBoxContainer" type="VBoxContainer" parent="ControlPanel" unique_id=1208588433]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_right = -64.0
+offset_left = 4.0
+offset_top = 3.5
+offset_right = -4.0
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-offset_transform_enabled = true
-alignment = 1
-
-[node name="PlayerNameContainer" type="HBoxContainer" parent="PlayerPanel/PlayerData" unique_id=1348677964]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PlayerName" type="Label" parent="PlayerPanel/PlayerData/PlayerNameContainer" unique_id=312825507]
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_font_sizes/font_size = 67
-text = "Æ"
-
-[node name="Condition" type="Label" parent="PlayerPanel/PlayerData/PlayerNameContainer" unique_id=2066300639]
-layout_mode = 2
-size_flags_horizontal = 2
-theme_override_font_sizes/font_size = 31
-text = "Condition: NONE"
-
-[node name="ProgressBar" type="ProgressBar" parent="PlayerPanel/PlayerData" unique_id=1517051273]
-custom_minimum_size = Vector2(0, 67)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_styles/background = SubResource("StyleBoxFlat_dvkl2")
-theme_override_styles/fill = SubResource("StyleBoxFlat_0x7ap")
-step = 1.0
-value = 50.0
-show_percentage = false
-
-[node name="Label" type="Label" parent="PlayerPanel/PlayerData/ProgressBar" unique_id=888010319]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 36
-text = "HP: 25/50"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ControlPanel" type="Panel" parent="." unique_id=1273226477]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 192.0
-grow_horizontal = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="ControlPanel" unique_id=1320754909]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 31.0
-offset_top = 29.0
-offset_right = -29.0
-offset_bottom = -26.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 4
 alignment = 1
 
 [node name="Assault" type="Button" parent="ControlPanel/HBoxContainer" unique_id=608430744]
@@ -236,54 +201,91 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 72
+theme_override_constants/outline_size = 0
+theme_override_constants/h_separation = 4
+theme_override_constants/align_to_largest_stylebox = 1
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/hover = SubResource("StyleBoxFlat_o8rks")
 text = "ASSAULT"
+alignment = 0
 
 [node name="Exert" type="Button" parent="ControlPanel/HBoxContainer" unique_id=294813028]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 72
+theme_override_constants/align_to_largest_stylebox = 1
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/hover = SubResource("StyleBoxFlat_o8rks")
 text = "EXERT"
+alignment = 0
 
 [node name="Article" type="Button" parent="ControlPanel/HBoxContainer" unique_id=102629580]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 72
+theme_override_constants/align_to_largest_stylebox = 1
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/hover = SubResource("StyleBoxFlat_o8rks")
 text = "ARTICLE
 "
+alignment = 0
 
 [node name="Brace" type="Button" parent="ControlPanel/HBoxContainer" unique_id=1595264841]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 72
+theme_override_constants/align_to_largest_stylebox = 1
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/hover = SubResource("StyleBoxFlat_o8rks")
 text = "BRACE"
+alignment = 0
+
+[node name="PlayerName" type="Label" parent="." unique_id=312825507]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = 73.0
+offset_right = -229.0
+offset_bottom = 138.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_constants/line_spacing = 3
+theme_override_constants/paragraph_spacing = 0
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_a0mol")
+text = "Æ"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Textbox" type="Panel" parent="." unique_id=1588708838]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 20.0
-offset_top = 17.0
-offset_right = -13.0
-offset_bottom = 313.0
+offset_left = 18.0
+offset_top = 9.0
+offset_right = -15.0
+offset_bottom = 305.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8qng1")
 
@@ -307,6 +309,270 @@ text = ">"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1192299852]
 libraries/ = SubResource("AnimationLibrary_a37co")
+
+[node name="AeContainer" type="Panel" parent="." unique_id=1884017970]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.13055556
+offset_left = 58.0
+offset_top = 685.0
+offset_right = 376.0
+offset_bottom = 1023.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8qng1")
+
+[node name="TextureRect" type="TextureRect" parent="AeContainer" unique_id=722763652]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -158.5
+offset_top = 73.0
+offset_right = 158.5
+offset_bottom = 379.0
+grow_horizontal = 2
+size_flags_vertical = 3
+texture = ExtResource("5_3imsn")
+expand_mode = 1
+
+[node name="PlayerPanel" type="Panel" parent="AeContainer" unique_id=92603390]
+layout_mode = 0
+offset_top = 324.0
+offset_right = 318.0
+offset_bottom = 479.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
+
+[node name="PlayerData" type="VBoxContainer" parent="AeContainer/PlayerPanel" unique_id=331029754]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = -37.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+alignment = 1
+
+[node name="WN" type="Label" parent="AeContainer/PlayerPanel/PlayerData" unique_id=888010319]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "HP: 25/50"
+vertical_alignment = 1
+
+[node name="Condition" type="Label" parent="AeContainer/PlayerPanel/PlayerData" unique_id=2066300639]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/line_spacing = 3
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = " "
+
+[node name="Placeholder" type="Label" parent="AeContainer/PlayerPanel/PlayerData" unique_id=41788822]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+
+[node name="Sidekick1" type="Panel" parent="." unique_id=8923524]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.13055556
+offset_left = 388.0
+offset_top = 685.0
+offset_right = 706.0
+offset_bottom = 1023.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8qng1")
+
+[node name="TextureRect" type="TextureRect" parent="Sidekick1" unique_id=2051066340]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -158.5
+offset_top = 73.0
+offset_right = 158.5
+offset_bottom = 379.0
+grow_horizontal = 2
+size_flags_vertical = 3
+texture = ExtResource("5_3imsn")
+expand_mode = 1
+
+[node name="PlayerPanel" type="Panel" parent="Sidekick1" unique_id=2098402298]
+layout_mode = 0
+offset_top = 324.0
+offset_right = 318.0
+offset_bottom = 479.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
+
+[node name="PlayerData" type="VBoxContainer" parent="Sidekick1/PlayerPanel" unique_id=1456863770]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = -37.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+alignment = 1
+
+[node name="WN" type="Label" parent="Sidekick1/PlayerPanel/PlayerData" unique_id=1386179170]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "HP: 25/50"
+vertical_alignment = 1
+
+[node name="Condition" type="Label" parent="Sidekick1/PlayerPanel/PlayerData" unique_id=1191240916]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/line_spacing = 3
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "Condition: NONE"
+
+[node name="Placeholder" type="Label" parent="Sidekick1/PlayerPanel/PlayerData" unique_id=1550636700]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+
+[node name="Sidekick2" type="Panel" parent="." unique_id=1692087399]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.13055556
+offset_left = 718.0
+offset_top = 685.0
+offset_right = 1036.0
+offset_bottom = 1023.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8qng1")
+
+[node name="TextureRect" type="TextureRect" parent="Sidekick2" unique_id=1170441983]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -158.5
+offset_top = 73.0
+offset_right = 158.5
+offset_bottom = 379.0
+grow_horizontal = 2
+size_flags_vertical = 3
+texture = ExtResource("5_3imsn")
+expand_mode = 1
+
+[node name="PlayerPanel" type="Panel" parent="Sidekick2" unique_id=984356951]
+layout_mode = 0
+offset_top = 324.0
+offset_right = 318.0
+offset_bottom = 479.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
+
+[node name="PlayerData" type="VBoxContainer" parent="Sidekick2/PlayerPanel" unique_id=266124770]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = -37.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+alignment = 1
+
+[node name="WN" type="Label" parent="Sidekick2/PlayerPanel/PlayerData" unique_id=1373997104]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "HP: 25/50"
+vertical_alignment = 1
+
+[node name="Condition" type="Label" parent="Sidekick2/PlayerPanel/PlayerData" unique_id=1376111896]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/line_spacing = 3
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "Condition: NONE"
+
+[node name="Placeholder" type="Label" parent="Sidekick2/PlayerPanel/PlayerData" unique_id=247216937]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+
+[node name="Sidekick3" type="Panel" parent="." unique_id=1721984962]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.13055556
+offset_left = 1048.0
+offset_top = 685.0
+offset_right = 1366.0
+offset_bottom = 1023.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8qng1")
+
+[node name="TextureRect" type="TextureRect" parent="Sidekick3" unique_id=995989203]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -158.5
+offset_top = 73.0
+offset_right = 158.5
+offset_bottom = 379.0
+grow_horizontal = 2
+size_flags_vertical = 3
+texture = ExtResource("5_3imsn")
+expand_mode = 1
+
+[node name="PlayerPanel" type="Panel" parent="Sidekick3" unique_id=1775893642]
+layout_mode = 0
+offset_top = 324.0
+offset_right = 318.0
+offset_bottom = 479.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
+
+[node name="PlayerData" type="VBoxContainer" parent="Sidekick3/PlayerPanel" unique_id=682308467]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = 13.0
+offset_right = -37.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+alignment = 1
+
+[node name="WN" type="Label" parent="Sidekick3/PlayerPanel/PlayerData" unique_id=639272064]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "HP: 25/50"
+vertical_alignment = 1
+
+[node name="Condition" type="Label" parent="Sidekick3/PlayerPanel/PlayerData" unique_id=1214547755]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/line_spacing = 3
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
+text = "Condition: NONE"
+
+[node name="Placeholder" type="Label" parent="Sidekick3/PlayerPanel/PlayerData" unique_id=490035868]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_ngeuj")
+theme_override_font_sizes/font_size = 26
 
 [connection signal="pressed" from="ControlPanel/HBoxContainer/Assault" to="." method="_on_assault_pressed"]
 [connection signal="pressed" from="ControlPanel/HBoxContainer/Brace" to="." method="_on_brace_pressed"]
