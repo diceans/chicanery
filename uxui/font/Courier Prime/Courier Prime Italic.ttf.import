@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://t86kcugym3ie"
-path="res://.godot/imported/SpecialElite-Regular.ttf-312a0d6ab40021bd68c96421f4064145.fontdata"
+uid="uid://cwuk2c1a12wnw"
+path="res://.godot/imported/Courier Prime Italic.ttf-6c09bd6abacb50ee9ab159ae75a3fcd1.fontdata"
 
 [deps]
 
-source_file="res://uxui/font/SpecialElite-Regular.ttf"
-dest_files=["res://.godot/imported/SpecialElite-Regular.ttf-312a0d6ab40021bd68c96421f4064145.fontdata"]
+source_file="res://uxui/font/Courier Prime/Courier Prime Italic.ttf"
+dest_files=["res://.godot/imported/Courier Prime Italic.ttf-6c09bd6abacb50ee9ab159ae75a3fcd1.fontdata"]
 
 [params]
 

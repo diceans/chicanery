@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dya1a0fvrbmy"]
 
-[ext_resource type="TileSet" uid="uid://bmqnxkdodtv0i" path="res://tilesets/game_tile_set.tres" id="1_53ief"]
+[ext_resource type="TileSet" uid="uid://bmqnxkdodtv0i" path="res://tilesets/firstfloor_tile_set.tres" id="1_53ief"]
 [ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE/AE_placeholder.tscn" id="2_iom6j"]
 [ext_resource type="Script" uid="uid://ckk1jmrw6j4y3" path="res://scenes/test/camera_2d.gd" id="3_iom6j"]
 [ext_resource type="Script" uid="uid://d3du1rk8x611w" path="res://scenes/test/transition/transition_node_1to2.gd" id="4_fiw6v"]

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b44y778y47plm"]
+
+[node name="Arrow" type="Node2D" unique_id=969616233]
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=551477774]
+polygon = PackedVector2Array(0, -4, 0, 0, 14, 0, 14, 2, 0, 2, 0, 6, -15, 1)
