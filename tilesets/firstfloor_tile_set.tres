@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" format=3 uid="uid://bmqnxkdodtv0i"]
 
-[ext_resource type="Texture2D" uid="uid://cwseuvxulljw8" path="res://assets/background/Receptium.png" id="1_tjtrf"]
+[ext_resource type="Texture2D" uid="uid://cwseuvxulljw8" path="res://assets/background/FirstFloor.png" id="1_tjtrf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_48fpx"]
 resource_name = "background"

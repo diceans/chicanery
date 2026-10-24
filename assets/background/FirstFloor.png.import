@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cwseuvxulljw8"
-path="res://.godot/imported/Receptium.png-78c91dddc9b4f96de0a715540c1245b6.ctex"
+path="res://.godot/imported/FirstFloor.png-b5808eb5b171be889a238f5226e151ac.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background/Receptium.png"
-dest_files=["res://.godot/imported/Receptium.png-78c91dddc9b4f96de0a715540c1245b6.ctex"]
+source_file="res://assets/background/FirstFloor.png"
+dest_files=["res://.godot/imported/FirstFloor.png-b5808eb5b171be889a238f5226e151ac.ctex"]
 
 [params]
 
