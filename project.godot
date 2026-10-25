@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 State="*uid://ckpgcnpwqgwol"
 BaseEnemy="*uid://fmpfei7rq57s"
+BaseAlly="*uid://wu2p1mtt84wi"
 
 [display]
 

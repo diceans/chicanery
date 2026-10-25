@@ -1,12 +1,12 @@
 [gd_resource type="Resource" format=3 uid="uid://6wchkbuvjdmx"]
 
 [ext_resource type="Script" uid="uid://fmpfei7rq57s" path="res://scripts/stats/base_enemy.gd" id="1_ebvco"]
-[ext_resource type="Texture2D" path="res://assets/characters/Anfugel/inbattle.png" id="2_qssw0"]
+[ext_resource type="Texture2D" uid="uid://ca4650kcpu01e" path="res://assets/characters/enemies/Anfugel/inbattle.png" id="2_pkpdq"]
 
 [resource]
 script = ExtResource("1_ebvco")
 name = "Anfugel"
-texture = ExtResource("2_qssw0")
+texture = ExtResource("2_pkpdq")
 WN = 30.0
 VHM = 8.0
 ERL = 15.0

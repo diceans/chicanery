@@ -1,15 +1,10 @@
 [gd_scene format=3 uid="uid://bowogku6ohgqq"]
 
-[ext_resource type="Texture2D" uid="uid://dllkvflk62kli" path="res://assets/characters/stinky.png" id="1_2p6i4"]
 [ext_resource type="Script" uid="uid://dm3gpvt05111u" path="res://scenes/test/battle/battle.gd" id="1_o02fv"]
 [ext_resource type="Resource" uid="uid://6wchkbuvjdmx" path="res://scripts/res/enemies/anfugel.tres" id="2_iw1lj"]
 [ext_resource type="Texture2D" uid="uid://bb7gaowvmiwqa" path="res://assets/background/taiwan3.jpg" id="3_uuwk3"]
 [ext_resource type="FontFile" uid="uid://cjed4d02nrwc5" path="res://uxui/font/Courier Prime/Courier Prime Bold.ttf" id="4_uuwk3"]
-[ext_resource type="Texture2D" uid="uid://q77krs3skau6" path="res://assets/characters/AE.png" id="5_3imsn"]
 [ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="7_yq2ln"]
-[ext_resource type="Texture2D" uid="uid://c18yap2u76iwl" path="res://assets/characters/Kletzt.png" id="9_3u3hm"]
-[ext_resource type="Texture2D" uid="uid://dudk4kgi571d5" path="res://assets/characters/Elizyka.png" id="9_ce6at"]
-[ext_resource type="Texture2D" uid="uid://ypqswc8s2bs8" path="res://assets/characters/Wilseffn.png" id="9_lgxa1"]
 [ext_resource type="FontFile" uid="uid://t86kcugym3ie" path="res://uxui/font/Special Elite/SpecialElite-Regular.ttf" id="9_yq2ln"]
 [ext_resource type="Texture2D" uid="uid://bid2884t2nusl" path="res://assets/misc/Exertionarticle_menu_pointer.png" id="13_f5pu5"]
 
@@ -227,7 +222,6 @@ vertical_alignment = 1
 
 [node name="Enemy" type="TextureRect" parent="EnemyContainer" unique_id=1696506467]
 layout_mode = 2
-texture = ExtResource("1_2p6i4")
 stretch_mode = 3
 
 [node name="ControlPanel" type="Panel" parent="." unique_id=1273226477]
@@ -541,7 +535,6 @@ offset_right = 158.5
 offset_bottom = 324.0
 grow_horizontal = 2
 size_flags_vertical = 3
-texture = ExtResource("5_3imsn")
 expand_mode = 1
 
 [node name="ConditionIcon" type="TextureRect" parent="AeContainer" unique_id=438492608]
@@ -620,7 +613,6 @@ offset_right = 158.5
 offset_bottom = 324.0
 grow_horizontal = 2
 size_flags_vertical = 3
-texture = ExtResource("9_ce6at")
 expand_mode = 1
 
 [node name="PlayerPanel" type="Panel" parent="Elizyka" unique_id=2098402298]
@@ -685,7 +677,6 @@ offset_right = 158.5
 offset_bottom = 324.0
 grow_horizontal = 2
 size_flags_vertical = 3
-texture = ExtResource("9_3u3hm")
 expand_mode = 1
 
 [node name="PlayerPanel" type="Panel" parent="Kietzt" unique_id=984356951]
@@ -750,7 +741,6 @@ offset_right = 158.5
 offset_bottom = 324.0
 grow_horizontal = 2
 size_flags_vertical = 3
-texture = ExtResource("9_lgxa1")
 expand_mode = 1
 
 [node name="PlayerPanel" type="Panel" parent="Wilseffn" unique_id=1775893642]

@@ -1,8 +1,9 @@
 [gd_resource type="Resource" format=3 uid="uid://dkvv0kbdmpvjs"]
 
-[ext_resource type="Script" uid="uid://bb17v3p7p64mr" path="res://scripts/stats/base_ally.gd" id="1_qiwda"]
+[ext_resource type="Script" uid="uid://fmpfei7rq57s" path="res://scripts/stats/base_enemy.gd" id="1_557gl"]
 [ext_resource type="Texture2D" uid="uid://lhnb44ell85o" path="res://assets/characters/allies/wilseffn_visualization-removebg-preview.png" id="2_557gl"]
 
 [resource]
-script = ExtResource("1_qiwda")
+script = ExtResource("1_557gl")
+name = "Ally"
 texture = ExtResource("2_557gl")
