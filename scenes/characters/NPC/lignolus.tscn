@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://bqqb0nqa3jh3m"]
+
+[ext_resource type="Texture2D" uid="uid://ckvil141lr02k" path="res://assets/characters/Lignolus/spritesheet.png" id="1_th3ay"]
+[ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="6_vnb0b"]
+[ext_resource type="Script" uid="uid://b50t0kr0gclog" path="res://scenes/characters/NPC/idle_state.gd" id="7_y2ga7"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvt51"]
+radius = 19.0
+height = 120.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8i13h"]
+atlas = ExtResource("1_th3ay")
+region = Rect2(500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lspac"]
+atlas = ExtResource("1_th3ay")
+region = Rect2(1000, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgh8d"]
+atlas = ExtResource("1_th3ay")
+region = Rect2(1500, 0, 500, 500)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pyh7"]
+atlas = ExtResource("1_th3ay")
+region = Rect2(0, 500, 500, 500)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i7okt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8i13h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lspac")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgh8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5pyh7")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Lignolus" type="CharacterBody2D" unique_id=1558658514]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1603411969]
+y_sort_enabled = true
+position = Vector2(0, 91)
+shape = SubResource("CapsuleShape2D_wvt51")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1912445074]
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_i7okt")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.5060622
+
+[node name="StateMachine" type="Node" parent="." unique_id=106757555]
+script = ExtResource("6_vnb0b")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1315428296]
+script = ExtResource("7_y2ga7")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1144470731]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

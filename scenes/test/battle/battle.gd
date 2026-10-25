@@ -319,7 +319,7 @@ func player_defeated() -> void:
 	await textbox_closed
 
 	State.current_WN = State.max_WN
-	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/scene/test_scene_player_house_first_floor.tscn")
+	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/act1/test_scene_player_house_first_floor.tscn")
 	if scene_change_error != OK:
 		push_error("Failed to load the first-floor scene: %s" % scene_change_error)
 
@@ -355,7 +355,7 @@ func _on_assault_pressed() -> void:
 		# Mark the return destination before leaving the battle scene.
 		State.return_player_to_anfugel = true
 		State.current_WN = current_player_WN
-		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/scene/test_scene_player_house_outside.tscn")
+		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
 		if scene_change_error != OK:
 			State.return_player_to_anfugel = false
 			push_error("Failed to load the outside scene: %s" % scene_change_error)

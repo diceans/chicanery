@@ -138,6 +138,7 @@ radius = 20.0
 height = 74.0
 
 [node name="AePlaceholder" type="CharacterBody2D" unique_id=2014605289]
+y_sort_enabled = true
 script = ExtResource("1_0v7dg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1547352783]

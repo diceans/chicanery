@@ -10,14 +10,15 @@ config_version=5
 
 [application]
 
-config/name="testingground"
-run/main_scene="uid://bowogku6ohgqq"
+config/name="chicanery"
+run/main_scene="uid://dcvmwxrxi3lhp"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 State="*uid://ckpgcnpwqgwol"
+BaseEnemy="*uid://fmpfei7rq57s"
 
 [display]
 

@@ -2,8 +2,8 @@
 
 [ext_resource type="TileSet" uid="uid://bmqnxkdodtv0i" path="res://tilesets/firstfloor_tile_set.tres" id="1_ysxcy"]
 [ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE/AE_placeholder.tscn" id="2_62lrn"]
-[ext_resource type="Script" uid="uid://d3du1rk8x611w" path="res://scenes/test/transition/transition_node_1to2.gd" id="4_bk60k"]
-[ext_resource type="Script" uid="uid://do1o6v1m30pgn" path="res://scenes/test/transition/transition_node_1too.gd" id="5_nue0b"]
+[ext_resource type="Script" uid="uid://d3du1rk8x611w" path="res://scenes/test/transition/transition_node_to_2.gd" id="4_bk60k"]
+[ext_resource type="Script" uid="uid://do1o6v1m30pgn" path="res://scenes/test/transition/transition_node_to_o.gd" id="5_nue0b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8qng1"]
 size = Vector2(230, 28)
