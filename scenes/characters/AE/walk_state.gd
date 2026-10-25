@@ -10,6 +10,7 @@ func _on_process(_delta : float) -> void:
 
 func _on_physics_process(_delta : float) -> void:
 	var direction: Vector2 = GameInputEvents.movement_input()
+	var is_sprint: bool = GameInputEvents.check_sprint()
 	
 	if direction == Vector2.UP:
 		animate_sprite_2d.play("walk_back")
@@ -22,6 +23,11 @@ func _on_physics_process(_delta : float) -> void:
 	
 	if direction != Vector2.ZERO:
 		player.ae_direction = direction
+	
+	if is_sprint:
+		speed = 600
+	else:
+		speed = 300
 	
 	player.velocity = direction * speed
 	player.move_and_slide()

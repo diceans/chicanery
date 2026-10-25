@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://i72svy0wuu5x" path="res://scenes/test/act1/test_scene_player_house_outside.gd" id="1_xjf3b"]
 [ext_resource type="TileSet" uid="uid://dcl2w3dwtbpnk" path="res://tilesets/outdoor_tile_set.tres" id="2_7w2d8"]
+[ext_resource type="Resource" uid="uid://oi1t5i1w1js0" path="res://scripts/res/allies/elizyka.tres" id="2_mnleo"]
 [ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE/AE_placeholder.tscn" id="3_mnleo"]
 [ext_resource type="Script" uid="uid://bfe0254iquhfp" path="res://scenes/test/transition/transition_node_to_1.gd" id="4_kme14"]
 [ext_resource type="PackedScene" uid="uid://c1gywu3noqrhl" path="res://scenes/characters/NPC/anfugel.tscn" id="5_cunso"]
@@ -13,6 +14,7 @@ size = Vector2(229.5, 22.5)
 [node name="TestSceneTilemap" type="Node2D" unique_id=2142147069]
 y_sort_enabled = true
 script = ExtResource("1_xjf3b")
+ally = ExtResource("2_mnleo")
 
 [node name="GameTileMap" type="Node2D" parent="." unique_id=1234913745]
 
@@ -60,5 +62,11 @@ position = Vector2(2997, 1621)
 [node name="Lignolus3" parent="." unique_id=196425170 instance=ExtResource("6_7w2d8")]
 y_sort_enabled = true
 position = Vector2(994, 2149)
+
+[node name="Spawnpoint1" type="Area2D" parent="." unique_id=1273425332]
+position = Vector2(-984, 50)
+
+[node name="Spawnpoint2" type="Area2D" parent="." unique_id=1250152830]
+position = Vector2(2974, 344)
 
 [connection signal="body_entered" from="TransitionNodeOto1" to="TransitionNodeOto1" method="_on_body_entered"]

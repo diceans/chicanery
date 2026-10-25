@@ -9,4 +9,4 @@ extends Resource
 @export var EM: float = 1
 @export var pi_ACM: float = 1
 @export var pi_tDIM: float = 1
-@export var exertions: Array = ["PINK"]
+@export var exertions: Array = []

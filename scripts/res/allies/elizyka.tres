@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://oi1t5i1w1js0"]
+
+[ext_resource type="Script" uid="uid://bb17v3p7p64mr" path="res://scripts/stats/base_ally.gd" id="1_asgq8"]
+[ext_resource type="Texture2D" uid="uid://cbj3y68jiag0u" path="res://assets/characters/allies/elizyka_visualization-removebg-preview.png" id="2_5ovra"]
+
+[resource]
+script = ExtResource("1_asgq8")
+texture = ExtResource("2_5ovra")
+spawnpoints = [Vector2(0, 0), Vector2(0, 0)]

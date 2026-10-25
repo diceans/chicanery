@@ -1,4 +1,5 @@
 extends Node2D
+@export var ally: Resource = null
 
 func _ready() -> void:
 	var returning_from_battle: bool = State.return_player_to_anfugel
