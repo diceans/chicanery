@@ -6,4 +6,4 @@
 [resource]
 script = ExtResource("1_asgq8")
 texture = ExtResource("2_5ovra")
-spawnpoints = [Vector2(0, 0), Vector2(0, 0)]
+spawnpoints = [Vector2(-984, 50), Vector2(2974, 344)]

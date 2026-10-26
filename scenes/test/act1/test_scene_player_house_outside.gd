@@ -25,3 +25,6 @@ func _ready() -> void:
 
 	if returning_from_battle and not found_active_enemy:
 		push_error("Could not find the enemy from the completed battle")
+		
+func spawnpoint():
+	pass

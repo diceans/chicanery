@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bqqb0nqa3jh3m"]
 
-[ext_resource type="Texture2D" uid="uid://ckvil141lr02k" path="res://assets/characters/Lignolus/spritesheet.png" id="1_th3ay"]
+[ext_resource type="Texture2D" uid="uid://ckvil141lr02k" path="res://assets/characters/enemies/Lignolus/spritesheet.png" id="1_th3ay"]
 [ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="6_vnb0b"]
 [ext_resource type="Script" uid="uid://b50t0kr0gclog" path="res://scenes/characters/NPC/idle_state.gd" id="7_y2ga7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvt51"]
-radius = 19.0
+radius = 28.0
 height = 120.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8i13h"]
@@ -48,7 +48,7 @@ animations = [{
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1603411969]
 y_sort_enabled = true
-position = Vector2(0, 91)
+position = Vector2(0, 82)
 shape = SubResource("CapsuleShape2D_wvt51")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1912445074]

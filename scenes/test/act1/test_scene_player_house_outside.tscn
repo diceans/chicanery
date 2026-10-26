@@ -7,9 +7,22 @@
 [ext_resource type="Script" uid="uid://bfe0254iquhfp" path="res://scenes/test/transition/transition_node_to_1.gd" id="4_kme14"]
 [ext_resource type="PackedScene" uid="uid://c1gywu3noqrhl" path="res://scenes/characters/NPC/anfugel.tscn" id="5_cunso"]
 [ext_resource type="PackedScene" uid="uid://bqqb0nqa3jh3m" path="res://scenes/characters/NPC/lignolus.tscn" id="6_7w2d8"]
+[ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="8_cunso"]
+[ext_resource type="Texture2D" uid="uid://cbj3y68jiag0u" path="res://assets/characters/allies/elizyka_visualization-removebg-preview.png" id="8_kme14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7okt"]
 size = Vector2(229.5, 22.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7okt"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
 
 [node name="TestSceneTilemap" type="Node2D" unique_id=2142147069]
 y_sort_enabled = true
@@ -26,10 +39,10 @@ tile_set = ExtResource("2_7w2d8")
 position = Vector2(892, 214)
 
 [node name="Camera2D" type="Camera2D" parent="AePlaceholder" unique_id=1300459940]
-limit_left = -4489
-limit_top = -2397
-limit_right = 5961
-limit_bottom = 2653
+limit_left = -4480
+limit_top = -2385
+limit_right = 5970
+limit_bottom = 2665
 editor_draw_limits = true
 
 [node name="TransitionNodeOto1" type="Area2D" parent="." unique_id=1575585029]
@@ -44,7 +57,7 @@ position = Vector2(2257, 1183)
 enemy_id = &"anfugel_1"
 
 [node name="Anfugel2" parent="." unique_id=146931934 instance=ExtResource("5_cunso")]
-position = Vector2(-120, 1154)
+position = Vector2(-325, 1208)
 enemy_id = &"anfugel_2"
 
 [node name="Anfugel3" parent="." unique_id=476737414 instance=ExtResource("5_cunso")]
@@ -53,20 +66,72 @@ enemy_id = &"anfugel_3"
 
 [node name="Lignolus" parent="." unique_id=1558658514 instance=ExtResource("6_7w2d8")]
 y_sort_enabled = true
-position = Vector2(-971, 1606)
+position = Vector2(-989, 1807)
 
 [node name="Lignolus2" parent="." unique_id=1502463436 instance=ExtResource("6_7w2d8")]
 y_sort_enabled = true
-position = Vector2(2997, 1621)
+position = Vector2(2985, 1875)
 
 [node name="Lignolus3" parent="." unique_id=196425170 instance=ExtResource("6_7w2d8")]
 y_sort_enabled = true
 position = Vector2(994, 2149)
 
-[node name="Spawnpoint1" type="Area2D" parent="." unique_id=1273425332]
-position = Vector2(-984, 50)
+[node name="Panel" type="Panel" parent="." unique_id=1041485536]
+z_index = 1
+y_sort_enabled = true
+offset_left = -1289.0
+offset_top = -327.0
+offset_right = -616.0
+offset_bottom = 293.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
 
-[node name="Spawnpoint2" type="Area2D" parent="." unique_id=1250152830]
-position = Vector2(2974, 344)
+[node name="Panel" type="Panel" parent="Panel" unique_id=1886953513]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 199.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8qng1")
+
+[node name="Label" type="Label" parent="Panel/Panel" unique_id=1658605367]
+layout_mode = 1
+offset_left = 18.0
+offset_top = 16.0
+offset_right = 521.0
+offset_bottom = 53.0
+theme_override_fonts/font = ExtResource("8_cunso")
+theme_override_font_sizes/font_size = 36
+text = "Smoke weed everyday"
+
+[node name="Label2" type="Label" parent="Panel/Panel" unique_id=818162762]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -44.0
+offset_right = -7.0
+offset_bottom = -7.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("8_cunso")
+theme_override_font_sizes/font_size = 36
+text = ">"
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=1089236294]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -333.0
+offset_top = -375.0
+offset_right = 333.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("8_kme14")
 
 [connection signal="body_entered" from="TransitionNodeOto1" to="TransitionNodeOto1" method="_on_body_entered"]
