@@ -1,7 +1,14 @@
 extends Node2D
 @export var ally: Resource = null
 
+var player_near_elizyka: bool = false
+
 func _ready() -> void:
+	$AePlaceholder/Dialogue.hide()
+	var ally_spawnpoint: Variant = spawnpoint(ally)
+	if not (ally_spawnpoint is Vector2):
+		return
+	$Elizyka.position = ally_spawnpoint
 	var returning_from_battle: bool = State.return_player_to_anfugel
 	State.return_player_to_anfugel = false
 
@@ -25,6 +32,51 @@ func _ready() -> void:
 
 	if returning_from_battle and not found_active_enemy:
 		push_error("Could not find the enemy from the completed battle")
+
+func spawnpoint(ally_resource: Resource) -> Variant:
+	if ally_resource == null:
+		push_error("Cannot choose a spawnpoint: no ally resource is assigned")
+		return null
+
+	var spawnpoints: Variant = ally_resource.get("spawnpoints")
+	if not spawnpoints is Array or spawnpoints.is_empty():
+		push_error("Cannot choose a spawnpoint: ally resource has no spawnpoints")
+		return null
+
+	var spawn: Variant = spawnpoints.pick_random()
+	if not spawn is Vector2:
+		push_error("Cannot choose a spawnpoint: ally spawnpoints must contain Vector2 values")
+		return null
+	return spawn
+
+
+func display_text(text):
+	$AePlaceholder/Dialogue.show()
+	$AePlaceholder/Dialogue/Message.text = text
+
+
+func _on_elizyka_body_entered(body: Node2D) -> void:
+	if body.name == "AePlaceholder":
+		player_near_elizyka = true
+
+
+func _on_elizyka_body_exited(body: Node2D) -> void:
+	if body.name == "AePlaceholder":
+		player_near_elizyka = false
+		$AePlaceholder/Dialogue.hide()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if player_near_elizyka and event.is_action_pressed("interact") and not event.is_echo():
+		display_text("Smoke weed everyday")
+		get_viewport().set_input_as_handled()
 		
-func spawnpoint():
-	pass
+func _input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo:
+		return
+
+	if $AePlaceholder/Dialogue.visible:
+		if event.is_action_pressed("ui_accept"):
+			get_viewport().set_input_as_handled()
+			$AePlaceholder/Dialogue.hide()
+		return

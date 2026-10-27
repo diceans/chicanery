@@ -1,7 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://dkvv0kbdmpvjs"]
 
 [ext_resource type="Script" uid="uid://fmpfei7rq57s" path="res://scripts/stats/base_enemy.gd" id="1_557gl"]
-[ext_resource type="Texture2D" uid="uid://lhnb44ell85o" path="res://assets/characters/allies/wilseffn_visualization-removebg-preview.png" id="2_557gl"]
+[ext_resource type="Texture2D" uid="uid://ypqswc8s2bs8" path="res://assets/characters/allies/Wilseffn.png" id="2_557gl"]
 
 [resource]
 script = ExtResource("1_557gl")

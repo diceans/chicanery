@@ -2,6 +2,7 @@ class_name GameInputEvents
 
 static var direction: Vector2
 static var is_sprint: bool
+static var is_interact: bool
 
 static func movement_input() -> Vector2:
 	
@@ -24,6 +25,13 @@ static func check_sprint():
 	else:
 		is_sprint = false
 	return is_sprint
+
+static func check_interact():
+	if Input.is_action_pressed("interact"):
+		is_interact = true
+	else:
+		is_interact = false
+	return is_interact
 
 static func is_movement_input() -> bool:
 	if direction == Vector2.ZERO:
