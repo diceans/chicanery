@@ -9,6 +9,7 @@ var current_node_state_name : String
 var parent_node_name: String
 
 
+# Registers all child states and sets the initial state so the state machine can begin running.
 func _ready() -> void:
 	parent_node_name = get_parent().name
 	
@@ -23,11 +24,13 @@ func _ready() -> void:
 		current_node_state_name = current_node_state.name.to_lower()
 
 
+# Updates the active state once each frame.
 func _process(delta : float) -> void:
 	if current_node_state:
 		current_node_state._on_process(delta)
 
 
+# Runs the active state's physics flow and checks whether it should leave for another state.
 func _physics_process(delta: float) -> void:
 	if current_node_state:
 		current_node_state._on_physics_process(delta)
@@ -36,6 +39,7 @@ func _physics_process(delta: float) -> void:
 		#print(parent_node_name, " Current State: ", current_node_state_name)
 
 
+# Switches the active state to a different registered state and cleans up the old one.
 func transition_to(node_state_name : String) -> void:
 	if node_state_name == current_node_state.name.to_lower():
 		return

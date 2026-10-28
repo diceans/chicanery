@@ -2,6 +2,7 @@ extends Control
 signal textbox_closed
 @export var enemy: Resource = null;
 
+# Maps the active enemy ID to the correct enemy resource so the battle scene always loads the matching enemy art and stats.
 func _resolve_enemy_resource_for_id(enemy_id: StringName) -> Resource:
 	if enemy_id.is_empty():
 		push_error("Cannot load enemy resource: active enemy ID is empty")
@@ -38,7 +39,7 @@ var condition_turns_remaining: int = 0
 var bracing_pending: bool = false
 @onready var condition_icon: TextureRect = $AeContainer/ConditionIcon
 
-# Initializes the battle UI and selects which side acts first.
+# Initializes the battle scene, loads the enemy resource, and decides who acts first based on ERL.
 func _ready():
 	enemy = _resolve_enemy_resource_for_id(State.active_enemy_id)
 	if enemy == null:
@@ -88,7 +89,7 @@ func _ready():
 				enemy_turn()
 		
 	
-# Collects menu buttons for keyboard navigation and stores their default colors.
+# Collects the visible menu buttons and stores their original colors so the current selection can be highlighted cleanly.
 func _get_menu_buttons(container: Node, item_count: int) -> Array[Button]:
 	var buttons: Array[Button] = []
 	for child in container.get_children():
@@ -100,7 +101,7 @@ func _get_menu_buttons(container: Node, item_count: int) -> Array[Button]:
 		push_error("Menu button count does not match its State list")
 	return buttons
 
-# Returns the buttons in the currently visible action menu.
+# Returns the set of buttons currently visible for the active menu panel.
 func _get_active_menu_buttons() -> Array[Button]:
 	if $ExertPanel.visible:
 		return exertion_buttons
@@ -108,7 +109,7 @@ func _get_active_menu_buttons() -> Array[Button]:
 		return action_buttons
 	return []
 
-# Resets menu highlighting and positions the selection arrow on the active item.
+# Resets the menu highlight state and repositions the selector arrow over the active button.
 func _refresh_menu_selection() -> void:
 	for button in action_buttons + exertion_buttons:
 		button.offset_transform_position = Vector2(16, 0)
@@ -139,21 +140,21 @@ func _refresh_menu_selection() -> void:
 	$Arrow.global_position = Vector2(button_rect.position.x + 450, button_rect.get_center().y)
 	$Arrow.show()
 
-# Updates an enemy health bar and its numeric label.
+# Updates an enemy progress bar and its numeric label to reflect the current and max WN values.
 func set_WN(progress_bar, WN, max_WN):
 	progress_bar.value = WN
 	progress_bar.max_value = max_WN
 	progress_bar.get_node("Label").text = "%d/%d" % [WN, max_WN]
 
-# Updates the player's WN label.
+# Refreshes the player's WN HUD to show the current health and maximum health values.
 func set_player_WN(condition_label: Label, WN: int, max_WN: int) -> void:
 	condition_label.text = "WN: %d/%d" % [WN, max_WN]
 	
-# Sets the text shown for the player's active condition.
+# Updates the condition label to display the current status effect name or an empty string when none applies.
 func set_condition(condition_label: Label, condition: String) -> void:
 	condition_label.text = "%s" % condition
 
-# Replaces the active effect and preserves a pending brace if another effect overwrites it.
+# Applies or clears a status effect while preserving a pending bracing state if another effect replaces it.
 func _apply_condition(condition_path: String) -> void:
 	if condition != null and condition.custom_properties.get("is_bracing", false):
 		bracing_pending = true
@@ -170,7 +171,7 @@ func _apply_condition(condition_path: String) -> void:
 	condition_turns_remaining = condition.duration_turns if condition != null else 0
 	check_condition()
 
-# Updates activation flags defined by the status-effect resource.
+# Toggles the custom status-effect flags used by the condition system, such as bracing and restriction states.
 func _set_condition_active(status_effect: StatusEffect, is_active: bool) -> void:
 	if status_effect == null:
 		return
@@ -178,7 +179,7 @@ func _set_condition_active(status_effect: StatusEffect, is_active: bool) -> void
 		if status_effect.custom_properties.has(property_name):
 			status_effect.custom_properties[property_name] = is_active
 
-# Updates the condition label/icon and applies any condition-specific menu restrictions.
+# Refreshes the condition HUD and hides or reveals the action menu based on whether the player is restricted by status effects.
 func check_condition() -> void:
 	var condition_label: Label = $AeContainer/PlayerPanel/PlayerData/Condition
 	if condition == null or condition_turns_remaining <= 0:
@@ -213,7 +214,7 @@ func check_condition() -> void:
 		$DescriptionPanel.hide()
 	_refresh_menu_selection()
 
-# Scales and aligns the condition icon to the upper-right of the player portrait.
+# Positions the condition icon over the player portrait so the active status is visible in the battle UI.
 func _position_condition_icon() -> void:
 	var avatar_rect: TextureRect = $AeContainer/TextureRect
 	condition_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
@@ -224,14 +225,14 @@ func _position_condition_icon() -> void:
 		0
 	)
 
-# Decrements the duration if the same condition stayed active during this enemy turn.
+# Reduces a status effect's remaining duration if it persisted through the enemy's turn.
 func _advance_condition_turn(condition_at_turn_start: StatusEffect) -> void:
 	if condition == null or condition != condition_at_turn_start:
 		return
 	condition_turns_remaining -= 1
 	check_condition()
 	
-# Handles textbox dismissal and keyboard navigation/selection in the menus.
+# Handles accept-key dismissal and keyboard navigation across the battle menu panels.
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
@@ -274,7 +275,7 @@ func _input(event: InputEvent) -> void:
 	_refresh_menu_selection()
 	get_viewport().set_input_as_handled()
 
-# Displays a message and hides the action controls until the textbox is dismissed.
+# Shows a battle text box and temporarily hides the action menu while the message is on screen.
 func display_text(text):
 	$ControlPanel.hide()
 	$PlayerName.hide()
@@ -282,7 +283,7 @@ func display_text(text):
 	$Textbox/Message.text = text
 	_refresh_menu_selection()
 	
-# Selects and resolves an enemy exertion, repeating enemy turns while constriction holds.
+# Chooses the enemy's exertion, resolves its damage or condition effects, and repeats until the threat ends.
 func enemy_turn():
 	display_text("%s attacks" % enemy.name)
 	await textbox_closed
@@ -332,7 +333,7 @@ func enemy_turn():
 	if condition != null and condition.custom_properties.get("is_constricted", false):
 		await enemy_turn()
 
-# Displays defeat text, restores player WN, and returns to the first-floor scene.
+# Resets the player after a loss, shows the defeat text, and sends the player back to the first-floor scene.
 func player_defeated() -> void:
 	display_text("u is slimed out")
 	await textbox_closed
@@ -342,7 +343,7 @@ func player_defeated() -> void:
 	if scene_change_error != OK:
 		push_error("Failed to load the first-floor scene: %s" % scene_change_error)
 
-# Resolves a player attack and records a victory if it defeats the enemy.
+# Resolves the player's assault action, applies damage, and transitions back to the outside scene when the enemy is slain.
 func _on_assault_pressed() -> void:
 	display_text("U swung")
 	await textbox_closed
@@ -386,7 +387,7 @@ func _on_assault_pressed() -> void:
 	enemy_turn()
 
 
-# Applies the bracing condition before the enemy's turn.
+# Uses the brace action to apply the bracing condition and pass the turn to the enemy.
 func _on_brace_pressed() -> void:
 	display_text("U braced")
 	await textbox_closed
@@ -394,7 +395,7 @@ func _on_brace_pressed() -> void:
 	enemy_turn()
 
 
-# Opens the exertion menu.
+# Opens the exertion menu so the player can choose a strategic action instead of a basic attack.
 func _on_exert_pressed() -> void:
 	$ControlPanel.hide()
 	$ExertPanel.show()
@@ -402,7 +403,7 @@ func _on_exert_pressed() -> void:
 	exertion_index = 0
 	_refresh_menu_selection()
 
-# Resolves FORBEAR and passes the turn to the enemy.
+# Resolves the FORBEAR exertion and passes the turn to the enemy without attacking.
 func _on_forbear_pressed() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
@@ -411,7 +412,7 @@ func _on_forbear_pressed() -> void:
 	await textbox_closed
 	enemy_turn()
 
-# Resolves FORSAKE and passes the turn to the enemy.
+# Resolves the FORSAKE exertion and intentionally gives the enemy the next turn.
 func _on_forsake_pressed() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
@@ -420,7 +421,7 @@ func _on_forsake_pressed() -> void:
 	await textbox_closed
 	enemy_turn()
 
-# Resolves the self-defeating FORDOOM exertion.
+# Resolves the FORDOOM exertion, instantly dropping the player's WN and checking whether the battle is lost.
 func _on_foredoom_pressed() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()

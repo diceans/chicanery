@@ -1,11 +1,11 @@
 extends Node
 
 
-# Called when the node enters the scene tree for the first time.
+# Initializes the node when it enters the scene tree.
 func _ready() -> void:
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Updates the node each frame using the time since the last frame.
 func _process(delta: float) -> void:
 	pass

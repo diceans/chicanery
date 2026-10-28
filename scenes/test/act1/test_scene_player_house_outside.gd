@@ -3,6 +3,7 @@ extends Node2D
 
 var player_near_elizyka: bool = false
 
+# Initializes the outside scene, restores the player to the defeated enemy's location if needed, and removes cleared enemies.
 func _ready() -> void:
 	$AePlaceholder/Dialogue.hide()
 	var ally_spawnpoint: Variant = spawnpoint(ally)
@@ -33,6 +34,7 @@ func _ready() -> void:
 	if returning_from_battle and not found_active_enemy:
 		push_error("Could not find the enemy from the completed battle")
 
+# Chooses a random spawn point from the ally resource so Elizyka appears in a valid starting position.
 func spawnpoint(ally_resource: Resource) -> Variant:
 	if ally_resource == null:
 		push_error("Cannot choose a spawnpoint: no ally resource is assigned")
@@ -50,27 +52,32 @@ func spawnpoint(ally_resource: Resource) -> Variant:
 	return spawn
 
 
+# Shows the dialogue box with the provided text so narrative or interaction prompts appear in the world scene.
 func display_text(text):
 	$AePlaceholder/Dialogue.show()
 	$AePlaceholder/Dialogue/Message.text = text
 
 
+# Tracks whether the player is close enough to Elizyka to interact with her.
 func _on_elizyka_body_entered(body: Node2D) -> void:
 	if body.name == "AePlaceholder":
 		player_near_elizyka = true
 
 
+# Clears the interaction state when the player moves away from Elizyka.
 func _on_elizyka_body_exited(body: Node2D) -> void:
 	if body.name == "AePlaceholder":
 		player_near_elizyka = false
 		$AePlaceholder/Dialogue.hide()
 
 
+# Handles world interaction input while the player is near Elizyka.
 func _unhandled_input(event: InputEvent) -> void:
 	if player_near_elizyka and event.is_action_pressed("interact") and not event.is_echo():
 		display_text("Smoke weed everyday")
 		get_viewport().set_input_as_handled()
 		
+# Dismisses dialogue boxes with the accept key after interaction prompts are shown.
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return

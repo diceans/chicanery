@@ -2,9 +2,11 @@ extends CharacterBody2D
 
 @export var enemy_id: StringName = &""
 
+# Adds the enemy to the world-enemy group so outside-scene cleanup can target all active foes.
 func _ready() -> void:
 	add_to_group("world_enemies")
 
+# Starts a battle when the player touches this enemy and stores the enemy ID for resource lookup.
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "AePlaceholder":
 		if enemy_id.is_empty():

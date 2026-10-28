@@ -2,9 +2,11 @@ extends CharacterBody2D
 
 @export var enemy_id: StringName = &""
 
+# Adds the lignolus to the world-enemy group so it can be tracked and cleaned up like other foes.
 func _ready() -> void:
 	add_to_group("world_enemies")
 
+# Starts a battle when the player touches this lignolus and stores its ID for the correct enemy resource.
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.name == "AePlaceholder":
 		if enemy_id.is_empty():
