@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://bqqb0nqa3jh3m" path="res://scenes/characters/NPC/lignolus.tscn" id="6_7w2d8"]
 [ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="8_cunso"]
 [ext_resource type="Texture2D" uid="uid://cbj3y68jiag0u" path="res://assets/characters/allies/elizyka_visualization-removebg-preview.png" id="8_kme14"]
-[ext_resource type="Script" uid="uid://hkr8pdr0n7rn" path="res://scenes/characters/NPC/lignolus.gd" id="10_06r44"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -25,6 +24,12 @@ size = Vector2(229.5, 22.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8qng1"]
 size = Vector2(686, 400.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vw7al"]
+size = Vector2(10498, 73)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tqit0"]
+size = Vector2(211.5, 4993)
 
 [node name="TestSceneTilemap" type="Node2D" unique_id=2142147069]
 y_sort_enabled = true
@@ -121,40 +126,31 @@ shape = SubResource("RectangleShape2D_i7okt")
 z_index = 1
 y_sort_enabled = true
 position = Vector2(2257, 1183)
-enemy_id = &"enemy_anfugel"
 
 [node name="Anfugel2" parent="." unique_id=146931934 instance=ExtResource("5_cunso")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(-325, 1208)
-enemy_id = &"enemy_anfugel"
 
 [node name="Anfugel3" parent="." unique_id=476737414 instance=ExtResource("5_cunso")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(955, 1541)
-enemy_id = &"enemy_anfugel"
 
 [node name="Lignolus" parent="." unique_id=1558658514 instance=ExtResource("6_7w2d8")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(-989, 1807)
-script = ExtResource("10_06r44")
-enemy_id = &"enemy_lignolus"
 
 [node name="Lignolus2" parent="." unique_id=1502463436 instance=ExtResource("6_7w2d8")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(2985, 1875)
-script = ExtResource("10_06r44")
-enemy_id = &"enemy_lignolus"
 
 [node name="Lignolus3" parent="." unique_id=196425170 instance=ExtResource("6_7w2d8")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(994, 2149)
-script = ExtResource("10_06r44")
-enemy_id = &"enemy_lignolus"
 
 [node name="Elizyka" type="Area2D" parent="." unique_id=1221828609]
 position = Vector2(2990, 340)
@@ -172,6 +168,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("8_kme14")
+
+[node name="BorderBottom" type="StaticBody2D" parent="." unique_id=971638524]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderBottom" unique_id=2021576920]
+position = Vector2(720, 2668)
+shape = SubResource("RectangleShape2D_vw7al")
+
+[node name="BorderTop" type="StaticBody2D" parent="." unique_id=2105998651]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderTop" unique_id=1931978172]
+position = Vector2(722, -2371)
+shape = SubResource("RectangleShape2D_vw7al")
+
+[node name="BorderRight" type="StaticBody2D" parent="." unique_id=743828490]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderRight" unique_id=1400235690]
+position = Vector2(5958.75, 130.5)
+shape = SubResource("RectangleShape2D_tqit0")
+
+[node name="BorderLeft" type="StaticBody2D" parent="." unique_id=1390163838]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderLeft" unique_id=1533930921]
+position = Vector2(-4521, 143)
+shape = SubResource("RectangleShape2D_tqit0")
 
 [connection signal="body_entered" from="TransitionNodeOto1" to="TransitionNodeOto1" method="_on_body_entered"]
 [connection signal="body_entered" from="Elizyka" to="." method="_on_elizyka_body_entered"]

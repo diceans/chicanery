@@ -12,4 +12,5 @@ var actions = ["ASSAULT", "EXERT", "ARTICLE", "BRACE"]
 var exertions = ["FORBEAR", "FORSAKE", "FORDOOM"]
 var return_player_to_enemy = false
 var active_enemy_id: StringName = &""
-var defeated_enemy_ids: Dictionary = {}
+var active_enemy_position: Vector2 = Vector2.ZERO
+var defeated_enemy_positions: Dictionary = {}

@@ -3,7 +3,7 @@ extends Node2D
 
 var player_near_elizyka: bool = false
 
-# Initializes the outside scene, restores the player to the defeated enemy's location if needed, and removes cleared enemies.
+# Initializes the overworld scene, clears defeated enemies by their world-space position, and restores the player to the exact enemy location after battle.
 func _ready() -> void:
 	$AePlaceholder/Dialogue.hide()
 	var ally_spawnpoint: Variant = spawnpoint(ally)
@@ -14,22 +14,22 @@ func _ready() -> void:
 	State.return_player_to_enemy = false
 
 	var player := get_node_or_null("AePlaceholder") as Node2D
-	var active_id: StringName = State.active_enemy_id
+	var active_position: Vector2 = State.active_enemy_position
 	var found_active_enemy := false
 	if returning_from_battle and player == null:
 		push_error("Outside scene is missing AePlaceholder")
 		return
 
 	for enemy: Node2D in get_tree().get_nodes_in_group("world_enemies"):
-		var enemy_id: StringName = enemy.get("enemy_id")
-
-		if State.defeated_enemy_ids.has(enemy_id):
-			if returning_from_battle and enemy_id == active_id:
+		var enemy_position: Vector2 = enemy.global_position
+		if State.defeated_enemy_positions.has(enemy_position):
+			if returning_from_battle and enemy_position == active_position:
 				player.global_position = enemy.global_position
 				found_active_enemy = true
 			enemy.queue_free()
 
 	State.active_enemy_id = &""
+	State.active_enemy_position = Vector2.ZERO
 
 	if returning_from_battle and not found_active_enemy:
 		push_error("Could not find the enemy from the completed battle")

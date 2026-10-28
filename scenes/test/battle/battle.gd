@@ -2,7 +2,7 @@ extends Control
 signal textbox_closed
 @export var enemy: Resource = null;
 
-# Maps the active enemy ID to the correct enemy resource so the battle scene always loads the matching enemy art and stats.
+# Maps the active enemy type ID to the correct enemy resource so each battle loads the matching art and stats even when several enemies share the same type.
 func _resolve_enemy_resource_for_id(enemy_id: StringName) -> Resource:
 	if enemy_id.is_empty():
 		push_error("Cannot load enemy resource: active enemy ID is empty")
@@ -360,7 +360,7 @@ func _on_assault_pressed() -> void:
 	await textbox_closed
 	
 	if current_enemy_WN == 0:
-		display_text("%s is slimed out" % enemy.name)
+		display_text("%s is slimed out" % enemy.name.to_upper())
 		await textbox_closed
 		
 		$AnimationPlayer.play("enemy_dead")
@@ -375,13 +375,14 @@ func _on_assault_pressed() -> void:
 		# Mark the return destination before leaving the battle scene.
 		State.return_player_to_enemy = true
 		State.current_WN = current_player_WN
+		State.defeated_enemy_positions[State.active_enemy_position] = true
 		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
 		if scene_change_error != OK:
 			State.return_player_to_enemy = false
+			State.defeated_enemy_positions.erase(State.active_enemy_position)
 			push_error("Failed to load the outside scene: %s" % scene_change_error)
 			return
 
-		State.defeated_enemy_ids[State.active_enemy_id] = true
 		return
 	
 	enemy_turn()
