@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bqqb0nqa3jh3m" path="res://scenes/characters/NPC/lignolus.tscn" id="6_7w2d8"]
 [ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="8_cunso"]
 [ext_resource type="Texture2D" uid="uid://cbj3y68jiag0u" path="res://assets/characters/allies/elizyka_visualization-removebg-preview.png" id="8_kme14"]
+[ext_resource type="Script" uid="uid://hkr8pdr0n7rn" path="res://scenes/characters/NPC/lignolus.gd" id="10_06r44"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -120,34 +121,40 @@ shape = SubResource("RectangleShape2D_i7okt")
 z_index = 1
 y_sort_enabled = true
 position = Vector2(2257, 1183)
-enemy_id = &"anfugel_1"
+enemy_id = &"enemy_anfugel"
 
 [node name="Anfugel2" parent="." unique_id=146931934 instance=ExtResource("5_cunso")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(-325, 1208)
-enemy_id = &"anfugel_2"
+enemy_id = &"enemy_anfugel"
 
 [node name="Anfugel3" parent="." unique_id=476737414 instance=ExtResource("5_cunso")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(955, 1541)
-enemy_id = &"anfugel_3"
+enemy_id = &"enemy_anfugel"
 
 [node name="Lignolus" parent="." unique_id=1558658514 instance=ExtResource("6_7w2d8")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(-989, 1807)
+script = ExtResource("10_06r44")
+enemy_id = &"enemy_lignolus"
 
 [node name="Lignolus2" parent="." unique_id=1502463436 instance=ExtResource("6_7w2d8")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(2985, 1875)
+script = ExtResource("10_06r44")
+enemy_id = &"enemy_lignolus"
 
 [node name="Lignolus3" parent="." unique_id=196425170 instance=ExtResource("6_7w2d8")]
 z_index = 1
 y_sort_enabled = true
 position = Vector2(994, 2149)
+script = ExtResource("10_06r44")
+enemy_id = &"enemy_lignolus"
 
 [node name="Elizyka" type="Area2D" parent="." unique_id=1221828609]
 position = Vector2(2990, 340)

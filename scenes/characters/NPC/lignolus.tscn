@@ -1,12 +1,9 @@
 [gd_scene format=3 uid="uid://bqqb0nqa3jh3m"]
 
+[ext_resource type="Script" uid="uid://hkr8pdr0n7rn" path="res://scenes/characters/NPC/lignolus.gd" id="1_8i13h"]
 [ext_resource type="Texture2D" uid="uid://ckvil141lr02k" path="res://assets/characters/enemies/Lignolus/spritesheet.png" id="1_th3ay"]
 [ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="6_vnb0b"]
 [ext_resource type="Script" uid="uid://b50t0kr0gclog" path="res://scenes/characters/NPC/idle_state.gd" id="7_y2ga7"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvt51"]
-radius = 28.0
-height = 120.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8i13h"]
 atlas = ExtResource("1_th3ay")
@@ -44,12 +41,13 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Lignolus" type="CharacterBody2D" unique_id=1558658514]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvt51"]
+radius = 28.0
+height = 120.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1603411969]
-y_sort_enabled = true
-position = Vector2(0, 82)
-shape = SubResource("CapsuleShape2D_wvt51")
+[node name="Lignolus" type="CharacterBody2D" unique_id=1558658514]
+script = ExtResource("1_8i13h")
+enemy_id = &"enemy_lignolus"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1912445074]
 scale = Vector2(1.5, 1.5)
@@ -65,5 +63,9 @@ script = ExtResource("6_vnb0b")
 script = ExtResource("7_y2ga7")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1144470731]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1603411969]
+position = Vector2(0, 82)
+shape = SubResource("CapsuleShape2D_wvt51")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

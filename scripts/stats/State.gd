@@ -10,6 +10,6 @@ var pi_ACM = 1
 var pi_DIM = 1
 var actions = ["ASSAULT", "EXERT", "ARTICLE", "BRACE"]
 var exertions = ["FORBEAR", "FORSAKE", "FORDOOM"]
-var return_player_to_anfugel = false
+var return_player_to_enemy = false
 var active_enemy_id: StringName = &""
 var defeated_enemy_ids: Dictionary = {}

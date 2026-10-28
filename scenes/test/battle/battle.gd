@@ -1,6 +1,21 @@
 extends Control
 signal textbox_closed
 @export var enemy: Resource = null;
+
+func _resolve_enemy_resource_for_id(enemy_id: StringName) -> Resource:
+	if enemy_id.is_empty():
+		push_error("Cannot load enemy resource: active enemy ID is empty")
+		return null
+
+	var enemy_key := String(enemy_id).to_lower()
+	if enemy_key == "enemy_anfugel" or enemy_key.contains("anfugel"):
+		return load("res://scripts/res/enemies/anfugel.tres")
+	if enemy_key == "enemy_lignolus" or enemy_key.contains("lignolus"):
+		return load("res://scripts/res/enemies/lignolus.tres")
+
+	push_error("No enemy resource found for ID: %s" % enemy_id)
+	return null
+
 # Tracks battle values, menu selection, and the active status effect.
 var current_player_WN = 0
 var current_enemy_WN = 0
@@ -25,6 +40,10 @@ var bracing_pending: bool = false
 
 # Initializes the battle UI and selects which side acts first.
 func _ready():
+	enemy = _resolve_enemy_resource_for_id(State.active_enemy_id)
+	if enemy == null:
+		return
+
 	action_buttons = _get_menu_buttons($ControlPanel/HBoxContainer, State.actions.size())
 	exertion_buttons = _get_menu_buttons($ExertPanel/HBoxContainer, State.exertions.size())
 	set_WN($EnemyContainer/ProgressBar, enemy.WN, enemy.WN)
@@ -353,11 +372,11 @@ func _on_assault_pressed() -> void:
 		var scene_tree: SceneTree = get_tree()
 		await scene_tree.create_timer(0.25).timeout
 		# Mark the return destination before leaving the battle scene.
-		State.return_player_to_anfugel = true
+		State.return_player_to_enemy = true
 		State.current_WN = current_player_WN
 		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
 		if scene_change_error != OK:
-			State.return_player_to_anfugel = false
+			State.return_player_to_enemy = false
 			push_error("Failed to load the outside scene: %s" % scene_change_error)
 			return
 

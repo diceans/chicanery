@@ -9,8 +9,8 @@ func _ready() -> void:
 	if not (ally_spawnpoint is Vector2):
 		return
 	$Elizyka.position = ally_spawnpoint
-	var returning_from_battle: bool = State.return_player_to_anfugel
-	State.return_player_to_anfugel = false
+	var returning_from_battle: bool = State.return_player_to_enemy
+	State.return_player_to_enemy = false
 
 	var player := get_node_or_null("AePlaceholder") as Node2D
 	var active_id: StringName = State.active_enemy_id
