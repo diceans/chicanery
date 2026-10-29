@@ -25,7 +25,8 @@ var current_enemy_ERL = 0
 var d30_player = 0
 var d30_enemy = 0
 var player_damage = 0
-var enemy_damage = 0
+var enemy_DO = 0
+var enemy_DI = 0
 var player_exertion = ""
 var enemy_exertion = ""
 var previous_enemy_exertion = ""
@@ -35,8 +36,11 @@ var action_buttons: Array[Button] = []
 var exertion_buttons: Array[Button] = []
 var menu_button_font_colors: Dictionary = {}
 var condition: StatusEffect = null
+var secondary_condition: StatusEffect = null
 var condition_turns_remaining: int = 0
+var secondary_condition_turns_remaining: int = 0
 var bracing_pending: bool = false
+var conflagrant_burn_applied_this_turn: bool = false
 @onready var condition_icon: TextureRect = $AeContainer/ConditionIcon
 
 # Initializes the battle scene, loads the enemy resource, and decides who acts first based on ERL.
@@ -150,46 +154,117 @@ func set_WN(progress_bar, WN, max_WN):
 func set_player_WN(condition_label: Label, WN: int, max_WN: int) -> void:
 	condition_label.text = "WN: %d/%d" % [WN, max_WN]
 	
-# Updates the condition label to display the current status effect name or an empty string when none applies.
-func set_condition(condition_label: Label, condition: String) -> void:
-	condition_label.text = "%s" % condition
+# Writes the active status names into the primary and secondary condition labels.
+# The main status stays in the first slot, while a supplemental status such as bracing can
+# sit in the second slot without overwriting the original status text.
+func set_condition(condition_label: Label, condition: String, secondary_condition_name: String = "") -> void:
+	if condition_label == null:
+		return
 
-# Applies or clears a status effect while preserving a pending bracing state if another effect replaces it.
+	var data_container = condition_label.get_parent()
+	if data_container == null:
+		condition_label.text = "%s" % condition.strip_edges()
+		return
+
+	var primary_label: Label = condition_label
+	var secondary_label: Label = data_container.get_node_or_null("Condition2")
+	if secondary_label == null:
+		secondary_label = data_container.get_node_or_null("Container2")
+	if secondary_label == null:
+		primary_label.text = "%s" % condition.strip_edges()
+		return
+
+	primary_label.text = "%s" % condition.strip_edges()
+	secondary_label.text = "%s" % secondary_condition_name.strip_edges()
+
+# Applies or clears a status effect while preserving the player's main condition.
+# Bracing is kept as a supplemental effect instead of replacing the active status, so
+# states like CONFLAGRANT can coexist with the defensive bracing modifier.
 func _apply_condition(condition_path: String) -> void:
-	if condition != null and condition.custom_properties.get("is_bracing", false):
-		bracing_pending = true
-	_set_condition_active(condition, false)
-	condition = null
-	if not condition_path.is_empty():
-		condition = load(condition_path) as StatusEffect
-		if condition == null:
-			push_error("Failed to load status effect: %s" % condition_path)
-			condition_turns_remaining = 0
+	if condition_path == "res://scripts/res/conditions/bracing.tres":
+		if condition != null and not condition.custom_properties.get("is_restricted", false):
+			var bracing_effect := load(condition_path) as StatusEffect
+			if bracing_effect == null:
+				push_error("Failed to load the bracing status effect")
+				return
+			secondary_condition = bracing_effect
+			secondary_condition_turns_remaining = bracing_effect.duration_turns
+			_set_condition_active(secondary_condition, true)
+			condition.custom_properties["is_bracing"] = true
+			bracing_pending = true
 			check_condition()
 			return
+		if condition == null:
+			condition = load(condition_path) as StatusEffect
+			if condition == null:
+				push_error("Failed to load the bracing status effect")
+				return
+			condition_turns_remaining = condition.duration_turns
+			_set_condition_active(condition, true)
+			check_condition()
+			return
+
+	if condition != null and condition.custom_properties.get("is_bracing", false):
+		bracing_pending = true
+
+	if condition_path.is_empty():
+		if condition != null and condition.custom_properties.get("is_conflagrant", false):
+			check_condition()
+			return
+		_set_condition_active(condition, false)
+		condition = null
+		condition_turns_remaining = 0
+		check_condition()
+		return
+
+	_set_condition_active(condition, false)
+	condition = null
+	condition = load(condition_path) as StatusEffect
+	if condition == null:
+		push_error("Failed to load status effect: %s" % condition_path)
+		condition_turns_remaining = 0
+		check_condition()
+		return
 	_set_condition_active(condition, true)
-	condition_turns_remaining = condition.duration_turns if condition != null else 0
+	if condition != null and condition.custom_properties.get("is_conflagrant", false):
+		# The status timer and the burn-tick timer are separate concerns.
+		# Keep the actual duration intact and only suppress the burn on the turn the
+		# condition first lands so PROJECT's raw hit resolves without an immediate burn.
+		condition_turns_remaining = condition.duration_turns
+		conflagrant_burn_applied_this_turn = true
+	else:
+		condition_turns_remaining = condition.duration_turns if condition != null else 0
 	check_condition()
 
 # Toggles the custom status-effect flags used by the condition system, such as bracing and restriction states.
 func _set_condition_active(status_effect: StatusEffect, is_active: bool) -> void:
 	if status_effect == null:
 		return
-	for property_name in ["is_bracing", "is_constricted"]:
+	for property_name in ["is_bracing", "is_constricted", "is_conflagrant"]:
 		if status_effect.custom_properties.has(property_name):
 			status_effect.custom_properties[property_name] = is_active
+	status_effect.locked = is_active and status_effect.duration_turns > 0
 
-# Refreshes the condition HUD and hides or reveals the action menu based on whether the player is restricted by status effects.
+# Refreshes the condition HUD and updates which controls are available to the player.
+# If the active status is a restriction, the action menu is hidden so the player is forced to
+# resolve the restriction; otherwise the normal battle UI remains usable.
 func check_condition() -> void:
 	var condition_label: Label = $AeContainer/PlayerPanel/PlayerData/Condition
+	var primary_name: String = ""
+	if condition != null and condition_turns_remaining > 0:
+		primary_name = condition.effect_name
+	var secondary_name: String = ""
+	if secondary_condition != null and secondary_condition_turns_remaining > 0:
+		secondary_name = secondary_condition.effect_name
 	if condition == null or condition_turns_remaining <= 0:
 		_set_condition_active(condition, false)
 		condition = null
 		condition_turns_remaining = 0
-		set_condition(condition_label, "")
+		set_condition(condition_label, primary_name, secondary_name)
 		condition_icon.hide()
 	else:
-		set_condition(condition_label, condition.effect_name)
+		condition.locked = true
+		set_condition(condition_label, primary_name, secondary_name)
 		var icon_image := condition.icon.get_image()
 		if icon_image == null or icon_image.is_empty():
 			push_error("Condition icon has no image data: %s" % condition.effect_name)
@@ -219,17 +294,42 @@ func _position_condition_icon() -> void:
 	var avatar_rect: TextureRect = $AeContainer/TextureRect
 	condition_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	condition_icon.size = Vector2(48, 48)
-	condition_icon.scale = Vector2(0.3, 0.3)
+	condition_icon.scale = Vector2(0.6, 0.6)
 	condition_icon.position = avatar_rect.position + Vector2(
 		avatar_rect.size.x - condition_icon.size.x * condition_icon.scale.x,
 		0
 	)
 
-# Reduces a status effect's remaining duration if it persisted through the enemy's turn.
+# Resolves the conflagrant burn tick once per active turn using the extra_dmg_factor value from the status effect.
+func _apply_conflagrant_burn() -> void:
+	if conflagrant_burn_applied_this_turn:
+		return
+	if condition == null or not condition.custom_properties.get("is_conflagrant", false):
+		return
+	if condition_turns_remaining <= 0:
+		return
+	var burn_factor: float = float(condition.stat_multipliers.get("extra_dmg_factor", 0.1))
+	var burn_damage := int(State.max_WN * burn_factor)
+	if burn_damage <= 0:
+		return
+	current_player_WN = max(0, current_player_WN - burn_damage)
+	State.current_WN = current_player_WN
+	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
+	conflagrant_burn_applied_this_turn = true
+
+# Advances each active status by one turn after the enemy resolves its action.
+# This keeps the primary condition timer and any supplemental bracing timer in sync with the
+# battle flow so status effects expire at the correct point in the turn order.
 func _advance_condition_turn(condition_at_turn_start: StatusEffect) -> void:
 	if condition == null or condition != condition_at_turn_start:
 		return
-	condition_turns_remaining -= 1
+	condition_turns_remaining = max(0, condition_turns_remaining - 1)
+	if secondary_condition != null and secondary_condition.custom_properties.get("is_bracing", false):
+		secondary_condition_turns_remaining = max(0, secondary_condition_turns_remaining - 1)
+		if secondary_condition_turns_remaining <= 0:
+			_set_condition_active(secondary_condition, false)
+			secondary_condition = null
+			secondary_condition_turns_remaining = 0
 	check_condition()
 	
 # Handles accept-key dismissal and keyboard navigation across the battle menu panels.
@@ -282,14 +382,40 @@ func display_text(text):
 	$Textbox.show()
 	$Textbox/Message.text = text
 	_refresh_menu_selection()
+
+# Removes any exertion currently locked by the enemy's status so it cannot be rolled again while the lock is active.
+func _remove_locked_exertion_from_pool(available_exertions: Array) -> void:
+	if enemy == null or not enemy.exertion_locked:
+		return
+	var locked_exertion := String(enemy.locked_exertion)
+	if locked_exertion.is_empty():
+		return
+	while available_exertions.has(locked_exertion):
+		available_exertions.erase(locked_exertion)
+
+# Decrements the enemy lock countdown to keep the associated exertion unavailable for the correct number of turns.
+func _advance_enemy_lock() -> void:
+	if enemy == null or not enemy.exertion_locked:
+		return
+	enemy.exertion_lock_turns = max(0, enemy.exertion_lock_turns - 1)
+	if enemy.exertion_lock_turns <= 0:
+		enemy.exertion_locked = false
+		enemy.locked_exertion = ""
+		enemy.exertion_lock_turns = 0
 	
 # Chooses the enemy's exertion, resolves its damage or condition effects, and repeats until the threat ends.
 func enemy_turn():
+	conflagrant_burn_applied_this_turn = false
 	display_text("%s attacks" % enemy.name)
 	await textbox_closed
-	enemy_damage = 0
-	# Use a turn-local list so a ROCK reroll does not modify the enemy resource.
+	enemy_DO = 0
+	enemy_DI = 0
+	var DV = randf_range(0.95, 1.05)
+	if condition != null and condition.custom_properties.get("is_conflagrant", false):
+		_apply_conflagrant_burn()
+	# Use a turn-local list so lock and reroll logic does not modify the enemy resource.
 	var available_exertions: Array = enemy.exertions.duplicate()
+	_remove_locked_exertion_from_pool(available_exertions)
 	if available_exertions.is_empty():
 		push_error("%s has no available exertions" % enemy.name)
 		return
@@ -311,22 +437,38 @@ func enemy_turn():
 	# ROCK applies constriction but is not an offensive, damaging exertion.
 	if enemy_exertion == "ROCK":
 		_apply_condition("res://scripts/res/conditions/constricted.tres")
-	if enemy_exertion == "PINK":
-		enemy_damage = int(enemy.VHM)
+	elif enemy_exertion == "PINK" or enemy_exertion == "RIVE":
+		enemy_DO = int(enemy.VHM * DV)
 		_apply_condition("")
-	# Carry brace through ROCK, but only reduce damage on an offensive exertion.
-	if was_bracing and enemy_exertion != "ROCK":
-		enemy.pi_tDIM = randf_range(0.46, 0.54)
+	elif enemy_exertion == "PROJECT":
+		enemy.exertion_locked = true
+		enemy.locked_exertion = "PROJECT"
+		# The move remains unavailable for one extra turn beyond the active CONFLAGRANT
+		# window so the raw PROJECT hit and the follow-on burn do not re-roll the same
+		# exertion while the condition is still in effect.
+		enemy.exertion_lock_turns = max(enemy.exertion_lock_turns, 3)
+		enemy.pi_tDIM = 0.5
+		enemy_DO = int(enemy.VHM * enemy.pi_tDIM * DV)
+		_apply_condition("res://scripts/res/conditions/conflagrant.tres")
+	# Bracing only applies to the immediate exertion hit. The burn from CONFLAGRANT is
+	# a separate status effect and should not be reduced by bracing.
+	enemy_DI = enemy_DO
+	if was_bracing and enemy_exertion != "ROCK" and enemy_DO > 0:
 		var bracing_effect := load("res://scripts/res/conditions/bracing.tres") as StatusEffect
 		if bracing_effect == null:
 			push_error("Failed to load the bracing status effect")
 			return
-		bracing_effect.stat_multipliers["pi_tDIM"] = enemy.pi_tDIM
-		enemy_damage = int(enemy.VHM * enemy.pi_tDIM)
+		bracing_effect.flat_modifiers["pi_tDIM"] = randf_range(0.46, 0.54)
+		enemy_DI = int(enemy_DO * bracing_effect.flat_modifiers["pi_tDIM"])
 		bracing_pending = false
-	current_player_WN = max(0, current_player_WN - enemy_damage)
+	if enemy_DI > 0:
+		current_player_WN = max(0, current_player_WN - enemy_DI)
+		State.current_WN = current_player_WN
 	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
+	if not conflagrant_burn_applied_this_turn and condition != null and condition.custom_properties.get("is_conflagrant", false):
+		_apply_conflagrant_burn()
 	_advance_condition_turn(condition_at_turn_start)
+	_advance_enemy_lock()
 	if current_player_WN <= 0:
 		await player_defeated()
 		return

@@ -7,7 +7,7 @@
 script = ExtResource("1_tqit0")
 name = "Lignolus"
 texture = ExtResource("2_tqit0")
-WN = 30.0
-VHM = 8.0
-ERL = 15.0
-exertions = ["PINK", "ROCK", "PINK", "ROCK"]
+WN = 45.0
+VHM = 13.0
+ERL = 0.0
+exertions = ["PROJECT", "RIVE", "RIVE", "RIVE"]

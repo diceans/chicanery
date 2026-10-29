@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="StatusEffect" format=3 uid="uid://d0pycvvgsfwk1"]
 
-[ext_resource type="Texture2D" uid="uid://badhwrtwocak4" path="res://assets/misc/cond_placeholder.png" id="1_wi5o7"]
+[ext_resource type="Texture2D" uid="uid://dgb0241aj8o3c" path="res://assets/misc/bracing.png" id="1_wi5o7"]
 [ext_resource type="Script" uid="uid://ccoh04a0ph3n6" path="res://scripts/stats/status_effect.gd" id="2_d3yib"]
 
 [resource]
 script = ExtResource("2_d3yib")
 effect_name = "BRACING"
 icon = ExtResource("1_wi5o7")
-stat_multipliers = {
+flat_modifiers = {
 "pi_tDIM": 0.5
 }
 custom_properties = {

@@ -592,7 +592,7 @@ theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 26
 text = " "
 
-[node name="Placeholder" type="Label" parent="AeContainer/PlayerPanel/PlayerData" unique_id=41788822]
+[node name="Condition2" type="Label" parent="AeContainer/PlayerPanel/PlayerData" unique_id=41788822]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 26

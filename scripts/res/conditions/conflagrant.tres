@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StatusEffect" format=3 uid="uid://c1epkld6gejej"]
+
+[ext_resource type="Texture2D" uid="uid://bvgprfbtxsim8" path="res://assets/misc/conflagrant.png" id="1_312kq"]
+[ext_resource type="Script" uid="uid://ccoh04a0ph3n6" path="res://scripts/stats/status_effect.gd" id="1_ntlr5"]
+
+[resource]
+script = ExtResource("1_ntlr5")
+effect_name = "CONFLAGRANT"
+icon = ExtResource("1_312kq")
+duration_turns = 2
+stat_multipliers = {
+"extra_dmg_factor": 0.1
+}
+custom_properties = {
+"is_conflagrant": false
+}
+metadata/_custom_type_script = "uid://ccoh04a0ph3n6"

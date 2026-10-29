@@ -7,3 +7,4 @@ class_name StatusEffect
 @export var flat_modifiers: Dictionary = {}
 @export var stat_multipliers: Dictionary = {}
 @export var custom_properties: Dictionary = {}
+@export var locked: bool = false
