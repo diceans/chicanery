@@ -42,12 +42,16 @@ var secondary_condition_turns_remaining: int = 0
 var bracing_pending: bool = false
 var conflagrant_burn_applied_this_turn: bool = false
 @onready var condition_icon: TextureRect = $AeContainer/ConditionIcon
+@onready var condition_icon_2: TextureRect = $AeContainer/ConditionIcon2
 
 # Initializes the battle scene, loads the enemy resource, and decides who acts first based on ERL.
 func _ready():
 	enemy = _resolve_enemy_resource_for_id(State.active_enemy_id)
 	if enemy == null:
 		return
+
+	$AeContainer/Damage.visible = false
+	$AeContainer/Damage.modulate.a = 1.0
 
 	action_buttons = _get_menu_buttons($ControlPanel/HBoxContainer, State.actions.size())
 	exertion_buttons = _get_menu_buttons($ExertPanel/HBoxContainer, State.exertions.size())
@@ -153,6 +157,27 @@ func set_WN(progress_bar, WN, max_WN):
 # Refreshes the player's WN HUD to show the current health and maximum health values.
 func set_player_WN(condition_label: Label, WN: int, max_WN: int) -> void:
 	condition_label.text = "WN: %d/%d" % [WN, max_WN]
+
+# Applies the damage taken by AE and briefly shows a floating label showing the amount lost.
+func _apply_player_damage(amount: int) -> void:
+	if amount <= 0:
+		return
+	current_player_WN = max(0, current_player_WN - amount)
+	State.current_WN = current_player_WN
+	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
+	var damage_label: Label = $AeContainer/Damage
+	damage_label.text = "-%d" % amount
+	damage_label.visible = true
+	damage_label.modulate.a = 1.0
+	var start_position := damage_label.position
+	var tween := create_tween()
+	tween.tween_property(damage_label, "position", start_position + Vector2(0, -24), 1.0)
+	tween.parallel().tween_property(damage_label, "modulate:a", 0.0, 1.0)
+	tween.finished.connect(func() -> void:
+		damage_label.visible = false
+		damage_label.position = start_position
+		damage_label.modulate.a = 1.0
+	)
 	
 # Writes the active status names into the primary and secondary condition labels.
 # The main status stays in the first slot, while a supplemental status such as bracing can
@@ -262,21 +287,16 @@ func check_condition() -> void:
 		condition_turns_remaining = 0
 		set_condition(condition_label, primary_name, secondary_name)
 		condition_icon.hide()
+		condition_icon_2.hide()
 	else:
 		condition.locked = true
 		set_condition(condition_label, primary_name, secondary_name)
-		var icon_image := condition.icon.get_image()
-		if icon_image == null or icon_image.is_empty():
-			push_error("Condition icon has no image data: %s" % condition.effect_name)
-			condition_icon.hide()
+		_condition_icon_for_status(condition_icon, condition)
+		if secondary_condition != null and secondary_condition_turns_remaining > 0:
+			_condition_icon_for_status(condition_icon_2, secondary_condition)
 		else:
-			# Crop transparent padding to make the artwork visible at UI size.
-			var icon_texture := AtlasTexture.new()
-			icon_texture.atlas = condition.icon
-			icon_texture.region = Rect2(icon_image.get_used_rect())
-			condition_icon.texture = icon_texture
-			_position_condition_icon()
-			condition_icon.show()
+			condition_icon_2.hide()
+		_position_condition_icon()
 
 	var is_constricted = condition != null and condition.custom_properties.get("is_constricted", false)
 	if is_constricted:
@@ -289,16 +309,43 @@ func check_condition() -> void:
 		$DescriptionPanel.hide()
 	_refresh_menu_selection()
 
+# Attaches a status effect sprite to the given icon slot and keeps the slot usable for a
+# secondary effect without duplicating the same icon in both positions.
+func _condition_icon_for_status(icon_slot: TextureRect, status_effect: StatusEffect) -> void:
+	if icon_slot == null or status_effect == null:
+		if icon_slot != null:
+			icon_slot.hide()
+		return
+	var icon_image := status_effect.icon.get_image()
+	if icon_image == null or icon_image.is_empty():
+		push_error("Condition icon has no image data: %s" % status_effect.effect_name)
+		icon_slot.hide()
+		return
+	var icon_texture := AtlasTexture.new()
+	icon_texture.atlas = status_effect.icon
+	icon_texture.region = Rect2(icon_image.get_used_rect())
+	icon_slot.texture = icon_texture
+	icon_slot.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	icon_slot.size = Vector2(48, 48)
+	icon_slot.scale = Vector2(0.6, 0.6)
+	icon_slot.show()
+
 # Positions the condition icon over the player portrait so the active status is visible in the battle UI.
 func _position_condition_icon() -> void:
 	var avatar_rect: TextureRect = $AeContainer/TextureRect
+	var base_position := avatar_rect.position + Vector2(
+		avatar_rect.size.x - 48 * 0.6,
+		0
+	)
 	condition_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	condition_icon.size = Vector2(48, 48)
 	condition_icon.scale = Vector2(0.6, 0.6)
-	condition_icon.position = avatar_rect.position + Vector2(
-		avatar_rect.size.x - condition_icon.size.x * condition_icon.scale.x,
-		0
-	)
+	condition_icon.position = base_position + Vector2(0, -52)
+	if condition_icon_2 != null:
+		condition_icon_2.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		condition_icon_2.size = Vector2(48, 48)
+		condition_icon_2.scale = Vector2(0.6, 0.6)
+		condition_icon_2.position = base_position + Vector2(0, 0)
 
 # Resolves the conflagrant burn tick once per active turn using the extra_dmg_factor value from the status effect.
 func _apply_conflagrant_burn() -> void:
@@ -312,9 +359,7 @@ func _apply_conflagrant_burn() -> void:
 	var burn_damage := int(State.max_WN * burn_factor)
 	if burn_damage <= 0:
 		return
-	current_player_WN = max(0, current_player_WN - burn_damage)
-	State.current_WN = current_player_WN
-	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
+	_apply_player_damage(burn_damage)
 	conflagrant_burn_applied_this_turn = true
 
 # Advances each active status by one turn after the enemy resolves its action.
@@ -462,9 +507,7 @@ func enemy_turn():
 		enemy_DI = int(enemy_DO * bracing_effect.flat_modifiers["pi_tDIM"])
 		bracing_pending = false
 	if enemy_DI > 0:
-		current_player_WN = max(0, current_player_WN - enemy_DI)
-		State.current_WN = current_player_WN
-	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
+		_apply_player_damage(enemy_DI)
 	if not conflagrant_burn_applied_this_turn and condition != null and condition.custom_properties.get("is_conflagrant", false):
 		_apply_conflagrant_burn()
 	_advance_condition_turn(condition_at_turn_start)
@@ -571,8 +614,9 @@ func _on_foredoom_pressed() -> void:
 	_refresh_menu_selection()
 	display_text("U fordoomed")
 	await textbox_closed
-	current_player_WN = 0
-	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
+	var fordoom_damage: int = current_player_WN
+	if fordoom_damage > 0:
+		_apply_player_damage(fordoom_damage)
 	if current_player_WN <= 0:
 		await player_defeated()
 		return
