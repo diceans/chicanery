@@ -41,6 +41,8 @@ var condition_turns_remaining: int = 0
 var secondary_condition_turns_remaining: int = 0
 var bracing_pending: bool = false
 var conflagrant_burn_applied_this_turn: bool = false
+const TEXTBOX_AUTO_CLOSE_SECONDS := 2.0
+var textbox_id: int = 0
 @onready var condition_icon: TextureRect = $AeContainer/ConditionIcon
 @onready var condition_icon_2: TextureRect = $AeContainer/ConditionIcon2
 
@@ -144,9 +146,15 @@ func _refresh_menu_selection() -> void:
 	selected_button.add_theme_color_override("font_color", Color("#FFFF00"))
 	if $ExertPanel.visible:
 		$Arrow.scale = Vector2(0.8, 0.8)
+		_update_exertion_description(selected_index)
 	var button_rect = selected_button.get_global_rect()
 	$Arrow.global_position = Vector2(button_rect.position.x + 450, button_rect.get_center().y)
 	$Arrow.show()
+
+# Shows the descriptor of the exertion the arrow is currently on in the description panel.
+func _update_exertion_description(selected_index: int) -> void:
+	var exertion_name: String = State.exertions[selected_index]
+	$DescriptionPanel/Label.text = State.exertions_descriptors.get(exertion_name, "")
 
 # Updates an enemy progress bar and its numeric label to reflect the current and max WN values.
 func set_WN(progress_bar, WN, max_WN):
@@ -159,6 +167,8 @@ func set_player_WN(condition_label: Label, WN: int, max_WN: int) -> void:
 	condition_label.text = "WN: %d/%d" % [WN, max_WN]
 
 # Applies the damage taken by AE and briefly shows a floating label showing the amount lost.
+# If another condition is active, a temporary duplicate float is also spawned so the number
+# remains visible while the original fades, which keeps the raw hit readable alongside burn ticks.
 func _apply_player_damage(amount: int) -> void:
 	if amount <= 0:
 		return
@@ -166,6 +176,26 @@ func _apply_player_damage(amount: int) -> void:
 	State.current_WN = current_player_WN
 	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
 	var damage_label: Label = $AeContainer/Damage
+	var has_active_status := (condition != null and condition_turns_remaining > 0) or (secondary_condition != null and secondary_condition_turns_remaining > 0)
+	if has_active_status and damage_label.visible and damage_label.modulate.a > 0.1:
+		var duplicate_label := damage_label.duplicate()
+		duplicate_label.name = "DamageDuplicate"
+		var portrait_rect: TextureRect = $AeContainer/Portrait
+		duplicate_label.position = portrait_rect.position + Vector2(
+			portrait_rect.size.x * 0.5 - duplicate_label.size.x * 0.5 - 132,
+			portrait_rect.size.y * 0.5 - duplicate_label.size.y * 0.5 - 160
+		)
+		duplicate_label.visible = true
+		duplicate_label.modulate.a = 1.0
+		duplicate_label.text = "-%d" % amount
+		$AeContainer.add_child(duplicate_label)
+		var duplicate_tween := create_tween()
+		duplicate_tween.tween_property(duplicate_label, "position", duplicate_label.position + Vector2(0, -24), 1.0)
+		duplicate_tween.parallel().tween_property(duplicate_label, "modulate:a", 0.0, 1.0)
+		duplicate_tween.finished.connect(func() -> void:
+			duplicate_label.queue_free()
+		)
+		return
 	damage_label.text = "-%d" % amount
 	damage_label.visible = true
 	damage_label.modulate.a = 1.0
@@ -332,7 +362,7 @@ func _condition_icon_for_status(icon_slot: TextureRect, status_effect: StatusEff
 
 # Positions the condition icon over the player portrait so the active status is visible in the battle UI.
 func _position_condition_icon() -> void:
-	var avatar_rect: TextureRect = $AeContainer/TextureRect
+	var avatar_rect: TextureRect = $AeContainer/Portrait
 	var base_position := avatar_rect.position + Vector2(
 		avatar_rect.size.x - 48 * 0.6,
 		0
@@ -388,9 +418,7 @@ func _input(event: InputEvent) -> void:
 			if viewport == null:
 				return
 			viewport.set_input_as_handled()
-			$Textbox.hide()
-			_refresh_menu_selection()
-			textbox_closed.emit()
+			_close_textbox(textbox_id, false)
 		return
 
 	var buttons := _get_active_menu_buttons()
@@ -421,12 +449,24 @@ func _input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 # Shows a battle text box and temporarily hides the action menu while the message is on screen.
+# The text box closes when the player presses enter or after TEXTBOX_AUTO_CLOSE_SECONDS, whichever comes first.
 func display_text(text):
 	$ControlPanel.hide()
 	$PlayerName.hide()
 	$Textbox.show()
 	$Textbox/Message.text = text
 	_refresh_menu_selection()
+	textbox_id += 1
+	get_tree().create_timer(TEXTBOX_AUTO_CLOSE_SECONDS).timeout.connect(_close_textbox.bind(textbox_id, true))
+
+# Closes the text box once, either from the enter key or from the auto-close timer.
+# The ID check stops an old timer from closing a newer message that is already on screen.
+func _close_textbox(id: int, timed_out: bool) -> void:
+	if not $Textbox.visible or (timed_out and id != textbox_id):
+		return
+	$Textbox.hide()
+	_refresh_menu_selection()
+	textbox_closed.emit()
 
 # Removes any exertion currently locked by the enemy's status so it cannot be rolled again while the lock is active.
 func _remove_locked_exertion_from_pool(available_exertions: Array) -> void:
@@ -520,7 +560,7 @@ func enemy_turn():
 
 # Resets the player after a loss, shows the defeat text, and sends the player back to the first-floor scene.
 func player_defeated() -> void:
-	display_text("u is slimed out")
+	display_text("You are defeated")
 	await textbox_closed
 
 	State.current_WN = State.max_WN
@@ -545,7 +585,7 @@ func _on_assault_pressed() -> void:
 	await textbox_closed
 	
 	if current_enemy_WN == 0:
-		display_text("%s is slimed out" % enemy.name.to_upper())
+		display_text("%s is defeated" % enemy.name.to_upper())
 		await textbox_closed
 		
 		$AnimationPlayer.play("enemy_dead")

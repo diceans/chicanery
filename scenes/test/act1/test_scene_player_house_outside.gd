@@ -74,7 +74,7 @@ func _on_elizyka_body_exited(body: Node2D) -> void:
 # Handles world interaction input while the player is near Elizyka.
 func _unhandled_input(event: InputEvent) -> void:
 	if player_near_elizyka and event.is_action_pressed("interact") and not event.is_echo():
-		display_text("Smoke weed everyday")
+		display_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
 		get_viewport().set_input_as_handled()
 		
 # Dismisses dialogue boxes with the accept key after interaction prompts are shown.

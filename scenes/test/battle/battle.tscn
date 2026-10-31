@@ -528,7 +528,7 @@ offset_right = 376.0
 offset_bottom = 1023.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_8qng1")
 
-[node name="TextureRect" type="TextureRect" parent="AeContainer" unique_id=722763652]
+[node name="Portrait" type="TextureRect" parent="AeContainer" unique_id=722763652]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
