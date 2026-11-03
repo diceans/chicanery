@@ -23,7 +23,7 @@ border_color = Color(1, 1, 1, 1)
 size = Vector2(229.5, 22.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8qng1"]
-size = Vector2(686, 400.5)
+size = Vector2(170, 157)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vw7al"]
 size = Vector2(10498, 73)
@@ -156,7 +156,7 @@ position = Vector2(994, 2149)
 position = Vector2(2990, 340)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Elizyka" unique_id=2089429752]
-position = Vector2(0, 2.75)
+position = Vector2(-22, 106.5)
 shape = SubResource("RectangleShape2D_8qng1")
 
 [node name="Portrait" type="TextureRect" parent="Elizyka" unique_id=1089236294]

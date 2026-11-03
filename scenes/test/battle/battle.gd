@@ -370,12 +370,12 @@ func _position_condition_icon() -> void:
 	condition_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 	condition_icon.size = Vector2(48, 48)
 	condition_icon.scale = Vector2(0.6, 0.6)
-	condition_icon.position = base_position + Vector2(0, -52)
+	condition_icon.position = base_position + Vector2(-20, -20)
 	if condition_icon_2 != null:
 		condition_icon_2.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
 		condition_icon_2.size = Vector2(48, 48)
 		condition_icon_2.scale = Vector2(0.6, 0.6)
-		condition_icon_2.position = base_position + Vector2(0, 0)
+		condition_icon_2.position = base_position + Vector2(-20, 32)
 
 # Resolves the conflagrant burn tick once per active turn using the extra_dmg_factor value from the status effect.
 func _apply_conflagrant_burn() -> void:
