@@ -44,7 +44,7 @@ tile_set = ExtResource("2_7w2d8")
 
 [node name="AePlaceholder" parent="." unique_id=2014605289 instance=ExtResource("3_mnleo")]
 z_index = 1
-position = Vector2(892, 214)
+position = Vector2(815, 142)
 
 [node name="Dialogue" type="Panel" parent="AePlaceholder" unique_id=1886953513]
 z_index = 1

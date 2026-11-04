@@ -37,7 +37,7 @@ tile_set = ExtResource("1_ysxcy")
 [node name="Entrance" type="TileMapLayer" parent="GameTileMap" unique_id=999141668]
 
 [node name="AePlaceholder" parent="." unique_id=2014605289 instance=ExtResource("2_62lrn")]
-position = Vector2(828, 677)
+position = Vector2(773, 591)
 
 [node name="Camera2D" type="Camera2D" parent="AePlaceholder" unique_id=1180935998]
 limit_left = -762

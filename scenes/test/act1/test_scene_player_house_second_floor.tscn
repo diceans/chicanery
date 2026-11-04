@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bfe0254iquhfp" path="res://scenes/test/transition/transition_node_to_1.gd" id="3_f5yox"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7okt"]
-size = Vector2(233.5, 20)
+size = Vector2(233.5, 52)
 
 [node name="TestSceneHouseSecondfloor2" type="Node2D" unique_id=1268625133]
 
@@ -17,7 +17,7 @@ tile_map_data = PackedByteArray("AAA7AL3/AAAEAAIAAAA7AL7/AAAEAAIAAAA7AL//AAAEAAI
 tile_set = ExtResource("1_yd57h")
 
 [node name="AePlaceholder" parent="GameTileMap" unique_id=2014605289 instance=ExtResource("2_prlsu")]
-position = Vector2(303, 354)
+position = Vector2(336, 340)
 
 [node name="Camera2D" type="Camera2D" parent="GameTileMap/AePlaceholder" unique_id=625956144]
 limit_left = -121
@@ -30,7 +30,7 @@ editor_draw_limits = true
 script = ExtResource("3_f5yox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=455153197]
-position = Vector2(272.25, 560)
+position = Vector2(272.25, 544)
 shape = SubResource("RectangleShape2D_i7okt")
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

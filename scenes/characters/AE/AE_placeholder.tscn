@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://q3bwpc78tutt"]
 
 [ext_resource type="Script" uid="uid://di3j587bq7fvv" path="res://scenes/characters/AE/ae_placeholder.gd" id="1_0v7dg"]
-[ext_resource type="Texture2D" uid="uid://c78re1eca3bq" path="res://assets/characters/spritesheet (1).png" id="2_ayfg5"]
+[ext_resource type="Texture2D" uid="uid://c78re1eca3bq" path="res://assets/characters/ae/spritesheet (1).png" id="2_ayfg5"]
 [ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="3_ayfg5"]
 [ext_resource type="Script" uid="uid://djt2ff8pxc1nv" path="res://scenes/characters/AE/idle_state.gd" id="4_jvofh"]
 [ext_resource type="Script" uid="uid://wsqstmp1sg1y" path="res://scenes/characters/AE/walk_state.gd" id="5_wnscj"]
@@ -133,9 +133,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0v7dg"]
-radius = 20.0
-height = 74.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ixrrj"]
+size = Vector2(33, 65)
 
 [node name="AePlaceholder" type="CharacterBody2D" unique_id=2014605289]
 y_sort_enabled = true
@@ -148,8 +147,8 @@ sprite_frames = SubResource("SpriteFrames_i7okt")
 animation = &"walk_front"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1415920983]
-position = Vector2(3, 43)
-shape = SubResource("CapsuleShape2D_0v7dg")
+position = Vector2(0.5, 65.5)
+shape = SubResource("RectangleShape2D_ixrrj")
 
 [node name="StateMachine" type="Node" parent="." unique_id=879886051 node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("3_ayfg5")

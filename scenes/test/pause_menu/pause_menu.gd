@@ -1,4 +1,5 @@
 extends Control
 
 func _ready() -> void:
-	$ArticlePanel.hide()
+	$OverviewPanel.hide()
+	$QuitPanel.hide()
