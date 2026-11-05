@@ -43,6 +43,7 @@ var bracing_pending: bool = false
 var conflagrant_burn_applied_this_turn: bool = false
 const TEXTBOX_AUTO_CLOSE_SECONDS := 2.0
 var textbox_id: int = 0
+const ENEMY_DAMAGE_OFFSET := Vector2(0, 0)
 @onready var condition_icon: TextureRect = $AeContainer/ConditionIcon
 @onready var condition_icon_2: TextureRect = $AeContainer/ConditionIcon2
 
@@ -54,6 +55,7 @@ func _ready():
 
 	$AeContainer/Damage.visible = false
 	$AeContainer/Damage.modulate.a = 1.0
+	$EnemyContainer/Damage.modulate.a = 0.0
 
 	action_buttons = _get_menu_buttons($ControlPanel/HBoxContainer, State.actions.size())
 	exertion_buttons = _get_menu_buttons($ExertPanel/HBoxContainer, State.exertions.size())
@@ -208,7 +210,30 @@ func _apply_player_damage(amount: int) -> void:
 		damage_label.position = start_position
 		damage_label.modulate.a = 1.0
 	)
-	
+
+# Shows a floating label over the enemy with the damage it just took.
+# The enemy's Damage label sits inside a VBoxContainer, so it stays transparent in place to keep the
+# layout steady, and a copy is floated from the battle root where the container cannot reposition it.
+func _show_enemy_damage(amount: int) -> void:
+	if amount <= 0:
+		return
+	var damage_label: Label = $EnemyContainer/Damage
+	var floating_label := damage_label.duplicate() as Label
+	floating_label.name = "EnemyDamageFloat"
+	floating_label.text = "-%d" % amount
+	floating_label.modulate.a = 1.0
+	add_child(floating_label)
+	floating_label.size = damage_label.size
+	# Start the number centred over the enemy sprite rather than at the label's slot below it.
+	var enemy_rect: Rect2 = $EnemyContainer/Enemy.get_global_rect()
+	floating_label.global_position = enemy_rect.get_center() - floating_label.size * 0.5 + ENEMY_DAMAGE_OFFSET
+	var tween := create_tween()
+	tween.tween_property(floating_label, "position", floating_label.position + Vector2(0, -24), 1.0)
+	tween.parallel().tween_property(floating_label, "modulate:a", 0.0, 1.0)
+	tween.finished.connect(func() -> void:
+		floating_label.queue_free()
+	)
+
 # Writes the active status names into the primary and secondary condition labels.
 # The main status stays in the first slot, while a supplemental status such as bracing can
 # sit in the second slot without overwriting the original status text.
@@ -577,7 +602,8 @@ func _on_assault_pressed() -> void:
 	player_damage = roundi((State.VHM + State.EB) * State.EM * State.pi_ACM * DV)
 	current_enemy_WN = max(0, current_enemy_WN - player_damage)
 	set_WN($EnemyContainer/ProgressBar, current_enemy_WN, enemy.WN)
-	
+	_show_enemy_damage(player_damage)
+
 	$AnimationPlayer.play("enemy_damaged")
 	await $AnimationPlayer.animation_finished
 	

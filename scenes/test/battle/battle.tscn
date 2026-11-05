@@ -21,7 +21,7 @@ bg_color = Color(0, 0.7254902, 0.2, 0)
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw7al"]
-bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+bg_color = Color(0, 0, 0, 0.8235294)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -81,7 +81,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0mol"]
-bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+bg_color = Color(0, 0, 0, 0.8235294)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -154,7 +154,7 @@ _data = {
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8qng1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7okt"]
-bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+bg_color = Color(0, 0, 0, 0.8235294)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -162,7 +162,7 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ay5dm"]
-bg_color = Color(0.37254903, 0.24705882, 0.24705882, 1)
+bg_color = Color(0, 0, 0, 0.8235294)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -227,6 +227,14 @@ vertical_alignment = 1
 [node name="Enemy" type="TextureRect" parent="EnemyContainer" unique_id=1696506467]
 layout_mode = 2
 stretch_mode = 3
+
+[node name="Damage" type="Label" parent="EnemyContainer" unique_id=91439474]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.69259906, 0, 0.25522032, 1)
+theme_override_fonts/font = ExtResource("4_uuwk3")
+theme_override_font_sizes/font_size = 67
+text = "67"
 
 [node name="ControlPanel" type="Panel" parent="." unique_id=1273226477]
 layout_mode = 1
