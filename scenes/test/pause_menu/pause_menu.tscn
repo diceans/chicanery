@@ -2,6 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://t86kcugym3ie" path="res://uxui/font/Special Elite/SpecialElite-Regular.ttf" id="1_eyvtn"]
 [ext_resource type="Script" uid="uid://blvagram4towr" path="res://scenes/test/pause_menu/pause_menu.gd" id="1_t7r3o"]
+[ext_resource type="Texture2D" uid="uid://bid2884t2nusl" path="res://assets/misc/Exertionarticle_menu_pointer.png" id="2_0hsqp"]
 [ext_resource type="Texture2D" uid="uid://q77krs3skau6" path="res://assets/characters/ae/AE.png" id="3_s516v"]
 [ext_resource type="Texture2D" uid="uid://dudk4kgi571d5" path="res://assets/characters/allies/Elizyka.png" id="4_j06rl"]
 [ext_resource type="Texture2D" uid="uid://c18yap2u76iwl" path="res://assets/characters/allies/Kletzt.png" id="5_t7r3o"]
@@ -19,19 +20,49 @@ border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
-content_margin_left = 16.0
-content_margin_top = 16.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjq0u"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-bg_color = Color(1, 1, 1, 0.23529412)
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5n7a1"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-bg_color = Color(1, 1, 1, 0.23529412)
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ylm7d"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mgcta"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xan4y"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tr5ef"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_whx1d"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wnek7"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d0pjp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fbe7k"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lsmdr"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kv20n"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gmha"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_malu8"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw7al"]
 content_margin_top = 10.0
@@ -61,58 +92,16 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_647dl"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxett"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2ou"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbye"]
 bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5e3ng"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0ler"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqanr"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2ood"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eausm"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stv4p"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7d0nt"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjxx0"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8cqgx"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx1ou"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7omq"]
 bg_color = Color(0, 0, 0, 0.8235294)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2oa5b"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uvccg"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jw8mq"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyira"]
@@ -146,62 +135,7 @@ bg_color = Color(1, 1, 1, 0.23529412)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8pxx"]
 bg_color = Color(1, 1, 1, 0.23529412)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnqm4"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqqu3"]
-bg_color = Color(0, 0, 0, 0.8235294)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xewm4"]
-bg_color = Color(0, 0, 0, 0.8235294)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epurj"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lg47u"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qsgte"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_24uwf"]
-content_margin_left = 16.0
-content_margin_top = 24.0
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7iwp"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2h57m"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sxcy6"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgcyw"]
-content_margin_left = 18.0
-content_margin_top = 20.0
-bg_color = Color(0, 0, 0, 0.8235294)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j06rl"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[node name="PauseMenu" type="Control" unique_id=1773060025]
+[node name="PauseMenu" type="Control" unique_id=1773060025 node_paths=PackedStringArray("item_template", "arrow")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -209,23 +143,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_t7r3o")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=263654459]
-layout_mode = 0
-offset_left = -85.0
-offset_top = -67.0
-offset_right = 2019.0
-offset_bottom = 1174.0
-color = Color(0.9607843, 1, 0.7176471, 1)
+item_template = NodePath("ArticlePanel/Article")
+arrow = NodePath("OverviewPanel/Arrow")
+metadata/_edit_horizontal_guides_ = [1309.0]
+metadata/_edit_vertical_guides_ = [1101.0, 1798.0, 1800.0, 1185.0]
 
 [node name="OverviewPanel" type="Panel" parent="." unique_id=278106525]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -26.0
 offset_right = -1163.0
-offset_bottom = -26.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_h5n0k")
@@ -235,121 +163,132 @@ layout_mode = 1
 offset_left = 35.0
 offset_top = 62.0
 offset_right = 531.0
-offset_bottom = 644.0
+offset_bottom = 645.0
 offset_transform_enabled = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_i7okt")
 
-[node name="Article" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=850630071]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 492.0
-offset_bottom = 86.0
-offset_transform_position = Vector2(16, 16)
+[node name="VBoxContainer" type="VBoxContainer" parent="OverviewPanel/OptionsPanel" unique_id=1586214768]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(6, 14)
+theme_override_constants/separation = 12
+
+[node name="Article" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=850630071]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 67
 theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
 text = "ARTICLES"
 alignment = 0
 
-[node name="Article2" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=280256637]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 86.0
-offset_right = 492.0
-offset_bottom = 168.0
-offset_transform_position = Vector2(16, 16)
+[node name="Equippables" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=1508068909]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 67
 theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ylm7d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_mgcta")
 text = "EQUIPPABLES"
 alignment = 0
 
-[node name="Article3" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=628553718]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 168.0
-offset_right = 492.0
-offset_bottom = 250.0
-offset_transform_position = Vector2(16, 16)
+[node name="Exertions" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=529480066]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 67
 theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xan4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tr5ef")
 text = "EXERTIONS"
 alignment = 0
 
-[node name="Article4" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=1883951336]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 250.0
-offset_right = 492.0
-offset_bottom = 332.0
-offset_transform_position = Vector2(16, 16)
+[node name="Save" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=564259070]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 67
 theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_whx1d")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wnek7")
 text = "SAVE"
 alignment = 0
 
-[node name="Article5" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=1645725371]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 332.0
-offset_right = 492.0
-offset_bottom = 414.0
-offset_transform_position = Vector2(16, 16)
+[node name="Quit" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=35550300]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 67
 theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
-text = "LOAD"
-alignment = 0
-
-[node name="Article6" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=741721762]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 414.0
-offset_right = 492.0
-offset_bottom = 496.0
-offset_transform_position = Vector2(16, 16)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
-theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d0pjp")
+theme_override_styles/hover = SubResource("StyleBoxFlat_fbe7k")
 text = "QUIT"
 alignment = 0
 
-[node name="Article7" type="Button" parent="OverviewPanel/OptionsPanel" unique_id=1396277016]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 496.0
-offset_right = 492.0
-offset_bottom = 578.0
-offset_transform_position = Vector2(16, 16)
+[node name="Load" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=1987955305]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 67
 theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kjq0u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5n7a1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lsmdr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kv20n")
+text = "LOAD"
+alignment = 0
+
+[node name="Options" type="Button" parent="OverviewPanel/OptionsPanel/VBoxContainer" unique_id=1146585054]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(16, 0)
+mouse_filter = 2
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 67
+theme_override_styles/normal = SubResource("StyleBoxFlat_8qng1")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0gmha")
+theme_override_styles/hover = SubResource("StyleBoxFlat_malu8")
 text = "OPTIONS"
 alignment = 0
+
+[node name="Arrow" type="Sprite2D" parent="OverviewPanel" unique_id=1882460468]
+visible = false
+z_index = 1
+position = Vector2(530, 105)
+texture = ExtResource("2_0hsqp")
 
 [node name="Currency" type="Label" parent="OverviewPanel" unique_id=756223938]
 layout_mode = 1
@@ -394,20 +333,25 @@ anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -794.0
-offset_top = 36.0
+offset_top = 64.0
 offset_right = -41.0
-offset_bottom = -84.0
+offset_bottom = -56.0
 grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_o8rks")
 
-[node name="AePanel" type="Button" parent="CharactersPanel" unique_id=827897429]
+[node name="AePanel" type="Panel" parent="CharactersPanel" unique_id=512107508]
 layout_mode = 0
 offset_right = 753.0
 offset_bottom = 239.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_647dl")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_dxett")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uv2ou")
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/AePanel" unique_id=276308968]
+visible = false
+layout_mode = 0
+offset_right = 757.0
+offset_bottom = 235.0
+color = Color(1, 1, 1, 0.23529412)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/AePanel" unique_id=1907375425]
 layout_mode = 1
@@ -440,6 +384,7 @@ offset_bottom = 89.0
 grow_horizontal = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 5)
+theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 40
 text = "Æ"
@@ -523,14 +468,18 @@ theme_override_font_sizes/font_size = 36
 text = "16"
 vertical_alignment = 1
 
-[node name="ElizykaPanel" type="Button" parent="CharactersPanel" unique_id=984474340]
+[node name="ElizykaPanel" type="Panel" parent="CharactersPanel" unique_id=585992721]
 layout_mode = 0
 offset_top = 239.0
 offset_right = 753.0
 offset_bottom = 478.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
-theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+
+[node name="ColorRect2" type="ColorRect" parent="CharactersPanel/ElizykaPanel" unique_id=1712929470]
+visible = false
+layout_mode = 0
+offset_right = 757.0
+offset_bottom = 235.0
+color = Color(1, 1, 1, 0.23529412)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/ElizykaPanel" unique_id=2132421339]
 layout_mode = 1
@@ -563,6 +512,7 @@ offset_bottom = 89.0
 grow_horizontal = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 5)
+theme_override_colors/font_color = Color(0.67058825, 0.67058825, 0.67058825, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 40
 text = "Elizyka"
@@ -646,14 +596,18 @@ theme_override_font_sizes/font_size = 36
 text = "16"
 vertical_alignment = 1
 
-[node name="KletztPanel" type="Button" parent="CharactersPanel" unique_id=621885622]
+[node name="KletztPanel" type="Panel" parent="CharactersPanel" unique_id=252285159]
 layout_mode = 0
 offset_top = 478.0
 offset_right = 753.0
 offset_bottom = 717.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_eausm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_stv4p")
-theme_override_styles/hover = SubResource("StyleBoxFlat_7d0nt")
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/KletztPanel" unique_id=1116514643]
+visible = false
+layout_mode = 0
+offset_right = 757.0
+offset_bottom = 235.0
+color = Color(1, 1, 1, 0.23529412)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/KletztPanel" unique_id=243974354]
 layout_mode = 1
@@ -686,6 +640,7 @@ offset_bottom = 89.0
 grow_horizontal = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 5)
+theme_override_colors/font_color = Color(0.22352941, 0.76862746, 0.43529412, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 40
 text = "Klêtzt"
@@ -769,14 +724,18 @@ theme_override_font_sizes/font_size = 36
 text = "16"
 vertical_alignment = 1
 
-[node name="WilseffnPanel" type="Button" parent="CharactersPanel" unique_id=2044024274]
+[node name="WilseffnPanel" type="Panel" parent="CharactersPanel" unique_id=1761808243]
 layout_mode = 0
 offset_top = 717.0
 offset_right = 753.0
 offset_bottom = 956.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_vjxx0")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_8cqgx")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hx1ou")
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/WilseffnPanel" unique_id=574880635]
+visible = false
+layout_mode = 0
+offset_right = 757.0
+offset_bottom = 235.0
+color = Color(1, 1, 1, 0.23529412)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/WilseffnPanel" unique_id=1369733090]
 layout_mode = 1
@@ -809,6 +768,7 @@ offset_bottom = 89.0
 grow_horizontal = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 5)
+theme_override_colors/font_color = Color(1, 0.64705884, 0, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 40
 text = "Wilseffn"
@@ -893,14 +853,11 @@ text = "16"
 vertical_alignment = 1
 
 [node name="QuitPanel" type="Panel" parent="." unique_id=1724779444]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 9.0
-offset_top = -1218.0
-offset_right = 9.0
-offset_bottom = -1218.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -932,7 +889,7 @@ text = "Quitting?
 You may choke on your saliva and die."
 horizontal_alignment = 1
 
-[node name="Yes" type="Button" parent="QuitPanel/QuitChoice" unique_id=596923381]
+[node name="Yes" type="Label" parent="QuitPanel/QuitChoice" unique_id=1391411368]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -942,16 +899,12 @@ offset_top = -54.0
 offset_right = 206.375
 offset_bottom = -7.0
 grow_vertical = 0
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_2oa5b")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_uvccg")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jw8mq")
 text = "Yes"
 
-[node name="No" type="Button" parent="QuitPanel/QuitChoice" unique_id=908315799]
+[node name="No" type="Label" parent="QuitPanel/QuitChoice" unique_id=1875947806]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -961,22 +914,21 @@ offset_top = -55.0
 offset_right = 633.375
 offset_bottom = -8.0
 grow_vertical = 0
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_2oa5b")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_uvccg")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jw8mq")
 text = "Nah"
 
 [node name="ArticlePanel" type="Panel" parent="." unique_id=1047305228]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1381.0
-offset_right = -2178.0
+offset_left = 14.0
+offset_top = 26.0
+offset_right = -783.0
+offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_nyira")
@@ -997,7 +949,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_0itmv")
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 autowrap_mode = 3
 
-[node name="ArticleList" type="Panel" parent="ArticlePanel" unique_id=1021276970]
+[node name="List" type="Panel" parent="ArticlePanel" unique_id=1021276970]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -1009,7 +961,7 @@ offset_bottom = 924.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8347y")
 
-[node name="1" type="Button" parent="ArticlePanel/ArticleList" unique_id=890331269]
+[node name="Article1" type="Button" parent="ArticlePanel/List" unique_id=890331269]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 4.0
@@ -1019,7 +971,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/1" unique_id=727060562]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article1" unique_id=727060562]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1033,7 +985,7 @@ text = "Apple Of Paradise"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/1" unique_id=284913948]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article1" unique_id=284913948]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1052,7 +1004,7 @@ theme_override_font_sizes/font_size = 36
 text = "6"
 vertical_alignment = 1
 
-[node name="2" type="Button" parent="ArticlePanel/ArticleList" unique_id=1394809236]
+[node name="Article2" type="Button" parent="ArticlePanel/List" unique_id=1394809236]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 84.0
@@ -1062,7 +1014,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/2" unique_id=1459720581]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article2" unique_id=1459720581]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1076,7 +1028,7 @@ text = "Hellshroom"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/2" unique_id=1519644876]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article2" unique_id=1519644876]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1095,7 +1047,7 @@ theme_override_font_sizes/font_size = 36
 text = "1"
 vertical_alignment = 1
 
-[node name="3" type="Button" parent="ArticlePanel/ArticleList" unique_id=1152719581]
+[node name="Article3" type="Button" parent="ArticlePanel/List" unique_id=1152719581]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 164.0
@@ -1105,7 +1057,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/3" unique_id=37302625]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article3" unique_id=37302625]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1119,7 +1071,7 @@ text = "Hibiscus Flower"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/3" unique_id=1223371432]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article3" unique_id=1223371432]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1138,7 +1090,7 @@ theme_override_font_sizes/font_size = 36
 text = "5"
 vertical_alignment = 1
 
-[node name="4" type="Button" parent="ArticlePanel/ArticleList" unique_id=1107110134]
+[node name="Article4" type="Button" parent="ArticlePanel/List" unique_id=1107110134]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 244.0
@@ -1148,7 +1100,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/4" unique_id=991052235]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article4" unique_id=991052235]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1162,7 +1114,7 @@ text = "Instant Noodles"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/4" unique_id=948374533]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article4" unique_id=948374533]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1180,8 +1132,9 @@ theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 36
 text = "4"
 vertical_alignment = 1
+justification_flags = 35
 
-[node name="5" type="Button" parent="ArticlePanel/ArticleList" unique_id=232346735]
+[node name="Article5" type="Button" parent="ArticlePanel/List" unique_id=232346735]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 324.0
@@ -1191,7 +1144,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/5" unique_id=1806866637]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article5" unique_id=1806866637]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1205,7 +1158,7 @@ text = "Macefruit"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/5" unique_id=1543956234]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article5" unique_id=1543956234]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1224,7 +1177,7 @@ theme_override_font_sizes/font_size = 36
 text = "1"
 vertical_alignment = 1
 
-[node name="6" type="Button" parent="ArticlePanel/ArticleList" unique_id=292461076]
+[node name="Article6" type="Button" parent="ArticlePanel/List" unique_id=292461076]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 404.0
@@ -1234,7 +1187,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/6" unique_id=727259321]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article6" unique_id=727259321]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1248,7 +1201,7 @@ text = "Mead"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/6" unique_id=1083177689]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article6" unique_id=1083177689]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1267,7 +1220,7 @@ theme_override_font_sizes/font_size = 36
 text = "3"
 vertical_alignment = 1
 
-[node name="7" type="Button" parent="ArticlePanel/ArticleList" unique_id=424149335]
+[node name="Article7" type="Button" parent="ArticlePanel/List" unique_id=424149335]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 484.0
@@ -1277,7 +1230,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/7" unique_id=1532076514]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article7" unique_id=1532076514]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1291,7 +1244,7 @@ text = "Mystery Tupperware"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/7" unique_id=318534942]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article7" unique_id=318534942]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1310,7 +1263,7 @@ theme_override_font_sizes/font_size = 36
 text = "1"
 vertical_alignment = 1
 
-[node name="8" type="Button" parent="ArticlePanel/ArticleList" unique_id=565896552]
+[node name="Article8" type="Button" parent="ArticlePanel/List" unique_id=565896552]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 564.0
@@ -1320,7 +1273,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/8" unique_id=1313673018]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article8" unique_id=1313673018]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1334,7 +1287,7 @@ text = "Pocket Seasoning"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/8" unique_id=312071499]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article8" unique_id=312071499]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1353,7 +1306,7 @@ theme_override_font_sizes/font_size = 36
 text = "4"
 vertical_alignment = 1
 
-[node name="9" type="Button" parent="ArticlePanel/ArticleList" unique_id=1810671538]
+[node name="Article9" type="Button" parent="ArticlePanel/List" unique_id=1810671538]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 644.0
@@ -1363,7 +1316,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/9" unique_id=1211966994]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article9" unique_id=1211966994]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1377,7 +1330,7 @@ text = "Pomegrenade"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/9" unique_id=1487187363]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article9" unique_id=1487187363]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1396,7 +1349,7 @@ theme_override_font_sizes/font_size = 36
 text = "2"
 vertical_alignment = 1
 
-[node name="10" type="Button" parent="ArticlePanel/ArticleList" unique_id=583053847]
+[node name="Article10" type="Button" parent="ArticlePanel/List" unique_id=583053847]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 724.0
@@ -1406,7 +1359,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/10" unique_id=1404880877]
+[node name="Name" type="Label" parent="ArticlePanel/List/Article10" unique_id=1404880877]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1420,7 +1373,7 @@ text = "Porse Milk"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/10" unique_id=1194271867]
+[node name="Quantity" type="Label" parent="ArticlePanel/List/Article10" unique_id=1194271867]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1439,17 +1392,15 @@ theme_override_font_sizes/font_size = 36
 text = "35"
 vertical_alignment = 1
 
-[node name="11" type="Button" parent="ArticlePanel/ArticleList" unique_id=1615572223]
+[node name="Article" type="Panel" parent="ArticlePanel" unique_id=1489546705]
+visible = false
 layout_mode = 0
-offset_left = 4.0
-offset_top = 804.0
-offset_right = 547.0
-offset_bottom = 884.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
+offset_left = 540.0
+offset_top = 840.0
+offset_right = 1083.0
+offset_bottom = 920.0
 
-[node name="Name" type="Label" parent="ArticlePanel/ArticleList/11" unique_id=2083524035]
+[node name="Name" type="Label" parent="ArticlePanel/Article" unique_id=2083524035]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -1463,7 +1414,7 @@ text = "Ramjet Energy Drink"
 vertical_alignment = 1
 clip_text = true
 
-[node name="Quantity" type="Label" parent="ArticlePanel/ArticleList/11" unique_id=1899453430]
+[node name="Quantity" type="Label" parent="ArticlePanel/Article" unique_id=1899453430]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1480,1259 +1431,4 @@ offset_transform_position = Vector2(27, 0)
 theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 36
 text = "6"
-vertical_alignment = 1
-
-[node name="EquippablePanelAe" type="Panel" parent="." unique_id=1336819029]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2164.0
-offset_top = 22.0
-offset_right = 2164.0
-offset_bottom = 22.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_vnqm4")
-
-[node name="Stats" type="Panel" parent="EquippablePanelAe" unique_id=1395102777]
-layout_mode = 0
-offset_left = 36.0
-offset_top = 63.0
-offset_right = 935.0
-offset_bottom = 287.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_gqqu3")
-
-[node name="Portrait" type="TextureRect" parent="EquippablePanelAe/Stats" unique_id=1194298103]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = -17.0
-offset_top = -70.0
-offset_right = 293.0
-grow_vertical = 2
-texture = ExtResource("3_s516v")
-expand_mode = 2
-
-[node name="SidePanel" type="Panel" parent="EquippablePanelAe/Stats" unique_id=491318627]
-layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -603.0
-grow_horizontal = 0
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gtbye")
-
-[node name="Label" type="Label" parent="EquippablePanelAe/Stats/SidePanel" unique_id=1743675078]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 4.0
-offset_bottom = 89.0
-grow_horizontal = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, 5)
-theme_override_colors/font_color = Color(1, 1, 0, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 40
-text = "Æ"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="StatPanel" type="Panel" parent="EquippablePanelAe/Stats/SidePanel" unique_id=813086295]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -151.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_5e3ng")
-
-[node name="StatLabel" type="VBoxContainer" parent="EquippablePanelAe/Stats/SidePanel/StatPanel" unique_id=777082283]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -197.0
-offset_top = 11.0
-offset_right = -18.0
-offset_bottom = 114.0
-grow_horizontal = 2
-theme_override_constants/separation = 2
-
-[node name="Wholeness" type="Label" parent="EquippablePanelAe/Stats/SidePanel/StatPanel/StatLabel" unique_id=183167570]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "WHOLENESS"
-vertical_alignment = 1
-
-[node name="Mentality" type="Label" parent="EquippablePanelAe/Stats/SidePanel/StatPanel/StatLabel" unique_id=1721065750]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "MENTALITY"
-vertical_alignment = 1
-
-[node name="Vehemence" type="Label" parent="EquippablePanelAe/Stats/SidePanel/StatPanel/StatLabel" unique_id=945934397]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "VEHEMENCE"
-vertical_alignment = 1
-
-[node name="StatNumber" type="VBoxContainer" parent="EquippablePanelAe/Stats/SidePanel/StatPanel" unique_id=1871303824]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 51.0
-offset_top = 11.0
-offset_right = 208.0
-offset_bottom = 126.0
-grow_horizontal = 2
-theme_override_constants/separation = 2
-
-[node name="Wholeness" type="Label" parent="EquippablePanelAe/Stats/SidePanel/StatPanel/StatNumber" unique_id=519491024]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "60/60"
-vertical_alignment = 1
-
-[node name="Mentality" type="Label" parent="EquippablePanelAe/Stats/SidePanel/StatPanel/StatNumber" unique_id=586780990]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "45/85"
-vertical_alignment = 1
-
-[node name="Vehemence" type="Label" parent="EquippablePanelAe/Stats/SidePanel/StatPanel/StatNumber" unique_id=323193718]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "16"
-vertical_alignment = 1
-
-[node name="EquipabblesEquip" type="Panel" parent="EquippablePanelAe" unique_id=1614675498]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 36.0
-offset_top = -240.0
-offset_right = 934.0
-offset_bottom = -16.0
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_xewm4")
-
-[node name="Arm" type="Button" parent="EquippablePanelAe/EquipabblesEquip" unique_id=441614716]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 4.0
-offset_bottom = 111.0
-grow_horizontal = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_epurj")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_lg47u")
-theme_override_styles/hover = SubResource("StyleBoxFlat_qsgte")
-
-[node name="Key" type="Label" parent="EquippablePanelAe/EquipabblesEquip/Arm" unique_id=620455520]
-layout_mode = 1
-offset_right = 232.0
-offset_bottom = 43.0
-offset_transform_position = Vector2(12, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxFlat_24uwf")
-text = "Arm:"
-
-[node name="Value" type="Label" parent="EquippablePanelAe/EquipabblesEquip/Arm" unique_id=1411275236]
-layout_mode = 1
-offset_left = 362.0
-offset_right = 594.0
-offset_bottom = 67.0
-offset_transform_position = Vector2(12, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxFlat_24uwf")
-text = "MALLET"
-
-[node name="Excessory" type="Button" parent="EquippablePanelAe/EquipabblesEquip" unique_id=1327348668]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 112.0
-offset_bottom = 220.0
-grow_horizontal = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_n7iwp")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_2h57m")
-theme_override_styles/hover = SubResource("StyleBoxFlat_sxcy6")
-
-[node name="Key" type="Label" parent="EquippablePanelAe/EquipabblesEquip/Excessory" unique_id=639023541]
-layout_mode = 1
-offset_right = 232.0
-offset_bottom = 43.0
-offset_transform_position = Vector2(12, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxFlat_24uwf")
-text = "Excessory:"
-
-[node name="Value" type="Label" parent="EquippablePanelAe/EquipabblesEquip/Excessory" unique_id=2144745839]
-layout_mode = 1
-offset_left = 362.0
-offset_right = 594.0
-offset_bottom = 67.0
-offset_transform_position = Vector2(12, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxFlat_24uwf")
-text = "DEDIFFERENTIATOR"
-
-[node name="EquipabbleDescription" type="Label" parent="EquippablePanelAe" unique_id=444794596]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 36.0
-offset_top = 15.5
-offset_right = 934.0
-offset_bottom = 265.0
-grow_vertical = 2
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_jgcyw")
-text = "45 Joules per swing. 
-VEHEMENCE + 6"
-
-[node name="Status" type="Label" parent="EquippablePanelAe" unique_id=1093934911]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -973.0
-offset_top = 63.0
-offset_right = -700.0
-offset_bottom = 287.0
-grow_horizontal = 0
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-theme_override_styles/normal = SubResource("StyleBoxFlat_jgcyw")
-text = "INSANE"
-
-[node name="EquippableList" type="Panel" parent="EquippablePanelAe" unique_id=2056222451]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -684.0
-offset_top = 62.0
-offset_right = -21.0
-offset_bottom = 1030.0
-grow_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_8347y")
-
-[node name="1" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=2044142589]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 659.0
-offset_bottom = 84.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/1" unique_id=693572266]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Cutting Board"
-vertical_alignment = 1
-clip_text = true
-
-[node name="2" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=1798964212]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 84.0
-offset_right = 659.0
-offset_bottom = 164.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/2" unique_id=411512546]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Defunct Wizard Staff"
-vertical_alignment = 1
-clip_text = true
-
-[node name="3" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=1163003828]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 164.0
-offset_right = 659.0
-offset_bottom = 244.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/3" unique_id=936982103]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Dull Rapier"
-vertical_alignment = 1
-clip_text = true
-
-[node name="4" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=875030987]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 244.0
-offset_right = 659.0
-offset_bottom = 324.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/4" unique_id=1823546650]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Efink"
-vertical_alignment = 1
-clip_text = true
-
-[node name="5" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=424967973]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 324.0
-offset_right = 659.0
-offset_bottom = 404.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/5" unique_id=1767082248]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Flail"
-vertical_alignment = 1
-clip_text = true
-
-[node name="6" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=1107293271]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 404.0
-offset_right = 659.0
-offset_bottom = 484.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/6" unique_id=344138086]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Halberd"
-vertical_alignment = 1
-clip_text = true
-
-[node name="7" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=855579903]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 484.0
-offset_right = 659.0
-offset_bottom = 564.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/7" unique_id=1001748298]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Handgonne"
-vertical_alignment = 1
-clip_text = true
-
-[node name="8" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=290870302]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 564.0
-offset_right = 659.0
-offset_bottom = 644.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/8" unique_id=1112660548]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Mallet"
-vertical_alignment = 1
-clip_text = true
-
-[node name="9" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=314405410]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 644.0
-offset_right = 659.0
-offset_bottom = 724.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/9" unique_id=362788361]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Messier"
-vertical_alignment = 1
-clip_text = true
-
-[node name="10" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=1221072407]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 724.0
-offset_right = 659.0
-offset_bottom = 804.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/10" unique_id=2144608522]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Porseman's Pick"
-vertical_alignment = 1
-clip_text = true
-
-[node name="11" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=1245647969]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 804.0
-offset_right = 659.0
-offset_bottom = 884.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/11" unique_id=1216742451]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 560.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Wafer Iron"
-vertical_alignment = 1
-clip_text = true
-
-[node name="12" type="Button" parent="EquippablePanelAe/EquippableList" unique_id=831396386]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 873.0
-offset_right = 659.0
-offset_bottom = 953.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="EquippablePanelAe/EquippableList/12" unique_id=1588941629]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_top = 11.0
-offset_right = 560.0
-offset_bottom = 11.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "War Scythe"
-vertical_alignment = 1
-clip_text = true
-
-[node name="ExertionPanel" type="Panel" parent="." unique_id=1736714792]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 1249.0
-offset_right = 4.0
-offset_bottom = 1249.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_j06rl")
-
-[node name="Label" type="Label" parent="ExertionPanel" unique_id=613203226]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 35.0
-offset_top = 55.0
-offset_right = 500.0
-offset_bottom = -282.0
-grow_vertical = 2
-offset_transform_enabled = true
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_0itmv")
-text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-autowrap_mode = 3
-
-[node name="ExertionType" type="Panel" parent="ExertionPanel" unique_id=325870980]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -305.5
-offset_top = 36.0
-offset_right = 245.5
-offset_bottom = 284.0
-grow_horizontal = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_8347y")
-
-[node name="Article1" type="Button" parent="ExertionPanel/ExertionType" unique_id=18196188]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 547.0
-offset_bottom = 84.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionType/Article1" unique_id=14949478]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Standard Exertions"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionType/Article1" unique_id=1408004820]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "3"
-vertical_alignment = 1
-
-[node name="Article2" type="Button" parent="ExertionPanel/ExertionType" unique_id=1916131691]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 84.0
-offset_right = 547.0
-offset_bottom = 164.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionType/Article2" unique_id=538727002]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Mechanics"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionType/Article2" unique_id=2125248024]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "13"
-vertical_alignment = 1
-
-[node name="Article3" type="Button" parent="ExertionPanel/ExertionType" unique_id=1349368867]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 164.0
-offset_right = 547.0
-offset_bottom = 244.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionType/Article3" unique_id=392115269]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(16, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "Imageries"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionType/Article3" unique_id=295763689]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "12"
-vertical_alignment = 1
-
-[node name="ExertionList" type="Panel" parent="ExertionPanel" unique_id=647769059]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -695.0
-offset_top = 36.0
-offset_right = -36.0
-offset_bottom = 1004.0
-grow_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_8347y")
-
-[node name="1" type="Button" parent="ExertionPanel/ExertionList" unique_id=1564225992]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 655.0
-offset_bottom = 84.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/1" unique_id=1090222429]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "ACUPUNCTURE"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/1" unique_id=1404798952]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "50"
-vertical_alignment = 1
-
-[node name="2" type="Button" parent="ExertionPanel/ExertionList" unique_id=43895232]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 84.0
-offset_right = 655.0
-offset_bottom = 164.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/2" unique_id=1165719382]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "ADUMBRATE"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/2" unique_id=163096921]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "50"
-vertical_alignment = 1
-
-[node name="3" type="Button" parent="ExertionPanel/ExertionList" unique_id=50107878]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 164.0
-offset_right = 655.0
-offset_bottom = 244.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/3" unique_id=199989873]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "ASH"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/3" unique_id=1964511725]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "30"
-vertical_alignment = 1
-
-[node name="4" type="Button" parent="ExertionPanel/ExertionList" unique_id=503919290]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 244.0
-offset_right = 655.0
-offset_bottom = 324.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/4" unique_id=2041324321]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "DEVOLVE"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/4" unique_id=103212491]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "60"
-vertical_alignment = 1
-
-[node name="5" type="Button" parent="ExertionPanel/ExertionList" unique_id=1375650039]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 324.0
-offset_right = 655.0
-offset_bottom = 404.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/5" unique_id=206548748]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "DISENTHRALL"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/5" unique_id=1232331109]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "40"
-vertical_alignment = 1
-
-[node name="6" type="Button" parent="ExertionPanel/ExertionList" unique_id=1772529737]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 404.0
-offset_right = 655.0
-offset_bottom = 484.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/6" unique_id=1714130570]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "EXEMPT"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/6" unique_id=1744147637]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "50"
-vertical_alignment = 1
-
-[node name="7" type="Button" parent="ExertionPanel/ExertionList" unique_id=1162763210]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 484.0
-offset_right = 655.0
-offset_bottom = 564.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/7" unique_id=1641702383]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "GAMBIT"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/7" unique_id=348423902]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "30"
-vertical_alignment = 1
-
-[node name="8" type="Button" parent="ExertionPanel/ExertionList" unique_id=300508895]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 564.0
-offset_right = 655.0
-offset_bottom = 644.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/8" unique_id=864288540]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "IMPLODE"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/8" unique_id=1320680273]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "20"
-vertical_alignment = 1
-
-[node name="9" type="Button" parent="ExertionPanel/ExertionList" unique_id=1457379949]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 644.0
-offset_right = 655.0
-offset_bottom = 724.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/9" unique_id=652398805]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "IRRADIATE"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/9" unique_id=93249762]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "55"
-vertical_alignment = 1
-
-[node name="10" type="Button" parent="ExertionPanel/ExertionList" unique_id=656364523]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 724.0
-offset_right = 655.0
-offset_bottom = 804.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/10" unique_id=1350607754]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "MISTIFY"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/10" unique_id=42571966]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "20"
-vertical_alignment = 1
-
-[node name="11" type="Button" parent="ExertionPanel/ExertionList" unique_id=828612260]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 804.0
-offset_right = 655.0
-offset_bottom = 884.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/11" unique_id=498595478]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "PULVERISE"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/11" unique_id=293907823]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "35"
-vertical_alignment = 1
-
-[node name="12" type="Button" parent="ExertionPanel/ExertionList" unique_id=1089674153]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 884.0
-offset_right = 655.0
-offset_bottom = 964.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_wvmkm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_gxne6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_r8pxx")
-
-[node name="Name" type="Label" parent="ExertionPanel/ExertionList/12" unique_id=439947801]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 447.0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(24, 0)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "VITRIFY"
-vertical_alignment = 1
-clip_text = true
-
-[node name="Quantity" type="Label" parent="ExertionPanel/ExertionList/12" unique_id=208842421]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -93.0
-offset_top = -40.0
-offset_bottom = 40.0
-grow_horizontal = 0
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(27, 0)
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
-theme_override_fonts/font = ExtResource("1_eyvtn")
-theme_override_font_sizes/font_size = 36
-text = "70"
 vertical_alignment = 1
