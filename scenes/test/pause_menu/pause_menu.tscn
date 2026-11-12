@@ -61,14 +61,8 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_647dl"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4u81l"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxett"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2ou"]
-bg_color = Color(1, 1, 1, 0.23529412)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtbye"]
 bg_color = Color(0, 0, 0, 0)
@@ -76,32 +70,14 @@ bg_color = Color(0, 0, 0, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5e3ng"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0ler"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6f13b"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqanr"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2ood"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eausm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jy15w"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stv4p"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7d0nt"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjxx0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0sxkh"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8cqgx"]
-bg_color = Color(1, 1, 1, 0.23529412)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx1ou"]
-bg_color = Color(1, 1, 1, 0.23529412)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7omq"]
 bg_color = Color(0, 0, 0, 0.8235294)
@@ -401,13 +377,23 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_o8rks")
 
-[node name="AePanel" type="Button" parent="CharactersPanel" unique_id=827897429]
+[node name="AePanel" type="Panel" parent="CharactersPanel" unique_id=1698580557]
 layout_mode = 0
 offset_right = 753.0
 offset_bottom = 239.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_647dl")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_dxett")
-theme_override_styles/hover = SubResource("StyleBoxFlat_uv2ou")
+theme_override_styles/panel = SubResource("StyleBoxFlat_4u81l")
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/AePanel" unique_id=936780085]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/AePanel" unique_id=1907375425]
 layout_mode = 1
@@ -523,14 +509,23 @@ theme_override_font_sizes/font_size = 36
 text = "16"
 vertical_alignment = 1
 
-[node name="ElizykaPanel" type="Button" parent="CharactersPanel" unique_id=984474340]
+[node name="ElizykaPanel" type="Panel" parent="CharactersPanel" unique_id=2136135525]
 layout_mode = 0
 offset_top = 239.0
 offset_right = 753.0
 offset_bottom = 478.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
-theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6f13b")
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/ElizykaPanel" unique_id=1654817784]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_right = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/ElizykaPanel" unique_id=2132421339]
 layout_mode = 1
@@ -646,14 +641,23 @@ theme_override_font_sizes/font_size = 36
 text = "16"
 vertical_alignment = 1
 
-[node name="KletztPanel" type="Button" parent="CharactersPanel" unique_id=621885622]
+[node name="KletztPanel" type="Panel" parent="CharactersPanel" unique_id=1860596743]
 layout_mode = 0
 offset_top = 478.0
 offset_right = 753.0
 offset_bottom = 717.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_eausm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_stv4p")
-theme_override_styles/hover = SubResource("StyleBoxFlat_7d0nt")
+theme_override_styles/panel = SubResource("StyleBoxFlat_jy15w")
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/KletztPanel" unique_id=1981960299]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_right = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/KletztPanel" unique_id=243974354]
 layout_mode = 1
@@ -769,14 +773,23 @@ theme_override_font_sizes/font_size = 36
 text = "16"
 vertical_alignment = 1
 
-[node name="WilseffnPanel" type="Button" parent="CharactersPanel" unique_id=2044024274]
+[node name="WilseffnPanel" type="Panel" parent="CharactersPanel" unique_id=1641480734]
 layout_mode = 0
 offset_top = 717.0
 offset_right = 753.0
 offset_bottom = 956.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_vjxx0")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_8cqgx")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hx1ou")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0sxkh")
+
+[node name="ColorRect" type="ColorRect" parent="CharactersPanel/WilseffnPanel" unique_id=343389767]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_right = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
 
 [node name="Portrait" type="TextureRect" parent="CharactersPanel/WilseffnPanel" unique_id=1369733090]
 layout_mode = 1
@@ -1487,10 +1500,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 2164.0
-offset_top = 22.0
-offset_right = 2164.0
-offset_bottom = 22.0
+offset_left = 2117.0
+offset_top = 15.0
+offset_right = 2117.0
+offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vnqm4")
