@@ -75,10 +75,14 @@ func _menu_nodes(menu):
 		"quit": return [$QuitPanel/QuitChoice/Yes, $QuitPanel/QuitChoice/No]
 	return []
 
-# Shows or hides the 25% white background behind a button, or the highlight ColorRect of a character panel.
+# Shows or hides the 25% white background behind a button, the yellow text of a quit choice, or the highlight ColorRect of a character panel.
 func _set_highlight(node, is_highlighted):
 	if not node is Button:
 		node.get_child(0).visible = is_highlighted
+		return
+	# The quit dialog's Yes/Nah buttons are highlighted with yellow text instead of a background.
+	if node.get_parent() == $QuitPanel/QuitChoice:
+		node.modulate = Color("Yellow") if is_highlighted else Color("White")
 		return
 	if not node.has_meta("normal_style"):
 		var normal_style = node.get_theme_stylebox("normal")
