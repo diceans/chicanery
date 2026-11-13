@@ -177,6 +177,29 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j06rl"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_647dl"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxett"]
+bg_color = Color(0, 0, 0, 0.8235294)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uv2ou"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0ler"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqanr"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2ood"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [node name="PauseMenu" type="Control" unique_id=1773060025]
 layout_mode = 3
 anchors_preset = 15
@@ -2749,3 +2772,186 @@ theme_override_fonts/font = ExtResource("1_eyvtn")
 theme_override_font_sizes/font_size = 36
 text = "70"
 vertical_alignment = 1
+
+[node name="OptionsPanel" type="Panel" parent="." unique_id=126841840]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2086.0
+offset_top = 1214.0
+offset_right = 2086.0
+offset_bottom = 1214.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_647dl")
+
+[node name="CenterPiece" type="Panel" parent="OptionsPanel" unique_id=1718692122]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -299.875
+offset_top = -376.6875
+offset_right = 300.125
+offset_bottom = 375.3125
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dxett")
+
+[node name="SideBar" type="Panel" parent="OptionsPanel/CenterPiece" unique_id=500285894]
+layout_mode = 0
+offset_left = 3.875
+offset_top = 3.6875
+offset_right = 103.875
+offset_bottom = 747.6875
+theme_override_styles/panel = SubResource("StyleBoxFlat_uv2ou")
+
+[node name="Content" type="Panel" parent="OptionsPanel/CenterPiece" unique_id=689698116]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -495.875
+offset_top = 3.6875
+offset_right = -3.875
+offset_bottom = -4.3125
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Keyboard" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=1043872583]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 93.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Keyboard"
+alignment = 0
+
+[node name="Controller" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=1239107829]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 93.0
+offset_bottom = 186.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Controller"
+alignment = 0
+
+[node name="Display" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=591984601]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 186.0
+offset_bottom = 279.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Display"
+alignment = 0
+
+[node name="Graphics" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=653019170]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 279.0
+offset_bottom = 372.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Graphics"
+alignment = 0
+
+[node name="Audio" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=1793600572]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 372.0
+offset_bottom = 465.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Audio"
+alignment = 0
+
+[node name="Accessibility" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=13084582]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 465.0
+offset_bottom = 558.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Accessibility"
+alignment = 0
+
+[node name="Gameplay" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=1181639829]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 558.0
+offset_bottom = 651.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+text = "Gameplay"
+alignment = 0
+
+[node name="Placeholder" type="Button" parent="OptionsPanel/CenterPiece/Content" unique_id=797507203]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 651.0
+offset_bottom = 744.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(8, 0)
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 56
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
+alignment = 0

@@ -31,7 +31,7 @@ var options = []
 var menu_button_font_colors
 const HIGHLIGHT_COLOR = Color(1, 1, 1, 0.25)
 # Which overview option opens each sub-menu, so backing out puts the cursor back on it.
-const MENU_OPTION_INDEX = {"items": 0, "equip_slots": 1, "exertion_types": 2, "quit": 5}
+const MENU_OPTION_INDEX = {"items": 0, "equip_slots": 1, "exertion_types": 2, "quit": 5, "settings": 6}
 
 func _ready() -> void:
 	$OverviewPanel.position = Vector2(0, -26)
@@ -40,11 +40,13 @@ func _ready() -> void:
 	$ArticlePanel.position = Vector2(0, 0)
 	$CharactersPanel.position = Vector2(1126, 36)
 	$ExertionPanel.position = Vector2(0, 0)
+	$OptionsPanel.position = Vector2(0, 0)
 
 	$ArticlePanel.hide()
 	$QuitPanel.hide()
 	$EquippablePanelAe.hide()
 	$ExertionPanel.hide()
+	$OptionsPanel.hide()
 	_disable_mouse(self)
 	# Each character panel's first child is a ColorRect used as its highlight background.
 	for panel in $CharactersPanel.get_children():
@@ -73,6 +75,7 @@ func _menu_nodes(menu):
 		"exertion_types": return $ExertionPanel/ExertionType.get_children()
 		"exertions": return $ExertionPanel/ExertionList.get_children()
 		"quit": return [$QuitPanel/QuitChoice/Yes, $QuitPanel/QuitChoice/No]
+		"settings": return $OptionsPanel/CenterPiece/Content.get_children()
 	return []
 
 # Shows or hides the 25% white background behind a button, the yellow text of a quit choice, or the highlight ColorRect of a character panel.
@@ -80,8 +83,8 @@ func _set_highlight(node, is_highlighted):
 	if not node is Button:
 		node.get_child(0).visible = is_highlighted
 		return
-	# The quit dialog's Yes/Nah buttons are highlighted with yellow text instead of a background.
-	if node.get_parent() == $QuitPanel/QuitChoice:
+	# The quit dialog's Yes/Nah buttons and the options panel's buttons are highlighted with yellow text instead of a background.
+	if node.get_parent() in [$QuitPanel/QuitChoice, $OptionsPanel/CenterPiece/Content]:
 		node.modulate = Color("Yellow") if is_highlighted else Color("White")
 		return
 	if not node.has_meta("normal_style"):
@@ -104,8 +107,9 @@ func update_arrow():
 	$EquippablePanelAe.visible = current_menu in ["equip_slots", "equippables"]
 	$ExertionPanel.visible = current_menu in ["exertion_types", "exertions"]
 	$QuitPanel.visible = current_menu == "quit"
-	# The equippable and exertion lists sit where the character panel is, so hide it behind them.
-	$CharactersPanel.visible = not ($EquippablePanelAe.visible or $ExertionPanel.visible)
+	$OptionsPanel.visible = current_menu == "settings"
+	# The equippable and exertion lists sit where the character panel is, and the options panel stands alone, so hide it behind them.
+	$CharactersPanel.visible = not ($EquippablePanelAe.visible or $ExertionPanel.visible or $OptionsPanel.visible)
 
 	options = _menu_nodes(current_menu)
 	limit = len(options)-1
@@ -159,6 +163,8 @@ func _physics_process(delta: float) -> void:
 				loadsave()
 			elif selected_pos == 5:
 				_open("quit")
+			elif selected_pos == 6:
+				_open("settings")
 		elif current_menu == "items":
 			if not options.is_empty():
 				selected_item=options[selected_pos].get_child(0).text
