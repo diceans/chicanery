@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://q3bwpc78tutt"]
 
-[ext_resource type="Script" uid="uid://di3j587bq7fvv" path="res://scenes/characters/AE/ae_placeholder.gd" id="1_0v7dg"]
+[ext_resource type="Script" uid="uid://di3j587bq7fvv" path="res://scenes/characters/ae/ae_placeholder.gd" id="1_0v7dg"]
 [ext_resource type="Texture2D" uid="uid://c78re1eca3bq" path="res://assets/characters/ae/spritesheet (1).png" id="2_ayfg5"]
 [ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="3_ayfg5"]
-[ext_resource type="Script" uid="uid://djt2ff8pxc1nv" path="res://scenes/characters/AE/idle_state.gd" id="4_jvofh"]
-[ext_resource type="Script" uid="uid://wsqstmp1sg1y" path="res://scenes/characters/AE/walk_state.gd" id="5_wnscj"]
+[ext_resource type="Script" uid="uid://djt2ff8pxc1nv" path="res://scenes/characters/ae/idle_state.gd" id="4_jvofh"]
+[ext_resource type="Script" uid="uid://wsqstmp1sg1y" path="res://scenes/characters/ae/walk_state.gd" id="5_wnscj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cmw6p"]
 atlas = ExtResource("2_ayfg5")

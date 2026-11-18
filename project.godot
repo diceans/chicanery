@@ -31,6 +31,16 @@ window/stretch/mode="canvas_items"
 
 movie_writer/movie_file="C:/Users/LE MINH QUY/Videos/Captures/chicanerymovie.avi"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://scenes/": "orange",
+"res://scripts/": "yellow",
+"res://tilesets/": "green",
+"res://uxui/": "blue"
+}
+
 [input]
 
 walk_up={

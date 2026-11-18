@@ -1,7 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://tgp2krn6bd8g"]
 
 [ext_resource type="Script" uid="uid://fmpfei7rq57s" path="res://scripts/stats/base_enemy.gd" id="1_tqit0"]
-[ext_resource type="Texture2D" uid="uid://bi71d4qvl7tj5" path="res://assets/characters/enemies/Lignolus/inbattle_1-removebg-preview.png" id="2_tqit0"]
+[ext_resource type="Texture2D" uid="uid://bi71d4qvl7tj5" path="res://assets/characters/npc/enemies/Lignolus/inbattle_1-removebg-preview.png" id="2_tqit0"]
 
 [resource]
 script = ExtResource("1_tqit0")

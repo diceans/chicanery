@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bbkv4yoslcjvh"]
 
 [ext_resource type="TileSet" uid="uid://c6agi25spf1nj" path="res://tilesets/secondfloor_tile_set.tres" id="1_yd57h"]
-[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE/AE_placeholder.tscn" id="2_prlsu"]
+[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/ae/AE_placeholder.tscn" id="2_prlsu"]
 [ext_resource type="Script" uid="uid://bfe0254iquhfp" path="res://scenes/test/transition/transition_node_to_1.gd" id="3_f5yox"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7okt"]

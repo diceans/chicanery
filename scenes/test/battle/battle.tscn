@@ -6,10 +6,10 @@
 [ext_resource type="FontFile" uid="uid://cjed4d02nrwc5" path="res://uxui/font/Courier Prime/Courier Prime Bold.ttf" id="4_uuwk3"]
 [ext_resource type="Texture2D" uid="uid://q77krs3skau6" path="res://assets/characters/ae/AE.png" id="7_3u3hm"]
 [ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="7_yq2ln"]
-[ext_resource type="Texture2D" uid="uid://dudk4kgi571d5" path="res://assets/characters/allies/Elizyka.png" id="8_ce6at"]
-[ext_resource type="Texture2D" uid="uid://c18yap2u76iwl" path="res://assets/characters/allies/Kletzt.png" id="9_f5pu5"]
+[ext_resource type="Texture2D" uid="uid://dudk4kgi571d5" path="res://assets/characters/npc/allies/Elizyka.png" id="8_ce6at"]
+[ext_resource type="Texture2D" uid="uid://c18yap2u76iwl" path="res://assets/characters/npc/allies/Kletzt.png" id="9_f5pu5"]
 [ext_resource type="FontFile" uid="uid://t86kcugym3ie" path="res://uxui/font/Special Elite/SpecialElite-Regular.ttf" id="9_yq2ln"]
-[ext_resource type="Texture2D" uid="uid://ypqswc8s2bs8" path="res://assets/characters/allies/Wilseffn.png" id="10_qcad0"]
+[ext_resource type="Texture2D" uid="uid://ypqswc8s2bs8" path="res://assets/characters/npc/allies/Wilseffn.png" id="10_qcad0"]
 [ext_resource type="Texture2D" uid="uid://bid2884t2nusl" path="res://assets/misc/Exertionarticle_menu_pointer.png" id="13_f5pu5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvkl2"]

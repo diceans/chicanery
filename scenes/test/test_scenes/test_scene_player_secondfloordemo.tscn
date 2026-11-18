@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://dsbcmsa2tmbjp"]
 
 [ext_resource type="Texture2D" uid="uid://b8ec2qiwhjeg6" path="res://assets/background/SecondFloor.png" id="1_y5eu4"]
-[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/AE/AE_placeholder.tscn" id="2_xvhso"]
+[ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/ae/AE_placeholder.tscn" id="2_xvhso"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4rllb"]
 resource_name = "floor/background"

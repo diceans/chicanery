@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://p27dujolrsvj"]
+
+[ext_resource type="Script" uid="uid://1ohpdqrvovy8" path="res://scenes/characters/npc/misc/nickel.gd" id="1_doqfp"]
+[ext_resource type="Script" uid="uid://darevge5015kl" path="res://scripts/node_state_machine/node_state_machine.gd" id="1_ksvrj"]
+[ext_resource type="Texture2D" uid="uid://b8h3uljvced22" path="res://assets/characters/npc/misc/goose_back-removebg-preview.webp" id="2_4cgp1"]
+[ext_resource type="Script" uid="uid://c5vlwcvla1i44" path="res://scenes/characters/npc/misc/idle_state.gd" id="2_s5tbo"]
+[ext_resource type="Script" uid="uid://cgmbbr8ij3wvc" path="res://scenes/characters/npc/misc/walk_state.gd" id="3_cdepo"]
+[ext_resource type="Texture2D" uid="uid://cf6vhfa01uebo" path="res://assets/characters/npc/misc/goose_front-removebg-preview.webp" id="3_rs734"]
+[ext_resource type="Texture2D" uid="uid://dseiijio5nq8p" path="res://assets/characters/npc/misc/goose_left-removebg-preview.webp" id="4_r0wyp"]
+[ext_resource type="Texture2D" uid="uid://ij078e4ae32h" path="res://assets/characters/npc/misc/goose_right-removebg-preview.png" id="5_j8v4n"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_doqfp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4cgp1")
+}],
+"loop": 1,
+"name": &"back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_rs734")
+}],
+"loop": 1,
+"name": &"front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_r0wyp")
+}],
+"loop": 1,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_j8v4n")
+}],
+"loop": 1,
+"name": &"right",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7hopo"]
+size = Vector2(120, 120)
+
+[node name="Nickel" type="CharacterBody2D" unique_id=287630542]
+script = ExtResource("1_doqfp")
+
+[node name="CharacterBody2D" type="AnimatedSprite2D" parent="." unique_id=1455456758]
+sprite_frames = SubResource("SpriteFrames_doqfp")
+animation = &"right"
+autoplay = "right"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1865638893]
+position = Vector2(0, 116)
+shape = SubResource("RectangleShape2D_7hopo")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1324907891]
+
+[node name="StateMachine" type="Node" parent="." unique_id=765933817 node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("1_ksvrj")
+initial_node_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=2137896563 node_paths=PackedStringArray("character", "animated_sprite_2d")]
+script = ExtResource("2_s5tbo")
+character = NodePath("../..")
+animated_sprite_2d = NodePath("../../CharacterBody2D")
+
+[node name="Walk" type="Node" parent="StateMachine" unique_id=533495028 node_paths=PackedStringArray("character", "animated_sprite_2d", "navigation_agent_2d")]
+script = ExtResource("3_cdepo")
+character = NodePath("../..")
+animated_sprite_2d = NodePath("../../CharacterBody2D")
+navigation_agent_2d = NodePath("../../NavigationAgent2D")
