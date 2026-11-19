@@ -1,9 +1,8 @@
 [gd_resource type="Resource" format=3 uid="uid://dkvv0kbdmpvjs"]
 
-[ext_resource type="Script" uid="uid://fmpfei7rq57s" path="res://scripts/stats/base_enemy.gd" id="1_557gl"]
+[ext_resource type="Script" uid="uid://wu2p1mtt84wi" path="res://scripts/stats/base_ally.gd" id="1_557gl"]
 [ext_resource type="Texture2D" uid="uid://ypqswc8s2bs8" path="res://assets/characters/npc/allies/Wilseffn.png" id="2_557gl"]
 
 [resource]
 script = ExtResource("1_557gl")
-name = "Ally"
 texture = ExtResource("2_557gl")

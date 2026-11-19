@@ -214,7 +214,7 @@ position = Vector2(994, 2149)
 navigation_polygon = SubResource("NavigationPolygon_i7okt")
 
 [node name="Nickel" parent="Goose" unique_id=287630542 instance=ExtResource("11_06r44")]
-position = Vector2(2627, 75)
+position = Vector2(2681, 181)
 
 [connection signal="body_entered" from="TransitionNodeOto1" to="TransitionNodeOto1" method="_on_body_entered"]
 [connection signal="body_entered" from="Elizyka" to="." method="_on_elizyka_body_entered"]

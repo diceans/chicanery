@@ -6,10 +6,10 @@ var player_near_elizyka: bool = false
 # Initializes the overworld scene, clears defeated enemies by their world-space position, and restores the player to the exact enemy location after battle.
 func _ready() -> void:
 	$AePlaceholder/Dialogue.hide()
+	# A missing spawnpoint only leaves Elizyka where she was placed; the enemy cleanup below must still run.
 	var ally_spawnpoint: Variant = spawnpoint(ally)
-	if not (ally_spawnpoint is Vector2):
-		return
-	$Elizyka.position = ally_spawnpoint
+	if ally_spawnpoint is Vector2:
+		$Elizyka.position = ally_spawnpoint
 	var returning_from_battle: bool = State.return_player_to_enemy
 	State.return_player_to_enemy = false
 

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://dsvv055wb0vsq"]
+
+[ext_resource type="Script" uid="uid://wu2p1mtt84wi" path="res://scripts/stats/base_ally.gd" id="1_7ov12"]
+[ext_resource type="Texture2D" uid="uid://c18yap2u76iwl" path="res://assets/characters/npc/allies/Kletzt.png" id="2_1vbgj"]
+
+[resource]
+script = ExtResource("1_7ov12")
+name = "Kietzt"
+texture = ExtResource("2_1vbgj")

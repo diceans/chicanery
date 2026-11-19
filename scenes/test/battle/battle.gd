@@ -18,9 +18,7 @@ func _resolve_enemy_resource_for_id(enemy_id: StringName) -> Resource:
 	return null
 
 # Tracks battle values, menu selection, and the active status effect.
-var current_player_WN = 0
 var current_enemy_WN = 0
-var current_player_ERL = 0
 var current_enemy_ERL = 0
 var d30_player = 0
 var d30_enemy = 0
@@ -34,7 +32,9 @@ var action_index = 0
 var exertion_index = 0
 var action_buttons: Array[Button] = []
 var exertion_buttons: Array[Button] = []
-var menu_button_font_colors: Dictionary = {}
+# Each menu button's original normal style and its highlighted copy.
+var menu_button_styles: Dictionary = {}
+const HIGHLIGHT_COLOR := Color(1, 1, 1, 0.25)
 var condition: StatusEffect = null
 var secondary_condition: StatusEffect = null
 var condition_turns_remaining: int = 0
@@ -44,48 +44,65 @@ var conflagrant_burn_applied_this_turn: bool = false
 const TEXTBOX_AUTO_CLOSE_SECONDS := 2.0
 var textbox_id: int = 0
 const ENEMY_DAMAGE_OFFSET := Vector2(0, 0)
-@onready var condition_icon: TextureRect = $AeContainer/ConditionIcon
-@onready var condition_icon_2: TextureRect = $AeContainer/ConditionIcon2
+const UNALIVE_CONDITION_PATH := "res://scripts/res/conditions/unalive.tres"
+# The HUD container for each ally, keyed by the id in the ally's resource file.
+const ALLY_CONTAINERS := {0: "AeContainer", 1: "Elizyka"}
+# Condition values that belong to one ally. They are copied into the variables above while that ally is active.
+const ALLY_CONDITION_KEYS := ["condition", "secondary_condition", "condition_turns_remaining", "secondary_condition_turns_remaining", "bracing_pending", "conflagrant_burn_applied_this_turn"]
+# One entry per ally in battle, holding its resource file, its HUD nodes and its own condition values.
+var party: Array[Dictionary] = []
+# The party entry and resource file of the ally the battle is currently resolving.
+var active_ally: Dictionary = {}
+var ally: Resource = null
+var condition_icon: TextureRect
+var condition_icon_2: TextureRect
 
-# Initializes the battle scene, loads the enemy resource, and decides who acts first based on ERL.
+# Initializes the battle scene, loads the enemy and ally resources, and decides who acts first based on ERL.
 func _ready():
 	enemy = _resolve_enemy_resource_for_id(State.active_enemy_id)
 	if enemy == null:
 		return
 
-	$AeContainer/Damage.visible = false
-	$AeContainer/Damage.modulate.a = 1.0
+	$ExertPanel.position = Vector2(381, 687)
 	$EnemyContainer/Damage.modulate.a = 0.0
 
-	action_buttons = _get_menu_buttons($ControlPanel/HBoxContainer, State.actions.size())
-	exertion_buttons = _get_menu_buttons($ExertPanel/HBoxContainer, State.exertions.size())
+	_build_party()
 	set_WN($EnemyContainer/ProgressBar, enemy.WN, enemy.WN)
-	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, State.current_WN, State.max_WN)
 	$EnemyContainer/Enemy.texture = enemy.texture
 
-	current_player_WN = State.current_WN
 	current_enemy_WN = enemy.WN
-	current_player_ERL = State.ERL
 	current_enemy_ERL = enemy.ERL
-	
+
 	$Textbox.hide()
-	$PlayerName.show()
+	$NamePanel.show()
 	$ControlPanel.show()
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
+	# Clear every ally's condition HUD before the battle starts.
+	# Clear every ally's condition HUD, except an ally who starts the battle with no WN, who is unalive.
+	for member in party:
+		_select_ally(member)
+		if ally.current_WN <= 0:
+			_apply_unalive()
+		else:
+			check_condition()
+	var first_ally := _next_ally()
+	if not first_ally.is_empty():
+		_select_ally(first_ally)
+		$NamePanel/PlayerName.text = ally.name
+		_load_ally_menus()
 	_refresh_menu_selection()
-	check_condition()
-	
+
 	display_text("%s appears" % enemy.name.to_upper())
 	await textbox_closed
-	if current_player_WN <= 0:
+	if _living_allies().is_empty():
 		await player_defeated()
 		return
 
+	# The ally who would act first races the enemy on ERL.
+	var current_player_ERL = ally.ERL
 	if current_player_ERL > current_enemy_ERL:
-		$PlayerName.show()
-		$ControlPanel.show()
-		_refresh_menu_selection()
+		_start_party_turn()
 	elif current_player_ERL < current_enemy_ERL:
 		enemy_turn()
 	else:
@@ -94,23 +111,159 @@ func _ready():
 			d30_player = randi_range(1, 30)
 			d30_enemy = randi_range(1, 30)
 			if d30_player > d30_enemy:
-				$PlayerName.show()
-				$ControlPanel.show()
-				_refresh_menu_selection()
+				_start_party_turn()
 			elif d30_player < d30_enemy:
 				enemy_turn()
-		
-	
-# Collects the visible menu buttons and stores their original colors so the current selection can be highlighted cleanly.
-func _get_menu_buttons(container: Node, item_count: int) -> Array[Button]:
+
+# Pairs each ally resource in State.party with its HUD container and fills the HUD with that ally's stats.
+func _build_party() -> void:
+	for ally_resource in State.party:
+		if not ALLY_CONTAINERS.has(ally_resource.id):
+			continue
+		var container: Control = get_node(ALLY_CONTAINERS[ally_resource.id])
+		var data: Node = container.get_node("PlayerPanel/PlayerData")
+		# AE's and Elizyka's containers name a few nodes differently, so check both names.
+		var member := {
+			"resource": ally_resource,
+			"container": container,
+			"portrait": _first_existing_node(container, ["Portrait", "TextureRect"]),
+			"damage_label": _first_existing_node(container, ["Damage", "Damage2"]),
+			"condition_icon": container.get_node("ConditionIcon"),
+			"condition_icon_2": container.get_node("ConditionIcon2"),
+			"wn_label": data.get_node("Wholeness/Stat"),
+			"mt_label": data.get_node("Mentality/Stat"),
+			"condition_label": _first_existing_node(data, ["Condition", "Panel/Condition"]),
+			"condition": null,
+			"secondary_condition": null,
+			"condition_turns_remaining": 0,
+			"secondary_condition_turns_remaining": 0,
+			"bracing_pending": false,
+			"conflagrant_burn_applied_this_turn": false,
+		}
+		ally_resource.turns = 0
+		if ally_resource.texture != null:
+			member["portrait"].texture = ally_resource.texture
+		member["damage_label"].visible = false
+		member["damage_label"].modulate.a = 1.0
+		_update_ally_stats(member)
+		party.append(member)
+
+# Returns the first of the given child paths that exists under the parent.
+func _first_existing_node(parent: Node, paths: Array) -> Node:
+	for path in paths:
+		var node := parent.get_node_or_null(path)
+		if node != null:
+			return node
+	push_error("%s has none of the nodes %s" % [parent.name, paths])
+	return null
+
+# Shows an ally's WN and MT from its resource file in its HUD.
+func _update_ally_stats(member: Dictionary) -> void:
+	var ally_resource: Resource = member["resource"]
+	set_player_WN(member["wn_label"], int(ally_resource.current_WN), int(ally_resource.max_WN))
+	set_player_WN(member["mt_label"], ally_resource.current_MT, ally_resource.max_MT)
+
+# Swaps which ally the battle is working on: the current ally's condition values are saved to its
+# party entry, then the given ally's values and HUD nodes are loaded into the shared battle variables.
+func _select_ally(member: Dictionary) -> void:
+	_store_active_ally()
+	active_ally = member
+	ally = member["resource"]
+	condition_icon = member["condition_icon"]
+	condition_icon_2 = member["condition_icon_2"]
+	for key in ALLY_CONDITION_KEYS:
+		set(key, member[key])
+
+# Saves the shared condition variables back into the active ally's party entry.
+func _store_active_ally() -> void:
+	if active_ally.is_empty():
+		return
+	for key in ALLY_CONDITION_KEYS:
+		active_ally[key] = get(key)
+
+# Returns the allies who still have WN left.
+func _living_allies() -> Array[Dictionary]:
+	var living: Array[Dictionary] = []
+	for member in party:
+		if member["resource"].current_WN > 0:
+			living.append(member)
+	return living
+
+# Returns the first standing ally whose turn count is 0, or an empty entry if nobody is standing.
+func _next_ally() -> Dictionary:
+	var living := _living_allies()
+	for member in living:
+		if member["resource"].turns == 0:
+			return member
+	if living.is_empty():
+		return {}
+	# Everyone standing has acted, so start a new round.
+	for member in party:
+		member["resource"].turns = 0
+	return living[0]
+
+# Hands the turn to the next ally who hasn't acted this round. A constricted ally loses the turn instead.
+func _start_party_turn() -> void:
+	var next_ally := _next_ally()
+	if next_ally.is_empty():
+		await player_defeated()
+		return
+	_select_ally(next_ally)
+	check_condition()
+	$NamePanel/PlayerName.text = ally.name
+	if condition != null and condition.custom_properties.get("is_constricted", false):
+		display_text("%s is constricted" % ally.name)
+		await textbox_closed
+		_end_ally_turn()
+		return
+	_load_ally_menus()
+	action_index = 0
+	$NamePanel.show()
+	$ControlPanel.show()
+	$ExertPanel.hide()
+	$DescriptionPanel.hide()
+	_refresh_menu_selection()
+
+# Marks the active ally as having acted, resets every ally's turn count once all standing allies
+# have acted, then passes the turn to the enemy.
+func _end_ally_turn() -> void:
+	ally.turns += 1
+	if _living_allies().all(func(member): return member["resource"].turns > 0):
+		for member in party:
+			member["resource"].turns = 0
+	enemy_turn()
+
+# Returns one of the active ally's menu lists from its resource file. An ally whose resource doesn't
+# list its own actions, exertions or descriptors yet uses AE's, so its menu is never empty.
+func _ally_list(property: String) -> Variant:
+	var value: Variant = ally.get(property)
+	if value.is_empty():
+		value = party[0]["resource"].get(property)
+	return value
+
+# Builds the action and exertion menus from the active ally's resource file.
+func _load_ally_menus() -> void:
+	action_buttons = _get_menu_buttons($ControlPanel, _ally_list("actions"))
+	exertion_buttons = _get_menu_buttons($ExertPanel/HBoxContainer, _ally_list("exertions"))
+
+# Collects the menu buttons whose text is in the given list and stores their original styles so the current selection can be highlighted cleanly.
+func _get_menu_buttons(container: Node, names: Array) -> Array[Button]:
 	var buttons: Array[Button] = []
 	for child in container.get_children():
-		if child is Button and buttons.size() < item_count:
-			child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			menu_button_font_colors[child] = child.get_theme_color("font_color")
+		if not child is Button:
+			continue
+		child.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		child.focus_mode = Control.FOCUS_NONE
+		if not menu_button_styles.has(child):
+			var normal_style: StyleBox = child.get_theme_stylebox("normal")
+			# Copy the normal style so the highlight keeps the same content margins and the text doesn't shift.
+			var highlight_style: StyleBox = normal_style.duplicate() if normal_style is StyleBoxFlat else StyleBoxFlat.new()
+			highlight_style.bg_color = HIGHLIGHT_COLOR
+			menu_button_styles[child] = {"normal": normal_style, "highlight": highlight_style}
+		if names.has(child.text.strip_edges().to_upper()):
 			buttons.append(child)
-	if buttons.size() != item_count:
-		push_error("Menu button count does not match its State list")
+	if buttons.size() != names.size():
+		push_error("Menu buttons do not match %s's list: %s" % [ally.name, names])
 	return buttons
 
 # Returns the set of buttons currently visible for the active menu panel.
@@ -121,14 +274,11 @@ func _get_active_menu_buttons() -> Array[Button]:
 		return action_buttons
 	return []
 
-# Resets the menu highlight state and repositions the selector arrow over the active button.
+# Clears every menu highlight, then gives the selected button of the open menu a 25% white background, like the pause menu.
 func _refresh_menu_selection() -> void:
-	for button in action_buttons + exertion_buttons:
-		button.offset_transform_position = Vector2(16, 0)
-		button.add_theme_color_override("font_color", menu_button_font_colors[button])
+	for button in menu_button_styles:
+		button.add_theme_stylebox_override("normal", menu_button_styles[button]["normal"])
 
-	$Arrow.hide()
-	$Arrow.scale = Vector2.ONE
 	if $Textbox.visible:
 		return
 
@@ -144,19 +294,14 @@ func _refresh_menu_selection() -> void:
 		action_index = selected_index
 
 	var selected_button = buttons[selected_index]
-	selected_button.offset_transform_position = Vector2(2, 0)
-	selected_button.add_theme_color_override("font_color", Color("#FFFF00"))
+	selected_button.add_theme_stylebox_override("normal", menu_button_styles[selected_button]["highlight"])
 	if $ExertPanel.visible:
-		$Arrow.scale = Vector2(0.8, 0.8)
 		_update_exertion_description(selected_index)
-	var button_rect = selected_button.get_global_rect()
-	$Arrow.global_position = Vector2(button_rect.position.x + 450, button_rect.get_center().y)
-	$Arrow.show()
 
-# Shows the descriptor of the exertion the arrow is currently on in the description panel.
+# Shows the descriptor of the highlighted exertion in the description panel.
 func _update_exertion_description(selected_index: int) -> void:
-	var exertion_name: String = State.exertions[selected_index]
-	$DescriptionPanel/Label.text = State.exertions_descriptors.get(exertion_name, "")
+	var exertion_name: String = exertion_buttons[selected_index].text.strip_edges().to_upper()
+	$DescriptionPanel/Label.text = _ally_list("exertions_descriptors").get(exertion_name, "")
 
 # Updates an enemy progress bar and its numeric label to reflect the current and max WN values.
 func set_WN(progress_bar, WN, max_WN):
@@ -164,25 +309,26 @@ func set_WN(progress_bar, WN, max_WN):
 	progress_bar.max_value = max_WN
 	progress_bar.get_node("Label").text = "%d/%d" % [WN, max_WN]
 
-# Refreshes the player's WN HUD to show the current health and maximum health values.
+# Refreshes an ally's WN HUD to show the current health and maximum health values.
 func set_player_WN(condition_label: Label, WN: int, max_WN: int) -> void:
-	condition_label.text = "WN: %d/%d" % [WN, max_WN]
+	condition_label.text = "%d/%d" % [WN, max_WN]
 
-# Applies the damage taken by AE and briefly shows a floating label showing the amount lost.
+# Applies the damage taken by the active ally and briefly shows a floating label showing the amount lost.
 # If another condition is active, a temporary duplicate float is also spawned so the number
 # remains visible while the original fades, which keeps the raw hit readable alongside burn ticks.
 func _apply_player_damage(amount: int) -> void:
 	if amount <= 0:
 		return
-	current_player_WN = max(0, current_player_WN - amount)
-	State.current_WN = current_player_WN
-	set_player_WN($AeContainer/PlayerPanel/PlayerData/WN, current_player_WN, State.max_WN)
-	var damage_label: Label = $AeContainer/Damage
+	ally.current_WN = max(0, ally.current_WN - amount)
+	_update_ally_stats(active_ally)
+	if ally.current_WN <= 0:
+		_apply_unalive()
+	var damage_label: Label = active_ally["damage_label"]
 	var has_active_status := (condition != null and condition_turns_remaining > 0) or (secondary_condition != null and secondary_condition_turns_remaining > 0)
 	if has_active_status and damage_label.visible and damage_label.modulate.a > 0.1:
 		var duplicate_label := damage_label.duplicate()
 		duplicate_label.name = "DamageDuplicate"
-		var portrait_rect: TextureRect = $AeContainer/Portrait
+		var portrait_rect: TextureRect = active_ally["portrait"]
 		duplicate_label.position = portrait_rect.position + Vector2(
 			portrait_rect.size.x * 0.5 - duplicate_label.size.x * 0.5 - 132,
 			portrait_rect.size.y * 0.5 - duplicate_label.size.y * 0.5 - 160
@@ -190,7 +336,7 @@ func _apply_player_damage(amount: int) -> void:
 		duplicate_label.visible = true
 		duplicate_label.modulate.a = 1.0
 		duplicate_label.text = "-%d" % amount
-		$AeContainer.add_child(duplicate_label)
+		active_ally["container"].add_child(duplicate_label)
 		var duplicate_tween := create_tween()
 		duplicate_tween.tween_property(duplicate_label, "position", duplicate_label.position + Vector2(0, -24), 1.0)
 		duplicate_tween.parallel().tween_property(duplicate_label, "modulate:a", 0.0, 1.0)
@@ -234,30 +380,14 @@ func _show_enemy_damage(amount: int) -> void:
 		floating_label.queue_free()
 	)
 
-# Writes the active status names into the primary and secondary condition labels.
-# The main status stays in the first slot, while a supplemental status such as bracing can
-# sit in the second slot without overwriting the original status text.
-func set_condition(condition_label: Label, condition: String, secondary_condition_name: String = "") -> void:
+# Writes the name of the first condition the active ally received into its condition label.
+# Later supplemental statuses such as bracing only show as icons, so the name never changes underneath.
+func set_condition(condition_label: Label, condition_name: String) -> void:
 	if condition_label == null:
 		return
+	condition_label.text = condition_name.strip_edges()
 
-	var data_container = condition_label.get_parent()
-	if data_container == null:
-		condition_label.text = "%s" % condition.strip_edges()
-		return
-
-	var primary_label: Label = condition_label
-	var secondary_label: Label = data_container.get_node_or_null("Condition2")
-	if secondary_label == null:
-		secondary_label = data_container.get_node_or_null("Container2")
-	if secondary_label == null:
-		primary_label.text = "%s" % condition.strip_edges()
-		return
-
-	primary_label.text = "%s" % condition.strip_edges()
-	secondary_label.text = "%s" % secondary_condition_name.strip_edges()
-
-# Applies or clears a status effect while preserving the player's main condition.
+# Applies or clears a status effect on the active ally while preserving its main condition.
 # Bracing is kept as a supplemental effect instead of replacing the active status, so
 # states like CONFLAGRANT can coexist with the defensive bracing modifier.
 func _apply_condition(condition_path: String) -> void:
@@ -316,6 +446,23 @@ func _apply_condition(condition_path: String) -> void:
 		condition_turns_remaining = condition.duration_turns if condition != null else 0
 	check_condition()
 
+# Marks the active ally as unalive once its WN reaches 0. Every other condition is cleared, and
+# unalive never counts down because fallen allies are skipped when conditions tick each enemy turn.
+func _apply_unalive() -> void:
+	var unalive := load(UNALIVE_CONDITION_PATH) as StatusEffect
+	if unalive == null:
+		push_error("Failed to load the unalive status effect")
+		return
+	_set_condition_active(condition, false)
+	_set_condition_active(secondary_condition, false)
+	secondary_condition = null
+	secondary_condition_turns_remaining = 0
+	bracing_pending = false
+	condition = unalive
+	condition_turns_remaining = unalive.duration_turns
+	_set_condition_active(condition, true)
+	check_condition()
+
 # Toggles the custom status-effect flags used by the condition system, such as bracing and restriction states.
 func _set_condition_active(status_effect: StatusEffect, is_active: bool) -> void:
 	if status_effect == null:
@@ -325,43 +472,29 @@ func _set_condition_active(status_effect: StatusEffect, is_active: bool) -> void
 			status_effect.custom_properties[property_name] = is_active
 	status_effect.locked = is_active and status_effect.duration_turns > 0
 
-# Refreshes the condition HUD and updates which controls are available to the player.
-# If the active status is a restriction, the action menu is hidden so the player is forced to
-# resolve the restriction; otherwise the normal battle UI remains usable.
+# Refreshes the active ally's condition name and icons. Whether that ally can act while
+# constricted is decided when its turn starts, in _start_party_turn.
 func check_condition() -> void:
-	var condition_label: Label = $AeContainer/PlayerPanel/PlayerData/Condition
+	var condition_label: Label = active_ally["condition_label"]
 	var primary_name: String = ""
 	if condition != null and condition_turns_remaining > 0:
 		primary_name = condition.effect_name
-	var secondary_name: String = ""
-	if secondary_condition != null and secondary_condition_turns_remaining > 0:
-		secondary_name = secondary_condition.effect_name
 	if condition == null or condition_turns_remaining <= 0:
 		_set_condition_active(condition, false)
 		condition = null
 		condition_turns_remaining = 0
-		set_condition(condition_label, primary_name, secondary_name)
+		set_condition(condition_label, primary_name)
 		condition_icon.hide()
 		condition_icon_2.hide()
 	else:
 		condition.locked = true
-		set_condition(condition_label, primary_name, secondary_name)
+		set_condition(condition_label, primary_name)
 		_condition_icon_for_status(condition_icon, condition)
 		if secondary_condition != null and secondary_condition_turns_remaining > 0:
 			_condition_icon_for_status(condition_icon_2, secondary_condition)
 		else:
 			condition_icon_2.hide()
 		_position_condition_icon()
-
-	var is_constricted = condition != null and condition.custom_properties.get("is_constricted", false)
-	if is_constricted:
-		$ControlPanel.hide()
-		$PlayerName.hide()
-	else:
-		$ControlPanel.show()
-		$PlayerName.show()
-		$ExertPanel.hide()
-		$DescriptionPanel.hide()
 	_refresh_menu_selection()
 
 # Attaches a status effect sprite to the given icon slot and keeps the slot usable for a
@@ -370,6 +503,9 @@ func _condition_icon_for_status(icon_slot: TextureRect, status_effect: StatusEff
 	if icon_slot == null or status_effect == null:
 		if icon_slot != null:
 			icon_slot.hide()
+		return
+	if status_effect.icon == null:
+		icon_slot.hide()
 		return
 	var icon_image := status_effect.icon.get_image()
 	if icon_image == null or icon_image.is_empty():
@@ -385,9 +521,9 @@ func _condition_icon_for_status(icon_slot: TextureRect, status_effect: StatusEff
 	icon_slot.scale = Vector2(0.6, 0.6)
 	icon_slot.show()
 
-# Positions the condition icon over the player portrait so the active status is visible in the battle UI.
+# Positions the condition icons over the active ally's portrait so its statuses are visible in the battle UI.
 func _position_condition_icon() -> void:
-	var avatar_rect: TextureRect = $AeContainer/Portrait
+	var avatar_rect: TextureRect = active_ally["portrait"]
 	var base_position := avatar_rect.position + Vector2(
 		avatar_rect.size.x - 48 * 0.6,
 		0
@@ -411,13 +547,13 @@ func _apply_conflagrant_burn() -> void:
 	if condition_turns_remaining <= 0:
 		return
 	var burn_factor: float = float(condition.stat_multipliers.get("extra_dmg_factor", 0.1))
-	var burn_damage := int(State.max_WN * burn_factor)
+	var burn_damage := int(ally.max_WN * burn_factor)
 	if burn_damage <= 0:
 		return
 	_apply_player_damage(burn_damage)
 	conflagrant_burn_applied_this_turn = true
 
-# Advances each active status by one turn after the enemy resolves its action.
+# Advances each of the active ally's statuses by one turn after the enemy resolves its action.
 # This keeps the primary condition timer and any supplemental bracing timer in sync with the
 # battle flow so status effects expire at the correct point in the turn order.
 func _advance_condition_turn(condition_at_turn_start: StatusEffect) -> void:
@@ -431,7 +567,7 @@ func _advance_condition_turn(condition_at_turn_start: StatusEffect) -> void:
 			secondary_condition = null
 			secondary_condition_turns_remaining = 0
 	check_condition()
-	
+
 # Handles accept-key dismissal and keyboard navigation across the battle menu panels.
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
@@ -477,7 +613,7 @@ func _input(event: InputEvent) -> void:
 # The text box closes when the player presses enter or after TEXTBOX_AUTO_CLOSE_SECONDS, whichever comes first.
 func display_text(text):
 	$ControlPanel.hide()
-	$PlayerName.hide()
+	$NamePanel.hide()
 	$Textbox.show()
 	$Textbox/Message.text = text
 	_refresh_menu_selection()
@@ -512,11 +648,21 @@ func _advance_enemy_lock() -> void:
 		enemy.exertion_locked = false
 		enemy.locked_exertion = ""
 		enemy.exertion_lock_turns = 0
-	
-# Chooses the enemy's exertion, resolves its damage or condition effects, and repeats until the threat ends.
+
+# Picks a random standing ally to target, resolves the enemy's exertion on it, ticks every ally's
+# conditions, then hands the turn back to the party.
 func enemy_turn():
-	conflagrant_burn_applied_this_turn = false
-	display_text("%s attacks" % enemy.name)
+	_store_active_ally()
+	for member in party:
+		member["conflagrant_burn_applied_this_turn"] = false
+	var living := _living_allies()
+	if living.is_empty():
+		await player_defeated()
+		return
+	# Allies are ordered by id, so with AE (id 0) and Elizyka (id 1) both standing this rolls 0 or 1 to pick the target.
+	var target: Dictionary = living[randi_range(0, living.size() - 1)]
+	_select_ally(target)
+	display_text("%s attacks %s" % [enemy.name, ally.name])
 	await textbox_closed
 	enemy_DO = 0
 	enemy_DI = 0
@@ -540,7 +686,9 @@ func enemy_turn():
 	previous_enemy_exertion = enemy_exertion
 	display_text("%s used %s" % [enemy.name, enemy_exertion])
 	await textbox_closed
-	var condition_at_turn_start = condition
+	# Record every ally's condition now, so a condition applied during this turn doesn't tick down straight away.
+	_store_active_ally()
+	var conditions_at_turn_start: Array = party.map(func(member): return member["condition"])
 	var was_bracing = bracing_pending or (
 		condition != null and condition.custom_properties.get("is_bracing", false)
 	)
@@ -575,57 +723,66 @@ func enemy_turn():
 		_apply_player_damage(enemy_DI)
 	if not conflagrant_burn_applied_this_turn and condition != null and condition.custom_properties.get("is_conflagrant", false):
 		_apply_conflagrant_burn()
-	_advance_condition_turn(condition_at_turn_start)
+	# Allies who weren't targeted still take their own burn tick, and every standing ally's conditions count down.
+	for i in party.size():
+		var member: Dictionary = party[i]
+		if member["resource"].current_WN <= 0:
+			continue
+		_select_ally(member)
+		if not is_same(member, target):
+			_apply_conflagrant_burn()
+		_advance_condition_turn(conditions_at_turn_start[i])
 	_advance_enemy_lock()
-	if current_player_WN <= 0:
+	if _living_allies().is_empty():
 		await player_defeated()
 		return
-	if condition != null and condition.custom_properties.get("is_constricted", false):
-		await enemy_turn()
+	_start_party_turn()
 
-# Resets the player after a loss, shows the defeat text, and sends the player back to the first-floor scene.
+# Restores every ally after a loss, shows the defeat text, and sends the player back to the first-floor scene.
 func player_defeated() -> void:
 	display_text("You are defeated")
 	await textbox_closed
 
-	State.current_WN = State.max_WN
+	for member in party:
+		member["resource"].current_WN = member["resource"].max_WN
+		member["resource"].turns = 0
 	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/act1/test_scene_player_house_first_floor.tscn")
 	if scene_change_error != OK:
 		push_error("Failed to load the first-floor scene: %s" % scene_change_error)
 
-# Resolves the player's assault action, applies damage, and transitions back to the outside scene when the enemy is slain.
+# Resolves the active ally's assault action, applies damage, and transitions back to the outside scene when the enemy is slain.
 func _on_assault_pressed() -> void:
-	display_text("U swung")
+	display_text("%s swung" % ally.name)
 	await textbox_closed
-	
+
 	var DV = randf_range(0.95, 1.05)
-	player_damage = roundi((State.VHM + State.EB) * State.EM * State.pi_ACM * DV)
+	player_damage = roundi((ally.VHM + ally.EB) * ally.EM * ally.pi_ACM * DV)
 	current_enemy_WN = max(0, current_enemy_WN - player_damage)
 	set_WN($EnemyContainer/ProgressBar, current_enemy_WN, enemy.WN)
 	_show_enemy_damage(player_damage)
 
 	$AnimationPlayer.play("enemy_damaged")
 	await $AnimationPlayer.animation_finished
-	
-	display_text("U dealt %d damage" % player_damage)
+
+	display_text("%s dealt %d damage" % [ally.name, player_damage])
 	await textbox_closed
-	
+
 	if current_enemy_WN == 0:
 		display_text("%s is defeated" % enemy.name.to_upper())
 		await textbox_closed
-		
+
 		$AnimationPlayer.play("enemy_dead")
 		await $AnimationPlayer.animation_finished
-		
+
 		if State.active_enemy_id.is_empty():
 			push_error("Cannot record victory: active enemy ID is empty")
 			return
 
 		var scene_tree: SceneTree = get_tree()
 		await scene_tree.create_timer(0.25).timeout
-		# Mark the return destination before leaving the battle scene.
+		# Mark the return destination before leaving the battle scene. Each ally's WN is
+		# already kept in its resource file, which State.party holds onto between battles.
 		State.return_player_to_enemy = true
-		State.current_WN = current_player_WN
 		State.defeated_enemy_positions[State.active_enemy_position] = true
 		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
 		if scene_change_error != OK:
@@ -635,16 +792,16 @@ func _on_assault_pressed() -> void:
 			return
 
 		return
-	
-	enemy_turn()
+
+	_end_ally_turn()
 
 
-# Uses the brace action to apply the bracing condition and pass the turn to the enemy.
+# Uses the brace action to apply the bracing condition and end the active ally's turn.
 func _on_brace_pressed() -> void:
-	display_text("U braced")
+	display_text("%s braced" % ally.name)
 	await textbox_closed
 	_apply_condition("res://scripts/res/conditions/bracing.tres")
-	enemy_turn()
+	_end_ally_turn()
 
 
 # Opens the exertion menu so the player can choose a strategic action instead of a basic attack.
@@ -655,34 +812,35 @@ func _on_exert_pressed() -> void:
 	exertion_index = 0
 	_refresh_menu_selection()
 
-# Resolves the FORBEAR exertion and passes the turn to the enemy without attacking.
+# Resolves the FORBEAR exertion and ends the active ally's turn without attacking.
 func _on_forbear_pressed() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
 	_refresh_menu_selection()
-	display_text("U forbore")
+	display_text("%s forbore" % ally.name)
 	await textbox_closed
-	enemy_turn()
+	_end_ally_turn()
 
-# Resolves the FORSAKE exertion and intentionally gives the enemy the next turn.
+# Resolves the FORSAKE exertion and intentionally gives up the active ally's turn.
 func _on_forsake_pressed() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
 	_refresh_menu_selection()
-	display_text("U forsook")
+	display_text("%s forsook" % ally.name)
 	await textbox_closed
-	enemy_turn()
+	_end_ally_turn()
 
-# Resolves the FORDOOM exertion, instantly dropping the player's WN and checking whether the battle is lost.
+# Resolves the FOREDOOM exertion, instantly dropping the active ally's WN and checking whether the battle is lost.
 func _on_foredoom_pressed() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
 	_refresh_menu_selection()
-	display_text("U fordoomed")
+	display_text("%s foredoomed" % ally.name)
 	await textbox_closed
-	var fordoom_damage: int = current_player_WN
-	if fordoom_damage > 0:
-		_apply_player_damage(fordoom_damage)
-	if current_player_WN <= 0:
+	var foredoom_damage: int = int(ally.current_WN)
+	if foredoom_damage > 0:
+		_apply_player_damage(foredoom_damage)
+	if _living_allies().is_empty():
 		await player_defeated()
 		return
+	_end_ally_turn()
