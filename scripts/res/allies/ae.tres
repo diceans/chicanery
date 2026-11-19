@@ -15,9 +15,9 @@ max_MT = 85
 VHM = 12.0
 ERL = 16.0
 actions = ["ASSAULT", "EXERT", "ARTICLE", "BRACE"]
-exertions = ["FORBEAR", "FORSAKE", "FOREDOOM"]
+standard_exertions = ["FORBEAR", "FORSAKE", "FOREDOOM"]
 exertions_descriptors = {
 "FORBEAR": "Stand by and commit to nothing.",
-"FORDOOM": "Seize your life before someone else does.",
+"FOREDOOM": "Seize your life before someone else does.",
 "FORSAKE": "Disengage from the fight."
 }

@@ -234,7 +234,7 @@ func _end_ally_turn() -> void:
 	enemy_turn()
 
 # Returns one of the active ally's menu lists from its resource file. An ally whose resource doesn't
-# list its own actions, exertions or descriptors yet uses AE's, so its menu is never empty.
+# list its own actions, standard exertions or descriptors yet uses AE's, so its menu is never empty.
 func _ally_list(property: String) -> Variant:
 	var value: Variant = ally.get(property)
 	if value.is_empty():
@@ -244,7 +244,7 @@ func _ally_list(property: String) -> Variant:
 # Builds the action and exertion menus from the active ally's resource file.
 func _load_ally_menus() -> void:
 	action_buttons = _get_menu_buttons($ControlPanel, _ally_list("actions"))
-	exertion_buttons = _get_menu_buttons($ExertPanel/HBoxContainer, _ally_list("exertions"))
+	exertion_buttons = _get_menu_buttons($ExertPanel/Standard, _ally_list("standard_exertions"))
 
 # Collects the menu buttons whose text is in the given list and stores their original styles so the current selection can be highlighted cleanly.
 func _get_menu_buttons(container: Node, names: Array) -> Array[Button]:

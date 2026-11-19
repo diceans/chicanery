@@ -13,3 +13,4 @@ current_MT = 100
 max_MT = 100
 VHM = 8.0
 ERL = 12.0
+standard_exertions = ["FORBEAR", "FORSAKE", "FOREDOOM"]

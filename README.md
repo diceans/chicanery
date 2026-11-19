@@ -44,7 +44,7 @@ A 2D top-down RPG prototype built with **Godot 4.7** (Forward Plus renderer), wh
   - **EXERT**: opens the exertion submenu:
     - **FORBEAR**: skip your turn.
     - **FORSAKE**: TBC
-    - **FORDOOM**: drop your own WN to 0.
+    - **FOREDOOM**: drop your own WN to 0.
 
     Hovering an exertion shows its description in the description panel (text lives in `State.exertions_descriptors`).
   - **BRACE**: applies the *Bracing* condition, roughly halving the next incoming exertion hit.

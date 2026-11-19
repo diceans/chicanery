@@ -61,28 +61,16 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iv5le"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_17d4a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7omq"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pledx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2oa5b"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uagmy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gxne6"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jc80i"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hai7h"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lf3ly"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7vkih"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vr8bd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uvccg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvmkm"]
@@ -356,24 +344,19 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vw7al")
 
-[node name="HBoxContainer" type="VBoxContainer" parent="ExertPanel" unique_id=1946895755]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Standard" type="Panel" parent="ExertPanel" unique_id=2063458407]
+layout_mode = 0
 offset_left = 4.0
-offset_top = 5.0
-offset_right = -4.0
-grow_horizontal = 2
-grow_vertical = 2
-offset_transform_enabled = true
-theme_override_constants/separation = 1
-alignment = 1
+offset_top = 4.0
+offset_right = 366.0
+offset_bottom = 334.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_j7omq")
 
-[node name="Forbear" type="Button" parent="ExertPanel/HBoxContainer" unique_id=2042948001]
-layout_mode = 2
+[node name="Forbear" type="Button" parent="ExertPanel/Standard" unique_id=2042948001]
+layout_mode = 0
+offset_right = 362.0
+offset_bottom = 51.0
 size_flags_horizontal = 3
-offset_transform_enabled = true
 offset_transform_position = Vector2(16, 0)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -386,10 +369,12 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 text = "FORBEAR"
 alignment = 0
 
-[node name="Forsake" type="Button" parent="ExertPanel/HBoxContainer" unique_id=32543526]
-layout_mode = 2
+[node name="Forsake" type="Button" parent="ExertPanel/Standard" unique_id=32543526]
+layout_mode = 0
+offset_top = 51.0
+offset_right = 362.0
+offset_bottom = 102.0
 size_flags_horizontal = 3
-offset_transform_enabled = true
 offset_transform_position = Vector2(16, 0)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -400,10 +385,12 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 text = "FORSAKE"
 alignment = 0
 
-[node name="Foredoom" type="Button" parent="ExertPanel/HBoxContainer" unique_id=130620839]
-layout_mode = 2
+[node name="Foredoom" type="Button" parent="ExertPanel/Standard" unique_id=130620839]
+layout_mode = 0
+offset_top = 102.0
+offset_right = 362.0
+offset_bottom = 153.0
 size_flags_horizontal = 3
-offset_transform_enabled = true
 offset_transform_position = Vector2(16, 0)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -415,70 +402,313 @@ text = "FOREDOOM
 "
 alignment = 0
 
-[node name="Placeholder1" type="Button" parent="ExertPanel/HBoxContainer" unique_id=714445385]
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_position = Vector2(4, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_constants/align_to_largest_stylebox = 1
-theme_override_fonts/font = ExtResource("9_yq2ln")
-theme_override_font_sizes/font_size = 36
-theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_17d4a")
-theme_override_styles/hover = SubResource("StyleBoxFlat_pledx")
-text = " "
-alignment = 0
+[node name="Mechanics" type="Panel" parent="ExertPanel" unique_id=1725690596]
+layout_mode = 0
+offset_left = 366.0
+offset_top = 4.0
+offset_right = 940.0
+offset_bottom = 334.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2oa5b")
 
-[node name="Placeholder2" type="Button" parent="ExertPanel/HBoxContainer" unique_id=1760954512]
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_position = Vector2(4, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_constants/align_to_largest_stylebox = 1
-theme_override_fonts/font = ExtResource("9_yq2ln")
-theme_override_font_sizes/font_size = 36
-theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_uagmy")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jc80i")
-text = " 
-"
-alignment = 0
+[node name="1" type="Button" parent="ExertPanel/Mechanics" unique_id=1524781929]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -287.0
+offset_right = 287.0
+offset_bottom = 51.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_gxne6")
 
-[node name="Placeholder3" type="Button" parent="ExertPanel/HBoxContainer" unique_id=331648324]
-layout_mode = 2
+[node name="Name" type="Label" parent="ExertPanel/Mechanics/1" unique_id=758594708]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -97.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
-offset_transform_enabled = true
 offset_transform_position = Vector2(4, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_constants/align_to_largest_stylebox = 1
 theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_hai7h")
-theme_override_styles/hover = SubResource("StyleBoxFlat_lf3ly")
-text = " "
-alignment = 0
+text = "PLACEHOLDER"
 
-[node name="Placeholder4" type="Button" parent="ExertPanel/HBoxContainer" unique_id=626632352]
-layout_mode = 2
+[node name="Price" type="Label" parent="ExertPanel/Mechanics/1" unique_id=1206438515]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.5
+offset_bottom = 25.5
+grow_horizontal = 0
+grow_vertical = 2
 size_flags_horizontal = 3
 offset_transform_enabled = true
 offset_transform_position = Vector2(4, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_constants/align_to_largest_stylebox = 1
+theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
 theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_7vkih")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vr8bd")
-text = " "
-alignment = 0
+text = " 99"
+horizontal_alignment = 1
+
+[node name="2" type="Button" parent="ExertPanel/Mechanics" unique_id=1992872529]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -287.0
+offset_top = 51.0
+offset_right = 287.0
+offset_bottom = 102.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_gxne6")
+
+[node name="Name" type="Label" parent="ExertPanel/Mechanics/2" unique_id=378756639]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -97.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_position = Vector2(4, 0)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = "PLACEHOLDER"
+
+[node name="Price" type="Label" parent="ExertPanel/Mechanics/2" unique_id=373912888]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.5
+offset_bottom = 25.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = " 99"
+horizontal_alignment = 1
+
+[node name="3" type="Button" parent="ExertPanel/Mechanics" unique_id=382016768]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -287.0
+offset_top = 102.0
+offset_right = 287.0
+offset_bottom = 153.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_gxne6")
+
+[node name="Name" type="Label" parent="ExertPanel/Mechanics/3" unique_id=1614245268]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -97.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_position = Vector2(4, 0)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = "PLACEHOLDER"
+
+[node name="Price" type="Label" parent="ExertPanel/Mechanics/3" unique_id=1035368876]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.5
+offset_bottom = 25.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = " 99"
+horizontal_alignment = 1
+
+[node name="Imageries" type="Panel" parent="ExertPanel" unique_id=1081038308]
+layout_mode = 0
+offset_left = 940.0
+offset_top = 4.0
+offset_right = 1514.0
+offset_bottom = 334.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uvccg")
+
+[node name="1" type="Button" parent="ExertPanel/Imageries" unique_id=416242307]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -287.0
+offset_right = 287.0
+offset_bottom = 51.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_gxne6")
+
+[node name="Name" type="Label" parent="ExertPanel/Imageries/1" unique_id=1663439821]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -97.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_position = Vector2(4, 0)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = "PLACEHOLDER"
+
+[node name="Price" type="Label" parent="ExertPanel/Imageries/1" unique_id=1979169744]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.5
+offset_bottom = 25.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = " 99"
+horizontal_alignment = 1
+
+[node name="2" type="Button" parent="ExertPanel/Imageries" unique_id=399354875]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -287.0
+offset_top = 51.0
+offset_right = 287.0
+offset_bottom = 102.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_gxne6")
+
+[node name="Name" type="Label" parent="ExertPanel/Imageries/2" unique_id=1457314706]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -97.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_position = Vector2(4, 0)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = "PLACEHOLDER"
+
+[node name="Price" type="Label" parent="ExertPanel/Imageries/2" unique_id=1287276350]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.5
+offset_bottom = 25.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = " 99"
+horizontal_alignment = 1
+
+[node name="3" type="Button" parent="ExertPanel/Imageries" unique_id=2083016729]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -287.0
+offset_top = 102.0
+offset_right = 287.0
+offset_bottom = 153.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_gxne6")
+
+[node name="Name" type="Label" parent="ExertPanel/Imageries/3" unique_id=1558521310]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -97.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_position = Vector2(4, 0)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = "PLACEHOLDER"
+
+[node name="Price" type="Label" parent="ExertPanel/Imageries/3" unique_id=1452151426]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -97.0
+offset_top = -25.5
+offset_bottom = 25.5
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_position = Vector2(4, 0)
+theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
+text = " 99"
+horizontal_alignment = 1
 
 [node name="NamePanel" type="Panel" parent="." unique_id=779725511]
 layout_mode = 1
@@ -1038,6 +1268,6 @@ autowrap_mode = 3
 [connection signal="pressed" from="ControlPanel/Assault" to="." method="_on_assault_pressed"]
 [connection signal="pressed" from="ControlPanel/Exert" to="." method="_on_exert_pressed"]
 [connection signal="pressed" from="ControlPanel/Brace" to="." method="_on_brace_pressed"]
-[connection signal="pressed" from="ExertPanel/HBoxContainer/Forbear" to="." method="_on_forbear_pressed"]
-[connection signal="pressed" from="ExertPanel/HBoxContainer/Forsake" to="." method="_on_forsake_pressed"]
-[connection signal="pressed" from="ExertPanel/HBoxContainer/Foredoom" to="." method="_on_foredoom_pressed"]
+[connection signal="pressed" from="ExertPanel/Standard/Forbear" to="." method="_on_forbear_pressed"]
+[connection signal="pressed" from="ExertPanel/Standard/Forsake" to="." method="_on_forsake_pressed"]
+[connection signal="pressed" from="ExertPanel/Standard/Foredoom" to="." method="_on_foredoom_pressed"]
