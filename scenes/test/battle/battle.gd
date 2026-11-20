@@ -32,6 +32,18 @@ var action_index = 0
 var exertion_index = 0
 var action_buttons: Array[Button] = []
 var exertion_buttons: Array[Button] = []
+# The buttons of the three columns in ExertPanel, left to right: standard, mechanics, imageries.
+var exertion_columns: Array = [[], [], []]
+var exertion_column: int = 0
+# The first visible row of each column, for the columns that scroll.
+var exertion_scroll: Array = [0, 0, 0]
+# The first row of the Mechanics and Imageries panels, copied once per exertion in the ally's resource file.
+var exertion_row_templates: Dictionary = {}
+const MT_RESTORED_BY_STANDARD_EXERTIONS := 15
+# Every ally container in the scene, so the others can be hidden while the exertion panel is open.
+const ALL_ALLY_CONTAINERS := ["AeContainer", "Elizyka", "Kietzt", "Wilseffn"]
+# Each ally container's starting position and visibility, restored when the exertion panel closes.
+var ally_container_layouts: Dictionary = {}
 # Each menu button's original normal style and its highlighted copy.
 var menu_button_styles: Dictionary = {}
 const HIGHLIGHT_COLOR := Color(1, 1, 1, 0.25)
@@ -67,6 +79,10 @@ func _ready():
 	$EnemyContainer/Damage.modulate.a = 0.0
 
 	_build_party()
+	for container_name in ALL_ALLY_CONTAINERS:
+		var container: Control = get_node_or_null(container_name)
+		if container != null:
+			ally_container_layouts[container] = {"position": container.position, "visible": container.visible}
 	set_WN($EnemyContainer/ProgressBar, enemy.WN, enemy.WN)
 	$EnemyContainer/Enemy.texture = enemy.texture
 
@@ -244,7 +260,85 @@ func _ally_list(property: String) -> Variant:
 # Builds the action and exertion menus from the active ally's resource file.
 func _load_ally_menus() -> void:
 	action_buttons = _get_menu_buttons($ControlPanel, _ally_list("actions"))
-	exertion_buttons = _get_menu_buttons($ExertPanel/Standard, _ally_list("standard_exertions"))
+	exertion_columns[0] = _get_menu_buttons($ExertPanel/Standard, _ally_list("standard_exertions"))
+	exertion_columns[1] = _build_exertion_rows($ExertPanel/Mechanics, ally.mechanics_exertions)
+	exertion_columns[2] = _build_exertion_rows($ExertPanel/Imageries, ally.imageries_exertions)
+	exertion_buttons = exertion_columns[exertion_column]
+
+# Fills a Mechanics or Imageries panel with one row per exertion in the dictionary, showing its name
+# and MT cost. Pressing a row pays that cost.
+func _build_exertion_rows(panel: Control, exertions: Dictionary) -> Array[Button]:
+	if not exertion_row_templates.has(panel):
+		var template: Button = panel.get_child(0)
+		panel.remove_child(template)
+		exertion_row_templates[panel] = template
+	for row in panel.get_children():
+		menu_button_styles.erase(row)
+		row.free()
+	var rows: Array[Button] = []
+	for exertion_name in exertions:
+		var cost: int = int(exertions[exertion_name])
+		var row: Button = exertion_row_templates[panel].duplicate()
+		row.get_node("Name").text = exertion_name
+		row.get_node("Price").text = str(cost)
+		row.set_meta("exertion_name", exertion_name)
+		row.pressed.connect(_on_mt_exertion_pressed.bind(exertion_name, cost))
+		panel.add_child(row)
+		_register_menu_button(row)
+		rows.append(row)
+	return rows
+
+# The row templates are kept out of the scene tree, so free them with the battle.
+func _exit_tree() -> void:
+	for template in exertion_row_templates.values():
+		template.free()
+
+# Shows only the rows of each scrolling column that fit in its panel, keeping the selected row in view.
+func _scroll_exertion_rows() -> void:
+	var panels := [$ExertPanel/Standard, $ExertPanel/Mechanics, $ExertPanel/Imageries]
+	for column in [1, 2]:
+		var rows: Array = exertion_columns[column]
+		if rows.is_empty():
+			continue
+		var row_height: float = rows[0].size.y
+		var visible_rows: int = max(1, int(panels[column].size.y / row_height))
+		if column == exertion_column:
+			if exertion_index < exertion_scroll[column]:
+				exertion_scroll[column] = exertion_index
+			elif exertion_index >= exertion_scroll[column] + visible_rows:
+				exertion_scroll[column] = exertion_index - visible_rows + 1
+		for i in rows.size():
+			var shown: bool = i >= exertion_scroll[column] and i < exertion_scroll[column] + visible_rows
+			rows[i].visible = shown
+			if shown:
+				rows[i].position.y = (i - exertion_scroll[column]) * row_height
+
+# Moves the selection to the next column to the left or right that has exertions in it.
+func _switch_exertion_column(step: int) -> void:
+	for offset in range(1, exertion_columns.size()):
+		var candidate: int = posmod(exertion_column + step * offset, exertion_columns.size())
+		var candidate_rows: Array = exertion_columns[candidate]
+		if candidate_rows.is_empty():
+			continue
+		# Stay on the same visible row when moving across, as far as the new column allows.
+		var visible_row: int = exertion_index - exertion_scroll[exertion_column]
+		exertion_index = clamp(exertion_scroll[candidate] + visible_row, 0, candidate_rows.size() - 1)
+		exertion_column = candidate
+		exertion_buttons = candidate_rows
+		break
+	_refresh_menu_selection()
+
+# Makes a menu button keyboard-only and stores its original style and a highlighted copy.
+func _register_menu_button(button: Button) -> void:
+	button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	button.focus_mode = Control.FOCUS_NONE
+	if menu_button_styles.has(button):
+		return
+	var normal_style: StyleBox = button.get_theme_stylebox("normal")
+	# Copy the normal style so the highlight keeps the same content margins and the text doesn't shift.
+	var highlight_style: StyleBox = normal_style.duplicate() if normal_style is StyleBoxFlat else StyleBoxFlat.new()
+	highlight_style.bg_color = HIGHLIGHT_COLOR
+	menu_button_styles[button] = {"normal": normal_style, "highlight": highlight_style}
 
 # Collects the menu buttons whose text is in the given list and stores their original styles so the current selection can be highlighted cleanly.
 func _get_menu_buttons(container: Node, names: Array) -> Array[Button]:
@@ -252,14 +346,7 @@ func _get_menu_buttons(container: Node, names: Array) -> Array[Button]:
 	for child in container.get_children():
 		if not child is Button:
 			continue
-		child.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		child.focus_mode = Control.FOCUS_NONE
-		if not menu_button_styles.has(child):
-			var normal_style: StyleBox = child.get_theme_stylebox("normal")
-			# Copy the normal style so the highlight keeps the same content margins and the text doesn't shift.
-			var highlight_style: StyleBox = normal_style.duplicate() if normal_style is StyleBoxFlat else StyleBoxFlat.new()
-			highlight_style.bg_color = HIGHLIGHT_COLOR
-			menu_button_styles[child] = {"normal": normal_style, "highlight": highlight_style}
+		_register_menu_button(child)
 		if names.has(child.text.strip_edges().to_upper()):
 			buttons.append(child)
 	if buttons.size() != names.size():
@@ -296,11 +383,13 @@ func _refresh_menu_selection() -> void:
 	var selected_button = buttons[selected_index]
 	selected_button.add_theme_stylebox_override("normal", menu_button_styles[selected_button]["highlight"])
 	if $ExertPanel.visible:
+		_scroll_exertion_rows()
 		_update_exertion_description(selected_index)
 
 # Shows the descriptor of the highlighted exertion in the description panel.
 func _update_exertion_description(selected_index: int) -> void:
-	var exertion_name: String = exertion_buttons[selected_index].text.strip_edges().to_upper()
+	var button: Button = exertion_buttons[selected_index]
+	var exertion_name: String = button.get_meta("exertion_name", button.text.strip_edges().to_upper())
 	$DescriptionPanel/Label.text = _ally_list("exertions_descriptors").get(exertion_name, "")
 
 # Updates an enemy progress bar and its numeric label to reflect the current and max WN values.
@@ -587,6 +676,10 @@ func _input(event: InputEvent) -> void:
 		return
 
 	var is_exertion_menu = $ExertPanel.visible
+	if is_exertion_menu and (event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right")):
+		_switch_exertion_column(-1 if event.is_action_pressed("ui_left") else 1)
+		get_viewport().set_input_as_handled()
+		return
 	var selected_index = exertion_index if is_exertion_menu else action_index
 	if event.is_action_pressed("ui_up"):
 		selected_index = posmod(selected_index - 1, buttons.size())
@@ -806,35 +899,69 @@ func _on_brace_pressed() -> void:
 
 # Opens the exertion menu so the player can choose a strategic action instead of a basic attack.
 func _on_exert_pressed() -> void:
+	_show_exert_panel()
+
+# Opens the exertion panel with the active ally's container moved to AE's spot and every other ally's container hidden.
+func _show_exert_panel() -> void:
 	$ControlPanel.hide()
+	var active_container: Control = active_ally["container"]
+	for container in ally_container_layouts:
+		container.visible = container == active_container
+	active_container.position = ally_container_layouts[$AeContainer]["position"]
+	exertion_column = 0
+	exertion_index = 0
+	exertion_scroll = [0, 0, 0]
+	exertion_buttons = exertion_columns[0]
 	$ExertPanel.show()
 	$DescriptionPanel.show()
-	exertion_index = 0
 	_refresh_menu_selection()
 
-# Resolves the FORBEAR exertion and ends the active ally's turn without attacking.
-func _on_forbear_pressed() -> void:
+# Closes the exertion panel and puts every ally container back where it started.
+func _hide_exert_panel() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
+	for container in ally_container_layouts:
+		container.position = ally_container_layouts[container]["position"]
+		container.visible = ally_container_layouts[container]["visible"]
 	_refresh_menu_selection()
+
+# Gives back the MT that FORBEAR and FORSAKE restore, up to the active ally's max MT.
+func _restore_standard_exertion_MT() -> void:
+	ally.current_MT = min(ally.max_MT, ally.current_MT + MT_RESTORED_BY_STANDARD_EXERTIONS)
+	_update_ally_stats(active_ally)
+
+# Pays a mechanics or imageries exertion's MT cost and ends the turn; the exertions have no other effect yet.
+# If the active ally can't afford it, nothing happens and the panel stays open so another exertion can be picked.
+func _on_mt_exertion_pressed(exertion_name: String, cost: int) -> void:
+	if ally.current_MT < cost:
+		$DescriptionPanel/Label.text = "Not enough MT for %s" % exertion_name
+		return
+	ally.current_MT -= cost
+	_update_ally_stats(active_ally)
+	_hide_exert_panel()
+	display_text("%s exerted %s" % [ally.name, exertion_name])
+	await textbox_closed
+	_end_ally_turn()
+
+# Resolves the FORBEAR exertion, restoring some MT, and ends the active ally's turn without attacking.
+func _on_forbear_pressed() -> void:
+	_hide_exert_panel()
+	_restore_standard_exertion_MT()
 	display_text("%s forbore" % ally.name)
 	await textbox_closed
 	_end_ally_turn()
 
-# Resolves the FORSAKE exertion and intentionally gives up the active ally's turn.
+# Resolves the FORSAKE exertion, restoring some MT, and intentionally gives up the active ally's turn.
 func _on_forsake_pressed() -> void:
-	$ExertPanel.hide()
-	$DescriptionPanel.hide()
-	_refresh_menu_selection()
+	_hide_exert_panel()
+	_restore_standard_exertion_MT()
 	display_text("%s forsook" % ally.name)
 	await textbox_closed
 	_end_ally_turn()
 
 # Resolves the FOREDOOM exertion, instantly dropping the active ally's WN and checking whether the battle is lost.
 func _on_foredoom_pressed() -> void:
-	$ExertPanel.hide()
-	$DescriptionPanel.hide()
-	_refresh_menu_selection()
+	_hide_exert_panel()
 	display_text("%s foredoomed" % ally.name)
 	await textbox_closed
 	var foredoom_damage: int = int(ally.current_WN)

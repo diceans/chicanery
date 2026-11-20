@@ -13,4 +13,20 @@ current_MT = 100
 max_MT = 100
 VHM = 8.0
 ERL = 12.0
+actions = ["ASSAULT", "EXERT", "ARTICLE", "BRACE"]
 standard_exertions = ["FORBEAR", "FORSAKE", "FOREDOOM"]
+mechanics_exertions = {
+"CHAFF": 15,
+"FINGER SALUTE": 0,
+"PERUSE": 20
+}
+imageries_exertions = {
+"ASH": 20,
+"DEMIT": 15,
+"DISENTHRALL": 20,
+"EXEMPT": 15,
+"IMPLODE": 10,
+"IRRADIATE": 25,
+"MISTIFY": 10,
+"VITRIFY": 20
+}

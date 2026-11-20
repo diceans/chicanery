@@ -16,6 +16,16 @@ VHM = 12.0
 ERL = 16.0
 actions = ["ASSAULT", "EXERT", "ARTICLE", "BRACE"]
 standard_exertions = ["FORBEAR", "FORSAKE", "FOREDOOM"]
+mechanics_exertions = {
+"COUNTERSTROKE": 25,
+"INQUIRE": 15,
+"JEST": 10
+}
+imageries_exertions = {
+"DEMIT": 15,
+"DISENTHRALL": 20,
+"EXEMPT": 15
+}
 exertions_descriptors = {
 "FORBEAR": "Stand by and commit to nothing.",
 "FOREDOOM": "Seize your life before someone else does.",
