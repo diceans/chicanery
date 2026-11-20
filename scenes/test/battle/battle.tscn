@@ -11,6 +11,9 @@
 [ext_resource type="FontFile" uid="uid://t86kcugym3ie" path="res://uxui/font/Special Elite/SpecialElite-Regular.ttf" id="9_yq2ln"]
 [ext_resource type="Texture2D" uid="uid://ypqswc8s2bs8" path="res://assets/characters/npc/allies/Wilseffn.png" id="10_qcad0"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxett"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvkl2"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(0, 0, 0, 1)
@@ -73,6 +76,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uvccg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jw8mq"]
+bg_color = Color(1, 1, 1, 0)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvmkm"]
 bg_color = Color(0, 0, 0, 0.8235294)
 border_width_left = 4
@@ -81,13 +87,23 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_647dl"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+bg_color = Color(0, 0, 0, 0.8235294)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 9
-border_width_top = 9
-border_width_right = 9
-border_width_bottom = 9
-border_color = Color(1, 1, 1, 1)
+bg_color = Color(0, 0, 0, 0.8235294)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Animation" id="Animation_iw1lj"]
 length = 0.001
@@ -188,7 +204,7 @@ offset_right = 1936.0
 offset_bottom = 1121.0
 texture = ExtResource("3_uuwk3")
 
-[node name="EnemyContainer" type="VBoxContainer" parent="." unique_id=1813149584]
+[node name="EnemyContainer" type="Panel" parent="." unique_id=891367029]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -201,10 +217,13 @@ offset_right = 182.0
 offset_bottom = 199.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dxett")
 
 [node name="ProgressBar" type="ProgressBar" parent="EnemyContainer" unique_id=1606812824]
 custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
+layout_mode = 0
+offset_right = 364.0
+offset_bottom = 32.0
 theme_override_styles/background = SubResource("StyleBoxFlat_dvkl2")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0x7ap")
 step = 1.0
@@ -226,16 +245,33 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Enemy" type="TextureRect" parent="EnemyContainer" unique_id=1696506467]
-layout_mode = 2
+layout_mode = 0
+offset_top = 36.0
+offset_right = 364.0
+offset_bottom = 36.0
 stretch_mode = 3
 
 [node name="Damage" type="Label" parent="EnemyContainer" unique_id=91439474]
-layout_mode = 2
+layout_mode = 0
+offset_left = 142.0
+offset_top = 40.0
+offset_right = 222.0
+offset_bottom = 109.0
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.69259906, 0, 0.25522032, 1)
 theme_override_fonts/font = ExtResource("4_uuwk3")
 theme_override_font_sizes/font_size = 67
 text = "67"
+
+[node name="ConditionIcon" type="TextureRect" parent="EnemyContainer" unique_id=1545379971]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 51.0
+offset_bottom = 91.0
+grow_horizontal = 0
 
 [node name="ControlPanel" type="Panel" parent="." unique_id=1273226477]
 layout_mode = 1
@@ -710,6 +746,58 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_5e3ng")
 text = " 99"
 horizontal_alignment = 1
 
+[node name="CombatDialogue" type="Panel" parent="." unique_id=1205632824]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 381.0
+offset_top = 1520.0
+offset_right = -21.0
+offset_bottom = 764.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jw8mq")
+
+[node name="Name" type="Panel" parent="CombatDialogue" unique_id=563837215]
+layout_mode = 1
+offset_right = 359.0
+offset_bottom = 83.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wvmkm")
+
+[node name="PlayerName" type="Label" parent="CombatDialogue/Name" unique_id=828360879]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.5
+offset_top = -65.0
+offset_right = 30.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 6
+theme_override_constants/line_spacing = 3
+theme_override_constants/paragraph_spacing = 0
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 56
+text = "Æ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="CombatDialogue" unique_id=161195531]
+layout_mode = 0
+offset_top = 81.0
+offset_right = 1518.0
+offset_bottom = 324.0
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_647dl")
+text = "I don't want to talk to you no more, you empty-headed animal food trough wiper! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries!"
+autowrap_mode = 3
+
 [node name="NamePanel" type="Panel" parent="." unique_id=779725511]
 layout_mode = 1
 anchors_preset = 6
@@ -763,7 +851,7 @@ offset_left = 34.0
 offset_top = 23.0
 offset_right = 543.0
 offset_bottom = 115.0
-theme_override_fonts/font = ExtResource("7_yq2ln")
+theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 67
 text = "STINKY appears"
 

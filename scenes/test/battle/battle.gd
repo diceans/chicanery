@@ -68,6 +68,20 @@ var active_ally: Dictionary = {}
 var ally: Resource = null
 var condition_icon: TextureRect
 var condition_icon_2: TextureRect
+# The enemy's condition, counted down at the end of each enemy turn like an ally's.
+var enemy_condition: StatusEffect = null
+var enemy_condition_turns_remaining: int = 0
+# The enemy's ConditionIcon, placed over the top-right of the enemy sprite like the allies' icons over their portraits.
+var enemy_condition_icon: TextureRect
+const ENEMY_CONDITION_ICON_OFFSET := Vector2(-20, -20)
+const CONFLAGRANT_CONDITION_PATH := "res://scripts/res/conditions/conflagrant.tres"
+# Each ally's EB when the battle started, restored when the battle ends so ASH's boost doesn't carry over.
+var starting_EB: Dictionary = {}
+const ASH_EB := 0.75
+const JEST_DAMAGE := 0
+const JEST_LINE := "What do you call an alligator wearing a vest? An investigator!"
+# The combat dialogue holds longer lines than the textbox, so it stays up longer before closing itself.
+const DIALOGUE_AUTO_CLOSE_SECONDS := 4.0
 
 # Initializes the battle scene, loads the enemy and ally resources, and decides who acts first based on ERL.
 func _ready():
@@ -76,6 +90,7 @@ func _ready():
 		return
 
 	$ExertPanel.position = Vector2(381, 687)
+	$CombatDialogue.position = Vector2(381, 701)
 	$EnemyContainer/Damage.modulate.a = 0.0
 
 	_build_party()
@@ -89,7 +104,15 @@ func _ready():
 	current_enemy_WN = enemy.WN
 	current_enemy_ERL = enemy.ERL
 
+	enemy_condition_icon = $EnemyContainer/ConditionIcon
+	# EnemyContainer is a VBoxContainer, which would stack the icon as a row under the Damage label.
+	# A top-level control is skipped by the container, so the icon can be placed over the sprite instead.
+	enemy_condition_icon.top_level = true
+	enemy_condition_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	enemy_condition_icon.hide()
+
 	$Textbox.hide()
+	$CombatDialogue.hide()
 	$NamePanel.show()
 	$ControlPanel.show()
 	$ExertPanel.hide()
@@ -157,6 +180,7 @@ func _build_party() -> void:
 			"conflagrant_burn_applied_this_turn": false,
 		}
 		ally_resource.turns = 0
+		starting_EB[ally_resource] = ally_resource.EB
 		if ally_resource.texture != null:
 			member["portrait"].texture = ally_resource.texture
 		member["damage_label"].visible = false
@@ -288,10 +312,13 @@ func _build_exertion_rows(panel: Control, exertions: Dictionary) -> Array[Button
 		rows.append(row)
 	return rows
 
-# The row templates are kept out of the scene tree, so free them with the battle.
+# The row templates are kept out of the scene tree, so free them with the battle. Each ally's EB is
+# put back too, since the resource files outlive the battle.
 func _exit_tree() -> void:
 	for template in exertion_row_templates.values():
 		template.free()
+	for ally_resource in starting_EB:
+		ally_resource.EB = starting_EB[ally_resource]
 
 # Shows only the rows of each scrolling column that fit in its panel, keeping the selected row in view.
 func _scroll_exertion_rows() -> void:
@@ -366,7 +393,7 @@ func _refresh_menu_selection() -> void:
 	for button in menu_button_styles:
 		button.add_theme_stylebox_override("normal", menu_button_styles[button]["normal"])
 
-	if $Textbox.visible:
+	if _is_message_open():
 		return
 
 	var buttons := _get_active_menu_buttons()
@@ -468,6 +495,55 @@ func _show_enemy_damage(amount: int) -> void:
 	tween.finished.connect(func() -> void:
 		floating_label.queue_free()
 	)
+
+# Takes WN off the enemy, updates its bar and floats the damage number over it.
+func _apply_enemy_damage(amount: int) -> void:
+	if amount <= 0:
+		return
+	current_enemy_WN = max(0, current_enemy_WN - amount)
+	set_WN($EnemyContainer/ProgressBar, current_enemy_WN, enemy.WN)
+	_show_enemy_damage(amount)
+
+# Puts a status effect on the enemy for its full duration, replacing any condition it already has.
+# The resource is copied because load() hands every caller the same instance, and the allies' condition
+# code switches flags such as is_conflagrant on and off; a shared copy would let an ally's CONFLAGRANT
+# expiring switch off the enemy's.
+func _apply_enemy_condition(condition_path: String) -> void:
+	var status_effect := load(condition_path) as StatusEffect
+	if status_effect == null:
+		push_error("Failed to load status effect: %s" % condition_path)
+		return
+	_set_condition_active(enemy_condition, false)
+	enemy_condition = status_effect.duplicate(true)
+	enemy_condition_turns_remaining = enemy_condition.duration_turns
+	_set_condition_active(enemy_condition, true)
+	_check_enemy_condition()
+
+# Shows the enemy's condition icon over its sprite, or clears the condition once it has run out.
+func _check_enemy_condition() -> void:
+	if enemy_condition == null or enemy_condition_turns_remaining <= 0:
+		_set_condition_active(enemy_condition, false)
+		enemy_condition = null
+		enemy_condition_turns_remaining = 0
+		enemy_condition_icon.hide()
+		return
+	_condition_icon_for_status(enemy_condition_icon, enemy_condition)
+	var enemy_rect: Rect2 = $EnemyContainer/Enemy.get_global_rect()
+	enemy_condition_icon.global_position = enemy_rect.position + Vector2(enemy_rect.size.x - 48 * 0.6, 0) + ENEMY_CONDITION_ICON_OFFSET
+
+# Burns the enemy for a share of its max WN while it is conflagrant, using the same extra_dmg_factor as the allies' burn.
+func _apply_enemy_conflagrant_burn() -> void:
+	if enemy_condition == null or not enemy_condition.custom_properties.get("is_conflagrant", false):
+		return
+	var burn_factor: float = float(enemy_condition.stat_multipliers.get("extra_dmg_factor", 0.1))
+	_apply_enemy_damage(int(enemy.WN * burn_factor))
+
+# Counts the enemy's condition down by one turn at the end of the enemy's turn.
+func _advance_enemy_condition_turn() -> void:
+	if enemy_condition == null:
+		return
+	enemy_condition_turns_remaining = max(0, enemy_condition_turns_remaining - 1)
+	_check_enemy_condition()
 
 # Writes the name of the first condition the active ally received into its condition label.
 # Later supplemental statuses such as bracing only show as icons, so the name never changes underneath.
@@ -662,7 +738,7 @@ func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 
-	if $Textbox.visible:
+	if _is_message_open():
 		if event.is_action_pressed("ui_accept"):
 			var viewport := get_viewport()
 			if viewport == null:
@@ -715,17 +791,43 @@ func _input(event: InputEvent) -> void:
 func display_text(text):
 	$ControlPanel.hide()
 	$NamePanel.hide()
+	$CombatDialogue.hide()
 	$Textbox.show()
 	$Textbox/Message.text = text
 	_refresh_menu_selection()
-	textbox_id += 1
-	get_tree().create_timer(TEXTBOX_AUTO_CLOSE_SECONDS).timeout.connect(_close_textbox.bind(textbox_id, true))
+	_start_message_timer(TEXTBOX_AUTO_CLOSE_SECONDS)
 
-# Closes the text box once, either from the enter key or from the auto-close timer.
+# Shows a line spoken by an ally in the combat dialogue, with the speaker's name above it.
+# It closes like the text box, from the enter key or after DIALOGUE_AUTO_CLOSE_SECONDS, and also emits textbox_closed.
+func display_dialogue(speaker: String, text: String) -> void:
+	$ControlPanel.hide()
+	$NamePanel.hide()
+	$Textbox.hide()
+	$CombatDialogue/Name/PlayerName.text = speaker
+	$CombatDialogue/Message.text = text
+	# Like the exertion panel, only the speaking ally's container stays on screen, in AE's spot.
+	_focus_active_ally_container()
+	$CombatDialogue.show()
+	_refresh_menu_selection()
+	_start_message_timer(DIALOGUE_AUTO_CLOSE_SECONDS)
+
+# Starts the auto-close timer for the message that was just shown.
+func _start_message_timer(seconds: float) -> void:
+	textbox_id += 1
+	get_tree().create_timer(seconds).timeout.connect(_close_textbox.bind(textbox_id, true))
+
+# Whether the text box or the combat dialogue is on screen.
+func _is_message_open() -> bool:
+	return $Textbox.visible or $CombatDialogue.visible
+
+# Closes the text box or combat dialogue once, either from the enter key or from the auto-close timer.
 # The ID check stops an old timer from closing a newer message that is already on screen.
 func _close_textbox(id: int, timed_out: bool) -> void:
-	if not $Textbox.visible or (timed_out and id != textbox_id):
+	if not _is_message_open() or (timed_out and id != textbox_id):
 		return
+	if $CombatDialogue.visible:
+		$CombatDialogue.hide()
+		_restore_ally_containers()
 	$Textbox.hide()
 	_refresh_menu_selection()
 	textbox_closed.emit()
@@ -760,6 +862,14 @@ func enemy_turn():
 	if living.is_empty():
 		await player_defeated()
 		return
+	# A conflagrant enemy burns at the start of its turn, and may burn out before it can act.
+	if enemy_condition != null and enemy_condition.custom_properties.get("is_conflagrant", false):
+		_apply_enemy_conflagrant_burn()
+		$AnimationPlayer.play("enemy_damaged")
+		await $AnimationPlayer.animation_finished
+		if current_enemy_WN == 0:
+			await _enemy_defeated()
+			return
 	# Allies are ordered by id, so with AE (id 0) and Elizyka (id 1) both standing this rolls 0 or 1 to pick the target.
 	var target: Dictionary = living[randi_range(0, living.size() - 1)]
 	_select_ally(target)
@@ -833,6 +943,7 @@ func enemy_turn():
 		if not is_same(member, target):
 			_apply_conflagrant_burn()
 		_advance_condition_turn(conditions_at_turn_start[i])
+	_advance_enemy_condition_turn()
 	_advance_enemy_lock()
 	if _living_allies().is_empty():
 		await player_defeated()
@@ -858,9 +969,7 @@ func _on_assault_pressed() -> void:
 
 	var DV = randf_range(0.95, 1.05)
 	player_damage = roundi((ally.VHM + ally.EB) * ally.EM * ally.pi_ACM * DV)
-	current_enemy_WN = max(0, current_enemy_WN - player_damage)
-	set_WN($EnemyContainer/ProgressBar, current_enemy_WN, enemy.WN)
-	_show_enemy_damage(player_damage)
+	_apply_enemy_damage(player_damage)
 
 	$AnimationPlayer.play("enemy_damaged")
 	await $AnimationPlayer.animation_finished
@@ -869,32 +978,35 @@ func _on_assault_pressed() -> void:
 	await textbox_closed
 
 	if current_enemy_WN == 0:
-		display_text("%s is defeated" % enemy.name.to_upper())
-		await textbox_closed
-
-		$AnimationPlayer.play("enemy_dead")
-		await $AnimationPlayer.animation_finished
-
-		if State.active_enemy_id.is_empty():
-			push_error("Cannot record victory: active enemy ID is empty")
-			return
-
-		var scene_tree: SceneTree = get_tree()
-		await scene_tree.create_timer(0.25).timeout
-		# Mark the return destination before leaving the battle scene. Each ally's WN is
-		# already kept in its resource file, which State.party holds onto between battles.
-		State.return_player_to_enemy = true
-		State.defeated_enemy_positions[State.active_enemy_position] = true
-		var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
-		if scene_change_error != OK:
-			State.return_player_to_enemy = false
-			State.defeated_enemy_positions.erase(State.active_enemy_position)
-			push_error("Failed to load the outside scene: %s" % scene_change_error)
-			return
-
+		await _enemy_defeated()
 		return
 
 	_end_ally_turn()
+
+# Plays the enemy's defeat, records it so it stays gone, and returns to the outside scene.
+func _enemy_defeated() -> void:
+	enemy_condition_icon.hide()
+	display_text("%s is defeated" % enemy.name.to_upper())
+	await textbox_closed
+
+	$AnimationPlayer.play("enemy_dead")
+	await $AnimationPlayer.animation_finished
+
+	if State.active_enemy_id.is_empty():
+		push_error("Cannot record victory: active enemy ID is empty")
+		return
+
+	var scene_tree: SceneTree = get_tree()
+	await scene_tree.create_timer(0.25).timeout
+	# Mark the return destination before leaving the battle scene. Each ally's WN is
+	# already kept in its resource file, which State.party holds onto between battles.
+	State.return_player_to_enemy = true
+	State.defeated_enemy_positions[State.active_enemy_position] = true
+	var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
+	if scene_change_error != OK:
+		State.return_player_to_enemy = false
+		State.defeated_enemy_positions.erase(State.active_enemy_position)
+		push_error("Failed to load the outside scene: %s" % scene_change_error)
 
 
 # Uses the brace action to apply the bracing condition and end the active ally's turn.
@@ -912,10 +1024,7 @@ func _on_exert_pressed() -> void:
 # Opens the exertion panel with the active ally's container moved to AE's spot and every other ally's container hidden.
 func _show_exert_panel() -> void:
 	$ControlPanel.hide()
-	var active_container: Control = active_ally["container"]
-	for container in ally_container_layouts:
-		container.visible = container == active_container
-	active_container.position = ally_container_layouts[$AeContainer]["position"]
+	_focus_active_ally_container()
 	exertion_column = 0
 	exertion_index = 0
 	exertion_scroll = [0, 0, 0]
@@ -928,17 +1037,29 @@ func _show_exert_panel() -> void:
 func _hide_exert_panel() -> void:
 	$ExertPanel.hide()
 	$DescriptionPanel.hide()
+	_restore_ally_containers()
+	_refresh_menu_selection()
+
+# Moves the active ally's container to AE's spot and hides every other ally's container.
+func _focus_active_ally_container() -> void:
+	var active_container: Control = active_ally["container"]
+	for container in ally_container_layouts:
+		container.visible = container == active_container
+	active_container.position = ally_container_layouts[$AeContainer]["position"]
+
+# Puts every ally container back where it started, with its starting visibility.
+func _restore_ally_containers() -> void:
 	for container in ally_container_layouts:
 		container.position = ally_container_layouts[container]["position"]
 		container.visible = ally_container_layouts[container]["visible"]
-	_refresh_menu_selection()
 
 # Gives back the MT that FORBEAR and FORSAKE restore, up to the active ally's max MT.
 func _restore_standard_exertion_MT() -> void:
 	ally.current_MT = min(ally.max_MT, ally.current_MT + MT_RESTORED_BY_STANDARD_EXERTIONS)
 	_update_ally_stats(active_ally)
 
-# Pays a mechanics or imageries exertion's MT cost and ends the turn; the exertions have no other effect yet.
+# Pays a mechanics or imageries exertion's MT cost, resolves its effect, and ends the turn.
+# Exertions without an effect yet only pay their cost.
 # If the active ally can't afford it, nothing happens and the panel stays open so another exertion can be picked.
 func _on_mt_exertion_pressed(exertion_name: String, cost: int) -> void:
 	if ally.current_MT < cost:
@@ -949,7 +1070,32 @@ func _on_mt_exertion_pressed(exertion_name: String, cost: int) -> void:
 	_hide_exert_panel()
 	display_text("%s exerted %s" % [ally.name, exertion_name])
 	await textbox_closed
+	match exertion_name:
+		"JEST":
+			await _exert_jest()
+		"ASH":
+			await _exert_ash()
+	if current_enemy_WN == 0:
+		await _enemy_defeated()
+		return
 	_end_ally_turn()
+
+# JEST: the active ally tells a joke in the combat dialogue, then deals JEST_DAMAGE (0 for now).
+func _exert_jest() -> void:
+	display_dialogue(ally.name, JEST_LINE)
+	await textbox_closed
+	_apply_enemy_damage(JEST_DAMAGE)
+	display_text("%s dealt %d damage" % [ally.name, JEST_DAMAGE])
+	await textbox_closed
+
+# ASH: sets the enemy CONFLAGRANT, and raises the active ally's EB to ASH_EB for the rest of the battle.
+func _exert_ash() -> void:
+	_apply_enemy_condition(CONFLAGRANT_CONDITION_PATH)
+	display_text("%s is %s" % [enemy.name, enemy_condition.effect_name.to_lower()])
+	await textbox_closed
+	ally.EB = max(ally.EB, ASH_EB)
+	display_text("%s's EB rose to %.2f" % [ally.name, ally.EB])
+	await textbox_closed
 
 # Resolves the FORBEAR exertion, restoring some MT, and ends the active ally's turn without attacking.
 func _on_forbear_pressed() -> void:
