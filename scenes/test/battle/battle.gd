@@ -676,6 +676,14 @@ func _input(event: InputEvent) -> void:
 		return
 
 	var is_exertion_menu = $ExertPanel.visible
+	# Backspace leaves the exertion panel and goes back to the action menu, like the pause menu.
+	if is_exertion_menu and event.is_action_pressed("ui_text_backspace"):
+		_hide_exert_panel()
+		$NamePanel.show()
+		$ControlPanel.show()
+		_refresh_menu_selection()
+		get_viewport().set_input_as_handled()
+		return
 	if is_exertion_menu and (event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right")):
 		_switch_exertion_column(-1 if event.is_action_pressed("ui_left") else 1)
 		get_viewport().set_input_as_handled()
