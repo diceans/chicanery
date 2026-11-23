@@ -200,7 +200,32 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s2ood"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[node name="PauseMenu" type="Control" unique_id=1773060025]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stv4p"]
+bg_color = Color(0, 0, 0, 0.8235294)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8cqgx"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7d0nt"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx1ou"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nphg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qodys"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t7r3o"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="PauseMenu" type="Control" unique_id=1347420937]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,7 +240,7 @@ offset_left = -85.0
 offset_top = -67.0
 offset_right = 2019.0
 offset_bottom = 1174.0
-color = Color(0.9607843, 1, 0.7176471, 1)
+color = Color(0.1663742, 0.16637436, 0.1663743, 0.78431374)
 
 [node name="OverviewPanel" type="Panel" parent="." unique_id=278106525]
 layout_mode = 1
@@ -2801,7 +2826,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dxett")
 
-[node name="SideBar" type="Panel" parent="OptionsPanel/CenterPiece" unique_id=500285894]
+[node name="Navigator" type="Panel" parent="OptionsPanel/CenterPiece" unique_id=500285894]
 layout_mode = 0
 offset_left = 3.875
 offset_top = 3.6875
@@ -2955,3 +2980,315 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_vqanr")
 theme_override_styles/hover = SubResource("StyleBoxFlat_s2ood")
 alignment = 0
+
+[node name="ControlPanel" type="Panel" parent="." unique_id=1964284278]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3062.0
+offset_top = 743.0
+offset_right = -1220.0
+offset_bottom = 1757.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_stv4p")
+
+[node name="OptionsPanel" type="Panel" parent="ControlPanel" unique_id=1645147449]
+layout_mode = 0
+offset_left = 68.0
+offset_top = 55.0
+offset_right = 1196.0
+offset_bottom = 344.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8cqgx")
+
+[node name="Done" type="Button" parent="ControlPanel/OptionsPanel" unique_id=291690984]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 20.0
+offset_right = 304.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d0nt")
+text = "Done"
+
+[node name="Remove" type="Button" parent="ControlPanel/OptionsPanel" unique_id=374449631]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 134.0
+offset_right = 303.0
+offset_bottom = 210.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d0nt")
+text = "Remove"
+
+[node name="Calibrate" type="Button" parent="ControlPanel/OptionsPanel" unique_id=1298151908]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 134.0
+offset_right = 699.0
+offset_bottom = 210.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d0nt")
+text = "Calibrate"
+
+[node name="RestoreDefaults" type="Button" parent="ControlPanel/OptionsPanel" unique_id=1607922842]
+layout_mode = 0
+offset_left = 345.0
+offset_top = 20.0
+offset_right = 971.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d0nt")
+text = "Restore Defaults"
+
+[node name="AssignController" type="Button" parent="ControlPanel/OptionsPanel" unique_id=794021390]
+layout_mode = 0
+offset_left = 743.0
+offset_top = 133.0
+offset_right = 1057.0
+offset_bottom = 249.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d0nt")
+text = "Assign Controller"
+autowrap_mode = 3
+
+[node name="AssignedController" type="Panel" parent="ControlPanel" unique_id=2107517624]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -670.0
+offset_top = -319.0
+offset_right = -23.0
+offset_bottom = -175.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ControlPanel/AssignedController" unique_id=1430080600]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 60
+text = "Assigned Controller:"
+
+[node name="ControllerName" type="Label" parent="ControlPanel/AssignedController" unique_id=1587817674]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -63.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d0nt")
+text = "None"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FunctionAdjustingPanel" type="Panel" parent="ControlPanel" unique_id=1640849834]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 400.0
+offset_right = 1465.0
+offset_bottom = 894.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hx1ou")
+
+[node name="Labels" type="Panel" parent="ControlPanel/FunctionAdjustingPanel" unique_id=578103071]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 77.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8nphg")
+
+[node name="Functions" type="Label" parent="ControlPanel/FunctionAdjustingPanel/Labels" unique_id=2085486727]
+layout_mode = 1
+offset_right = 336.0
+offset_bottom = 77.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 64
+text = "Functions"
+vertical_alignment = 1
+
+[node name="Keyboard" type="Label" parent="ControlPanel/FunctionAdjustingPanel/Labels" unique_id=1157572227]
+layout_mode = 1
+offset_left = 480.0
+offset_right = 816.0
+offset_bottom = 77.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 64
+text = "Keyboard"
+vertical_alignment = 1
+
+[node name="Keyboard2" type="Label" parent="ControlPanel/FunctionAdjustingPanel/Labels" unique_id=195691927]
+layout_mode = 1
+offset_left = 960.0
+offset_right = 1323.0
+offset_bottom = 77.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 64
+text = "Controller"
+vertical_alignment = 1
+
+[node name="FunctionList" type="Panel" parent="ControlPanel/FunctionAdjustingPanel" unique_id=1403484172]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 82.0
+offset_right = -580.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qodys")
+
+[node name="1" type="Button" parent="ControlPanel/FunctionAdjustingPanel/FunctionList" unique_id=733277351]
+layout_mode = 1
+offset_right = 336.0
+offset_bottom = 82.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Move Up"
+alignment = 0
+
+[node name="2" type="Button" parent="ControlPanel/FunctionAdjustingPanel/FunctionList" unique_id=49735931]
+layout_mode = 1
+offset_top = 82.0
+offset_right = 336.0
+offset_bottom = 164.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Move Down"
+alignment = 0
+
+[node name="3" type="Button" parent="ControlPanel/FunctionAdjustingPanel/FunctionList" unique_id=57644743]
+layout_mode = 1
+offset_top = 164.0
+offset_right = 336.0
+offset_bottom = 246.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Move Right"
+alignment = 0
+
+[node name="4" type="Button" parent="ControlPanel/FunctionAdjustingPanel/FunctionList" unique_id=277995542]
+layout_mode = 1
+offset_top = 246.0
+offset_right = 336.0
+offset_bottom = 328.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Move Left"
+alignment = 0
+
+[node name="5" type="Button" parent="ControlPanel/FunctionAdjustingPanel/FunctionList" unique_id=321660419]
+layout_mode = 1
+offset_top = 328.0
+offset_right = 336.0
+offset_bottom = 410.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Sprint"
+alignment = 0
+
+[node name="Keylist" type="Panel" parent="ControlPanel/FunctionAdjustingPanel" unique_id=141442119]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 480.0
+offset_top = 82.0
+offset_right = -100.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qodys")
+
+[node name="1" type="Button" parent="ControlPanel/FunctionAdjustingPanel/Keylist" unique_id=1219513220]
+layout_mode = 1
+offset_right = 336.0
+offset_bottom = 82.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Up Arrow"
+alignment = 0
+
+[node name="2" type="Button" parent="ControlPanel/FunctionAdjustingPanel/Keylist" unique_id=1326967322]
+layout_mode = 1
+offset_top = 82.0
+offset_right = 336.0
+offset_bottom = 164.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Down Arrow"
+alignment = 0
+
+[node name="3" type="Button" parent="ControlPanel/FunctionAdjustingPanel/Keylist" unique_id=478010785]
+layout_mode = 1
+offset_top = 164.0
+offset_right = 336.0
+offset_bottom = 246.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Right Arrow"
+alignment = 0
+
+[node name="4" type="Button" parent="ControlPanel/FunctionAdjustingPanel/Keylist" unique_id=70799310]
+layout_mode = 1
+offset_top = 246.0
+offset_right = 336.0
+offset_bottom = 328.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Left Arrow"
+alignment = 0
+
+[node name="5" type="Button" parent="ControlPanel/FunctionAdjustingPanel/Keylist" unique_id=1851003739]
+layout_mode = 1
+offset_top = 328.0
+offset_right = 336.0
+offset_bottom = 410.0
+theme_override_fonts/font = ExtResource("1_eyvtn")
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_t7r3o")
+text = "Shift"
+alignment = 0
+
+[node name="Navigator" type="Panel" parent="ControlPanel" unique_id=15752819]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -388.0
+offset_top = -530.0
+offset_right = -309.0
+offset_bottom = -120.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_uv2ou")

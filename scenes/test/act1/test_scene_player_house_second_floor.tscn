@@ -3,6 +3,7 @@
 [ext_resource type="TileSet" uid="uid://c6agi25spf1nj" path="res://tilesets/secondfloor_tile_set.tres" id="1_yd57h"]
 [ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/ae/AE_placeholder.tscn" id="2_prlsu"]
 [ext_resource type="Script" uid="uid://bfe0254iquhfp" path="res://scenes/test/transition/transition_node_to_1.gd" id="3_f5yox"]
+[ext_resource type="PackedScene" uid="uid://53bowmrlb2l2" path="res://scenes/test/pause_menu/pause_menu.tscn" id="4_prlsu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7okt"]
 size = Vector2(233.5, 52)
@@ -32,5 +33,10 @@ script = ExtResource("3_f5yox")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=455153197]
 position = Vector2(272.25, 544)
 shape = SubResource("RectangleShape2D_i7okt")
+
+[node name="PauseMenuLayer" type="CanvasLayer" parent="." unique_id=376888522]
+layer = 10
+
+[node name="PauseMenu" parent="PauseMenuLayer" unique_id=1347420937 instance=ExtResource("4_prlsu")]
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

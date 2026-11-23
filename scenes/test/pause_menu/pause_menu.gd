@@ -23,6 +23,8 @@ var selected_item
 var selected_item_pos
 var selected_slot_pos
 var selected_type_pos
+# Where the chosen function sits in the control panel's list, so backing out of the key list returns to it.
+var selected_function_pos
 var players = ["ae","elizyka","kletzt","wilseffin"]
 var limit = 6
 var options = []
@@ -41,12 +43,14 @@ func _ready() -> void:
 	$CharactersPanel.position = Vector2(1126, 36)
 	$ExertionPanel.position = Vector2(0, 0)
 	$OptionsPanel.position = Vector2(0, 0)
+	$ControlPanel.position = Vector2(39, 33)
 
 	$ArticlePanel.hide()
 	$QuitPanel.hide()
 	$EquippablePanelAe.hide()
 	$ExertionPanel.hide()
 	$OptionsPanel.hide()
+	$ControlPanel.hide()
 	_disable_mouse(self)
 	# Each character panel's first child is a ColorRect used as its highlight background.
 	for panel in $CharactersPanel.get_children():
@@ -54,6 +58,28 @@ func _ready() -> void:
 		panel.get_child(0).hide()
 	_items()
 	update_arrow()
+	# The menu keeps running while it pauses the game, so it can still be navigated and closed.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	hide()
+
+# Shows the menu from the overview and pauses the game, so AE and the NPCs stop while it is open.
+func open_menu():
+	current_menu = "options"
+	selected_pos = 0
+	shown_pos = 0
+	show()
+	update_arrow()
+	get_tree().paused = true
+
+# Hides the menu, clears its highlights, and lets the game carry on.
+func close_menu():
+	# A sub-menu leaves the row it was opened from highlighted, so clear every menu, not just the current one.
+	for menu in ["options", "items", "players", "equip_slots", "equippables", "exertion_types", "exertions", "quit", "settings", "controls", "keys"]:
+		_clear_highlight(menu)
+	current_menu = "options"
+	selected_pos = 0
+	hide()
+	get_tree().paused = false
 
 # Stops buttons from reacting to the mouse or taking focus, so the menu is keyboard-only like the battle menu.
 func _disable_mouse(root):
@@ -76,25 +102,38 @@ func _menu_nodes(menu):
 		"exertions": return $ExertionPanel/ExertionList.get_children()
 		"quit": return [$QuitPanel/QuitChoice/Yes, $QuitPanel/QuitChoice/No]
 		"settings": return $OptionsPanel/CenterPiece/Content.get_children()
+		"controls": return _control_buttons()
+		"keys": return $ControlPanel/FunctionAdjustingPanel/Keylist.get_children()
 	return []
 
-# Shows or hides the 25% white background behind a button, the yellow text of a quit choice, or the highlight ColorRect of a character panel.
+# The control panel's buttons in the order Up/Down moves through them: the top buttons row by row, then the functions.
+func _control_buttons():
+	var buttons = [
+		$ControlPanel/OptionsPanel/Done,
+		$ControlPanel/OptionsPanel/RestoreDefaults,
+		$ControlPanel/OptionsPanel/Remove,
+		$ControlPanel/OptionsPanel/Calibrate,
+		$ControlPanel/OptionsPanel/AssignController,
+	]
+	buttons.append_array($ControlPanel/FunctionAdjustingPanel/FunctionList.get_children())
+	return buttons
+
+# Turns a button's text yellow, or shows the highlight ColorRect of a character panel.
+# Only the font colour changes, so a button's background and border keep their own colours.
+# Article rows show their name and count in child labels, so those labels turn yellow too.
 func _set_highlight(node, is_highlighted):
 	if not node is Button:
 		node.get_child(0).visible = is_highlighted
 		return
-	# The quit dialog's Yes/Nah buttons and the options panel's buttons are highlighted with yellow text instead of a background.
-	if node.get_parent() in [$QuitPanel/QuitChoice, $OptionsPanel/CenterPiece/Content]:
-		node.modulate = Color("Yellow") if is_highlighted else Color("White")
-		return
-	if not node.has_meta("normal_style"):
-		var normal_style = node.get_theme_stylebox("normal")
-		# Copy the normal style so the highlight keeps the same content margins and the text doesn't shift.
-		var highlight_style = normal_style.duplicate() if normal_style is StyleBoxFlat else StyleBoxFlat.new()
-		highlight_style.bg_color = HIGHLIGHT_COLOR
-		node.set_meta("normal_style", normal_style)
-		node.set_meta("highlight_style", highlight_style)
-	node.add_theme_stylebox_override("normal", node.get_meta("highlight_style") if is_highlighted else node.get_meta("normal_style"))
+	var text_nodes = [node]
+	for child in node.get_children():
+		if child is Label:
+			text_nodes.append(child)
+	for text_node in text_nodes:
+		if is_highlighted:
+			text_node.add_theme_color_override("font_color", Color("Yellow"))
+		else:
+			text_node.remove_theme_color_override("font_color")
 
 func _clear_highlight(menu):
 	for node in _menu_nodes(menu):
@@ -108,8 +147,9 @@ func update_arrow():
 	$ExertionPanel.visible = current_menu in ["exertion_types", "exertions"]
 	$QuitPanel.visible = current_menu == "quit"
 	$OptionsPanel.visible = current_menu == "settings"
-	# The equippable and exertion lists sit where the character panel is, and the options panel stands alone, so hide it behind them.
-	$CharactersPanel.visible = not ($EquippablePanelAe.visible or $ExertionPanel.visible or $OptionsPanel.visible)
+	$ControlPanel.visible = current_menu in ["controls", "keys"]
+	# The equippable and exertion lists sit where the character panel is, and the options and control panels stand alone, so hide it behind them.
+	$CharactersPanel.visible = not ($EquippablePanelAe.visible or $ExertionPanel.visible or $OptionsPanel.visible or $ControlPanel.visible)
 
 	options = _menu_nodes(current_menu)
 	limit = len(options)-1
@@ -130,6 +170,14 @@ func _open(menu):
 	update_arrow()
 
 func _physics_process(delta: float) -> void:
+	# X opens the menu and Esc closes it from any panel. Nothing else reacts while it is hidden.
+	if not visible:
+		if Input.is_action_just_pressed("open_pause_menu"):
+			open_menu()
+		return
+	if Input.is_action_just_pressed("ui_cancel"):
+		close_menu()
+		return
 	if current_menu=="quit":
 		if Input.is_action_just_pressed("walk_right"):
 			if selected_pos<limit:
@@ -192,6 +240,21 @@ func _physics_process(delta: float) -> void:
 				quit()
 			else:
 				back()
+		elif current_menu == "settings":
+			if options[selected_pos] == $OptionsPanel/CenterPiece/Content/Controller:
+				_open("controls")
+		elif current_menu == "controls":
+			var button = options[selected_pos]
+			# Done does the same as Backspace.
+			if button == $ControlPanel/OptionsPanel/Done:
+				back()
+			elif button.get_parent() == $ControlPanel/FunctionAdjustingPanel/FunctionList:
+				selected_function_pos = selected_pos
+				_open_keys(button)
+		elif current_menu == "keys":
+			var function_button = _chosen_function_button()
+			rebind(function_button.text, options[selected_pos].text)
+			back()
 	if Input.is_action_just_pressed("ui_text_backspace"):
 		back()
 func back():
@@ -208,7 +271,29 @@ func back():
 	elif current_menu=="exertions":
 		current_menu="exertion_types"
 		selected_pos=selected_type_pos
+	elif current_menu=="controls":
+		current_menu="settings"
+		selected_pos=$OptionsPanel/CenterPiece/Content/Controller.get_index()
+	elif current_menu=="keys":
+		current_menu="controls"
+		selected_pos=selected_function_pos
 	update_arrow()
+
+# Moves from a function to the key list, starting on the key in the same row. The function and key
+# lists have the same number of buttons, so the key is the one with the same index as the function.
+func _open_keys(function_button):
+	current_menu = "keys"
+	selected_pos = 0
+	var keys = _menu_nodes("keys")
+	for i in len(keys):
+		if keys[i].get_index() == function_button.get_index():
+			selected_pos = i
+			break
+	update_arrow()
+
+# The function button the key list was opened from.
+func _chosen_function_button():
+	return _control_buttons()[selected_function_pos]
 
 func _items():
 	# Use the first list entry as the template if none is assigned, and detach it so the loop below doesn't free it.
@@ -250,6 +335,8 @@ func equip(slot,equippable):
 	print("equipped %s in %s" % [equippable, slot])
 func choose_exertion(exertion_type,exertion):
 	print("chose %s from %s" % [exertion, exertion_type])
+func rebind(function_name, key_name):
+	print("chose %s for %s" % [key_name, function_name])
 
 func save():
 	pass

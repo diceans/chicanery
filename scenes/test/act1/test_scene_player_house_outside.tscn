@@ -11,6 +11,7 @@
 [ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="8_cunso"]
 [ext_resource type="Texture2D" uid="uid://cbj3y68jiag0u" path="res://assets/characters/npc/allies/elizyka_visualization-removebg-preview.png" id="8_kme14"]
 [ext_resource type="PackedScene" uid="uid://p27dujolrsvj" path="res://scenes/characters/npc/misc/Nickel.tscn" id="11_06r44"]
+[ext_resource type="PackedScene" uid="uid://53bowmrlb2l2" path="res://scenes/test/pause_menu/pause_menu.tscn" id="12_ufyy3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qng1"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -215,6 +216,11 @@ navigation_polygon = SubResource("NavigationPolygon_i7okt")
 
 [node name="Nickel" parent="Goose" unique_id=287630542 instance=ExtResource("11_06r44")]
 position = Vector2(2681, 181)
+
+[node name="PauseMenuLayer" type="CanvasLayer" parent="." unique_id=1987654321]
+layer = 10
+
+[node name="PauseMenu" parent="PauseMenuLayer" unique_id=1347420937 instance=ExtResource("12_ufyy3")]
 
 [connection signal="body_entered" from="TransitionNodeOto1" to="TransitionNodeOto1" method="_on_body_entered"]
 [connection signal="body_entered" from="Elizyka" to="." method="_on_elizyka_body_entered"]
