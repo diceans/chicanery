@@ -186,7 +186,10 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_i7okt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0ler"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Battle" type="Control" unique_id=1340519752]
 layout_mode = 3
@@ -982,7 +985,6 @@ anchor_right = 1.0
 offset_left = -44.0
 offset_bottom = 27.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
 theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 28
 text = "N/A"
@@ -1133,7 +1135,6 @@ anchor_right = 1.0
 offset_left = -44.0
 offset_bottom = 27.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(0.84705883, 0.5882353, 1, 1)
 theme_override_fonts/font = ExtResource("9_yq2ln")
 theme_override_font_sizes/font_size = 28
 text = "N/A"
@@ -1334,23 +1335,16 @@ offset_bottom = 588.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ay5dm")
 
-[node name="Label" type="Label" parent="DescriptionPanel" unique_id=2023889777]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Label" type="Label" parent="DescriptionPanel" unique_id=1779058841]
+layout_mode = 0
 offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
-grow_horizontal = 2
-grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(4, 4)
+offset_top = 5.0
+offset_right = 361.0
+offset_bottom = 491.0
 theme_override_fonts/font = ExtResource("9_yq2ln")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-label_settings = SubResource("LabelSettings_i7okt")
 autowrap_mode = 3
 
 [connection signal="pressed" from="ControlPanel/Assault" to="." method="_on_assault_pressed"]

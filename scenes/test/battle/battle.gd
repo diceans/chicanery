@@ -75,9 +75,8 @@ var enemy_condition_turns_remaining: int = 0
 var enemy_condition_icon: TextureRect
 const ENEMY_CONDITION_ICON_OFFSET := Vector2(-20, -20)
 const CONFLAGRANT_CONDITION_PATH := "res://scripts/res/conditions/conflagrant.tres"
-# Each ally's EB when the battle started, restored when the battle ends so ASH's boost doesn't carry over.
-var starting_EB: Dictionary = {}
-const ASH_EB := 0.75
+# ASH raises the active ally's EM to this for its own hit only.
+const ASH_EM := 1.1
 const JEST_DAMAGE := 0
 const JEST_LINE := "What do you call an alligator wearing a vest? An investigator!"
 # The combat dialogue holds longer lines than the textbox, so it stays up longer before closing itself.
@@ -180,7 +179,6 @@ func _build_party() -> void:
 			"conflagrant_burn_applied_this_turn": false,
 		}
 		ally_resource.turns = 0
-		starting_EB[ally_resource] = ally_resource.EB
 		if ally_resource.texture != null:
 			member["portrait"].texture = ally_resource.texture
 		member["damage_label"].visible = false
@@ -312,13 +310,10 @@ func _build_exertion_rows(panel: Control, exertions: Dictionary) -> Array[Button
 		rows.append(row)
 	return rows
 
-# The row templates are kept out of the scene tree, so free them with the battle. Each ally's EB is
-# put back too, since the resource files outlive the battle.
+# The row templates are kept out of the scene tree, so free them with the battle.
 func _exit_tree() -> void:
 	for template in exertion_row_templates.values():
 		template.free()
-	for ally_resource in starting_EB:
-		ally_resource.EB = starting_EB[ally_resource]
 
 # Shows only the rows of each scrolling column that fit in its panel, keeping the selected row in view.
 func _scroll_exertion_rows() -> void:
@@ -733,13 +728,21 @@ func _advance_condition_turn(condition_at_turn_start: StatusEffect) -> void:
 			secondary_condition_turns_remaining = 0
 	check_condition()
 
+# Enter, or Z (the overworld's interact key), confirms a choice or closes a message.
+func _is_accept(event: InputEvent) -> bool:
+	return event.is_action_pressed("ui_accept") or event.is_action_pressed("interact")
+
+# X (open_pause_menu) or Esc (ui_cancel) backs out of a sub-panel.
+func _is_back(event: InputEvent) -> bool:
+	return event.is_action_pressed("open_pause_menu") or event.is_action_pressed("ui_cancel")
+
 # Handles accept-key dismissal and keyboard navigation across the battle menu panels.
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
 
 	if _is_message_open():
-		if event.is_action_pressed("ui_accept"):
+		if _is_accept(event):
 			var viewport := get_viewport()
 			if viewport == null:
 				return
@@ -752,8 +755,8 @@ func _input(event: InputEvent) -> void:
 		return
 
 	var is_exertion_menu = $ExertPanel.visible
-	# Backspace leaves the exertion panel and goes back to the action menu, like the pause menu.
-	if is_exertion_menu and event.is_action_pressed("ui_text_backspace"):
+	# X or Esc leaves the exertion panel and goes back to the action menu, like Backspace in the pause menu.
+	if is_exertion_menu and _is_back(event):
 		_hide_exert_panel()
 		$NamePanel.show()
 		$ControlPanel.show()
@@ -769,7 +772,7 @@ func _input(event: InputEvent) -> void:
 		selected_index = posmod(selected_index - 1, buttons.size())
 	elif event.is_action_pressed("ui_down"):
 		selected_index = posmod(selected_index + 1, buttons.size())
-	elif event.is_action_pressed("ui_accept"):
+	elif _is_accept(event):
 		var viewport := get_viewport()
 		if viewport == null:
 			return
@@ -1088,13 +1091,23 @@ func _exert_jest() -> void:
 	display_text("%s dealt %d damage" % [ally.name, JEST_DAMAGE])
 	await textbox_closed
 
-# ASH: sets the enemy CONFLAGRANT, and raises the active ally's EB to ASH_EB for the rest of the battle.
+# ASH: hits like ASSAULT with the active ally's EM raised to ASH_EM for this hit only, then sets the enemy CONFLAGRANT.
 func _exert_ash() -> void:
+	var base_EM: float = ally.EM
+	ally.EM = max(ally.EM, ASH_EM)
+	var DV = randf_range(0.95, 1.05)
+	player_damage = roundi((ally.VHM + ally.EB) * ally.EM * ally.pi_ACM * DV)
+	ally.EM = base_EM
+	_apply_enemy_damage(player_damage)
+
+	$AnimationPlayer.play("enemy_damaged")
+	await $AnimationPlayer.animation_finished
+
+	display_text("%s dealt %d damage" % [ally.name, player_damage])
+	await textbox_closed
+
 	_apply_enemy_condition(CONFLAGRANT_CONDITION_PATH)
 	display_text("%s is %s" % [enemy.name, enemy_condition.effect_name.to_lower()])
-	await textbox_closed
-	ally.EB = max(ally.EB, ASH_EB)
-	display_text("%s's EB rose to %.2f" % [ally.name, ally.EB])
 	await textbox_closed
 
 # Resolves the FORBEAR exertion, restoring some MT, and ends the active ally's turn without attacking.
