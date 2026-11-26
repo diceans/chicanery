@@ -17,7 +17,7 @@ ERL = 16.0
 actions = ["ASSAULT", "EXERT", "ARTICLE", "BRACE"]
 standard_exertions = ["FORBEAR", "FORSAKE", "FOREDOOM"]
 mechanics_exertions = {
-"COUNTERSTROKE": 25,
+"COUNTERSTROKE": 15,
 "INQUIRE": 15,
 "JEST": 10
 }
@@ -27,6 +27,7 @@ imageries_exertions = {
 "EXEMPT": 15
 }
 exertions_descriptors = {
+"COUNTERSTROKE": "It is basic decency to return a good stroke when you get one.",
 "FORBEAR": "Stand by and commit to nothing.",
 "FOREDOOM": "Seize your life before someone else does.",
 "FORSAKE": "Disengage from the fight."

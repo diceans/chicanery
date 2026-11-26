@@ -30,3 +30,10 @@ imageries_exertions = {
 "MISTIFY": 10,
 "VITRIFY": 20
 }
+exertions_descriptors = {
+"COUNTERSTROKE": "It is basic decency to return a good stroke when you get one.",
+"FORBEAR": "Stand by and commit to nothing.",
+"FOREDOOM": "Seize your life before someone else does.",
+"FORSAKE": "Disengage from the fight."
+}
+spawnpoints = [Vector2(2990, 340), Vector2(-965, 20)]

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="StatusEffect" format=3 uid="uid://dju8x5nf8rom3"]
+
+[ext_resource type="Texture2D" uid="uid://cmab5l1d85vev" path="res://assets/misc/countering.png" id="1_acnqk"]
+[ext_resource type="Script" uid="uid://ccoh04a0ph3n6" path="res://scripts/stats/status_effect.gd" id="1_q228i"]
+
+[resource]
+script = ExtResource("1_q228i")
+effect_name = "COUNTERING"
+icon = ExtResource("1_acnqk")
+icon_pos = "side"
+custom_properties = {
+"is_countering": false
+}
+metadata/_custom_type_script = "uid://ccoh04a0ph3n6"

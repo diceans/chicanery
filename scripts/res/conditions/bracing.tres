@@ -7,6 +7,7 @@
 script = ExtResource("2_d3yib")
 effect_name = "BRACING"
 icon = ExtResource("1_wi5o7")
+icon_pos = "side"
 flat_modifiers = {
 "pi_tDIM": 0.5
 }

@@ -2,6 +2,9 @@ extends Node2D
 @export var ally: Resource = null
 
 var player_near_elizyka: bool = false
+# Matches tile_size in AE's walk state, so AE stays on the movement grid after disengaging.
+const TILE_SIZE := 120
+const DISENGAGE_TILES := 1
 
 # Initializes the overworld scene, clears defeated enemies by their world-space position, and restores the player to the exact enemy location after battle.
 func _ready() -> void:
@@ -12,13 +15,17 @@ func _ready() -> void:
 		$Elizyka.position = ally_spawnpoint
 	var returning_from_battle: bool = State.return_player_to_enemy
 	State.return_player_to_enemy = false
+	var disengaged: bool = State.disengaged_from_enemy
+	State.disengaged_from_enemy = false
 
 	var player := get_node_or_null("AePlaceholder") as Node2D
 	var active_position: Vector2 = State.active_enemy_position
 	var found_active_enemy := false
-	if returning_from_battle and player == null:
+	if (returning_from_battle or disengaged) and player == null:
 		push_error("Outside scene is missing AePlaceholder")
 		return
+	if disengaged:
+		player.global_position = _disengage_position(player)
 
 	for enemy: Node2D in get_tree().get_nodes_in_group("world_enemies"):
 		var enemy_position: Vector2 = enemy.global_position
@@ -33,6 +40,18 @@ func _ready() -> void:
 
 	if returning_from_battle and not found_active_enemy:
 		push_error("Could not find the enemy from the completed battle")
+
+# Works out where AE lands after the party disengages: starting from the tile AE stepped from when
+# it touched the enemy, AE moves DISENGAGE_TILES tiles back the opposite way to its last movement,
+# which is away from the enemy. Walking right adds to x, so going back takes from x, and so on.
+# If a wall is in the way, AE stays on the tile it stepped from, which is still outside the enemy's reach.
+func _disengage_position(player: Node2D) -> Vector2:
+	var origin: Vector2 = State.player_tile_position
+	var away: Vector2 = -State.player_direction * TILE_SIZE * DISENGAGE_TILES
+	var origin_transform := Transform2D(player.global_rotation, origin)
+	if player is CharacterBody2D and player.test_move(origin_transform, away):
+		return origin
+	return origin + away
 
 # Chooses a random spawn point from the ally resource so Elizyka appears in a valid starting position.
 func spawnpoint(ally_resource: Resource) -> Variant:
@@ -71,13 +90,9 @@ func _on_elizyka_body_exited(body: Node2D) -> void:
 		$AePlaceholder/Dialogue.hide()
 
 
-# Handles world interaction input while the player is near Elizyka.
-func _unhandled_input(event: InputEvent) -> void:
-	if player_near_elizyka and event.is_action_pressed("interact") and not event.is_echo():
-		display_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-		get_viewport().set_input_as_handled()
-		
-# Dismisses dialogue boxes with the accept key after interaction prompts are shown.
+# Dismisses dialogue boxes with the accept key, and talks to Elizyka with Z when the player is near her.
+# The pause menu opens from _unhandled_input, so marking C as handled here keeps it shut while
+# Elizyka's dialogue is open.
 func _input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo:
 		return
@@ -86,4 +101,10 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_accept"):
 			get_viewport().set_input_as_handled()
 			$AePlaceholder/Dialogue.hide()
+		elif event.is_action_pressed("open_pause_menu"):
+			get_viewport().set_input_as_handled()
 		return
+
+	if player_near_elizyka and event.is_action_pressed("interact"):
+		display_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+		get_viewport().set_input_as_handled()

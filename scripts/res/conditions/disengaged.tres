@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="StatusEffect" format=3 uid="uid://e1lgkj6dvbxs"]
+
+[ext_resource type="Script" uid="uid://ccoh04a0ph3n6" path="res://scripts/stats/status_effect.gd" id="1_7n82g"]
+[ext_resource type="Texture2D" uid="uid://4e4o8nj046h5" path="res://assets/misc/disengaged.png" id="1_gwtql"]
+
+[resource]
+script = ExtResource("1_7n82g")
+effect_name = "DISENGAGED"
+icon = ExtResource("1_gwtql")
+icon_pos = "center"
+duration_turns = 1000
+custom_properties = {
+"is_disengaged": false,
+"portrait_opacity": 0.3
+}
+metadata/_custom_type_script = "uid://ccoh04a0ph3n6"

@@ -34,6 +34,26 @@ var menu_button_font_colors
 const HIGHLIGHT_COLOR = Color(1, 1, 1, 0.25)
 # Which overview option opens each sub-menu, so backing out puts the cursor back on it.
 const MENU_OPTION_INDEX = {"items": 0, "equip_slots": 1, "exertion_types": 2, "quit": 5, "settings": 6}
+# The character panels that show a party member's stats, with the id from that ally's resource file.
+const CHARACTER_PANEL_IDS = {"AePanel": 0, "ElizykaPanel": 1}
+# Which resource properties each StatNumber label shows. Two properties are shown as "current/max".
+# Add a label to StatNumber and an entry here to show another stat.
+const STAT_PROPERTIES = {
+	"Wholeness": ["current_WN", "max_WN"],
+	"Mentality": ["current_MT", "max_MT"],
+	"Vehemence": ["VHM"],
+}
+# The exertion types in the same order as the ExertionType buttons.
+const EXERTION_TYPES = ["standard", "mechanics", "imageries"]
+# How many exertion rows fit in ExertionList before it scrolls.
+const EXERTION_ROWS_SHOWN = 12
+# Every exertion the party has, by type, with its MT price as text. Standard exertions have no price.
+var party_exertions = {}
+# Every exertion description from the party's resource files.
+var party_descriptors = {}
+# The first row of ExertionList, copied once per exertion of the chosen type.
+var exertion_template: Node
+var exertion_shown_pos = 0
 
 func _ready() -> void:
 	$OverviewPanel.position = Vector2(0, -26)
@@ -57,6 +77,7 @@ func _ready() -> void:
 		panel.get_child(0).color = HIGHLIGHT_COLOR
 		panel.get_child(0).hide()
 	_items()
+	_refresh_party()
 	update_arrow()
 	# The menu keeps running while it pauses the game, so it can still be navigated and closed.
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -67,9 +88,84 @@ func open_menu():
 	current_menu = "options"
 	selected_pos = 0
 	shown_pos = 0
+	# Battles change WN and MT, so read the party's resource files again every time the menu opens.
+	_refresh_party()
 	show()
 	update_arrow()
 	get_tree().paused = true
+
+# Reads the party's resource files into the character panels' stats and the exertion panel.
+func _refresh_party():
+	_fill_party_stats()
+	_collect_party_exertions()
+
+# Returns the ally in State.party with the given id, or null if there isn't one.
+func _party_member(id):
+	for ally in State.party:
+		if ally.id == id:
+			return ally
+	return null
+
+# Writes each ally's stats from its resource file into the StatNumber labels of its character panel.
+func _fill_party_stats():
+	for panel_name in CHARACTER_PANEL_IDS:
+		var ally = _party_member(CHARACTER_PANEL_IDS[panel_name])
+		if ally == null:
+			continue
+		var stat_numbers = $CharactersPanel.get_node(panel_name + "/SidePanel/StatPanel/StatNumber")
+		for label in stat_numbers.get_children():
+			if not STAT_PROPERTIES.has(label.name):
+				continue
+			var values = []
+			for property in STAT_PROPERTIES[label.name]:
+				values.append(_format_stat(ally.get(property)))
+			label.text = "/".join(values)
+
+# Shows whole numbers without a decimal point, so 60.0 reads as 60.
+func _format_stat(value):
+	if is_equal_approx(value, round(value)):
+		return str(int(round(value)))
+	return "%.2f" % value
+
+# Combines every ally's exertions and descriptions into one list per type, so the exertion panel shows
+# everything the party can do. An exertion more than one ally knows is listed once, at the first ally's price.
+# Each type button's Quantity label shows how many exertions that type has.
+func _collect_party_exertions():
+	party_exertions = {"standard": {}, "mechanics": {}, "imageries": {}}
+	party_descriptors = {}
+	for ally in State.party:
+		for exertion in ally.standard_exertions:
+			if not party_exertions["standard"].has(exertion):
+				party_exertions["standard"][exertion] = ""
+		for type in ["mechanics", "imageries"]:
+			var prices: Dictionary = ally.get(type + "_exertions")
+			for exertion in prices:
+				if not party_exertions[type].has(exertion):
+					party_exertions[type][exertion] = str(prices[exertion])
+		for exertion in ally.exertions_descriptors:
+			if not party_descriptors.has(exertion):
+				party_descriptors[exertion] = ally.exertions_descriptors[exertion]
+	var type_buttons = $ExertionPanel/ExertionType.get_children()
+	for i in min(len(type_buttons), len(EXERTION_TYPES)):
+		type_buttons[i].get_node("Quantity").text = str(party_exertions[EXERTION_TYPES[i]].size())
+
+# Fills ExertionList with one row per exertion of the given type, showing its name and MT price.
+func _build_exertion_list(type):
+	var list = $ExertionPanel/ExertionList
+	# Use the first row as the template and detach it so the loop below doesn't free it.
+	if exertion_template == null:
+		exertion_template = list.get_child(0)
+		list.remove_child(exertion_template)
+	for row in list.get_children():
+		row.free()
+	var exertions = party_exertions[type]
+	for exertion in exertions:
+		var row = exertion_template.duplicate()
+		row.get_node("Name").text = exertion
+		row.get_node("Quantity").text = exertions[exertion]
+		list.add_child(row)
+		_disable_mouse(row)
+	exertion_shown_pos = 0
 
 # Hides the menu, clears its highlights, and lets the game carry on.
 func close_menu():
@@ -118,12 +214,17 @@ func _control_buttons():
 	buttons.append_array($ControlPanel/FunctionAdjustingPanel/FunctionList.get_children())
 	return buttons
 
-# Turns a button's text yellow, or shows the highlight ColorRect of a character panel.
-# Only the font colour changes, so a button's background and border keep their own colours.
-# Article rows show their name and count in child labels, so those labels turn yellow too.
+# Highlights the selected entry of a menu:
+# - a character panel shows its grey ColorRect,
+# - an exertion row gets the same grey (25% white) background, so its purple price keeps its colour,
+# - every other button turns its text yellow. Article rows show their name and count in child labels,
+#   so those labels turn yellow too.
 func _set_highlight(node, is_highlighted):
 	if not node is Button:
 		node.get_child(0).visible = is_highlighted
+		return
+	if node.get_parent() == $ExertionPanel/ExertionList:
+		_set_grey_highlight(node, is_highlighted)
 		return
 	var text_nodes = [node]
 	for child in node.get_children():
@@ -134,6 +235,17 @@ func _set_highlight(node, is_highlighted):
 			text_node.add_theme_color_override("font_color", Color("Yellow"))
 		else:
 			text_node.remove_theme_color_override("font_color")
+
+# Swaps a button's normal style for a copy with the grey highlight background, or puts the original back.
+func _set_grey_highlight(button, is_highlighted):
+	if not button.has_meta("normal_style"):
+		var normal_style = button.get_theme_stylebox("normal")
+		# Copy the normal style so the highlight keeps the same content margins and the text doesn't shift.
+		var highlight_style = normal_style.duplicate() if normal_style is StyleBoxFlat else StyleBoxFlat.new()
+		highlight_style.bg_color = HIGHLIGHT_COLOR
+		button.set_meta("normal_style", normal_style)
+		button.set_meta("highlight_style", highlight_style)
+	button.add_theme_stylebox_override("normal", button.get_meta("highlight_style") if is_highlighted else button.get_meta("normal_style"))
 
 func _clear_highlight(menu):
 	for node in _menu_nodes(menu):
@@ -164,19 +276,40 @@ func update_arrow():
 			shown_pos=selected_pos
 		move()
 
+	if current_menu=="exertion_types":
+		$ExertionPanel/ExertionDescription.text = ""
+	elif current_menu=="exertions":
+		# Scroll so the highlighted row stays in view, like the article list.
+		if selected_pos-exertion_shown_pos>EXERTION_ROWS_SHOWN-1:
+			exertion_shown_pos=selected_pos-(EXERTION_ROWS_SHOWN-1)
+		if selected_pos<exertion_shown_pos:
+			exertion_shown_pos=selected_pos
+		_scroll_list($ExertionPanel/ExertionList, exertion_shown_pos, EXERTION_ROWS_SHOWN)
+		var exertion = options[selected_pos].get_node("Name").text if not options.is_empty() else ""
+		$ExertionPanel/ExertionDescription.text = party_descriptors.get(exertion, "")
+
 func _open(menu):
 	current_menu = menu
 	selected_pos = 0
 	update_arrow()
 
+# C opens the menu. It opens from _unhandled_input, so a scene can keep it shut by handling C in its
+# own _input first, as the outside scene does while Elizyka's dialogue is open.
+func _unhandled_input(event: InputEvent) -> void:
+	if not visible and event.is_action_pressed("open_pause_menu") and not event.is_echo():
+		get_viewport().set_input_as_handled()
+		open_menu()
+
 func _physics_process(delta: float) -> void:
-	# X opens the menu and Esc closes it from any panel. Nothing else reacts while it is hidden.
+	# Nothing reacts while the menu is hidden.
 	if not visible:
-		if Input.is_action_just_pressed("open_pause_menu"):
-			open_menu()
 		return
-	if Input.is_action_just_pressed("ui_cancel"):
-		close_menu()
+	# X or Esc goes back one panel, like in battle. On the overview, the first panel, it closes the menu.
+	if Input.is_action_just_pressed("menu_back") or Input.is_action_just_pressed("ui_cancel"):
+		if current_menu == "options":
+			close_menu()
+		else:
+			back()
 		return
 	if current_menu=="quit":
 		if Input.is_action_just_pressed("walk_right"):
@@ -196,7 +329,8 @@ func _physics_process(delta: float) -> void:
 			if selected_pos>0:
 				selected_pos-=1
 			update_arrow()
-	if Input.is_action_just_pressed("ui_accept"):
+	# Enter, or Z (interact), confirms and moves on to the next panel, like in battle.
+	if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("interact"):
 		if current_menu == "options":
 			if selected_pos == 0:
 				if $ArticlePanel/ArticleList.get_child_count() > 0:
@@ -230,8 +364,12 @@ func _physics_process(delta: float) -> void:
 			equip($EquippablePanelAe/EquipabblesEquip.get_child(selected_slot_pos).name, options[selected_pos].get_child(0).text)
 			back()
 		elif current_menu == "exertion_types":
-			selected_type_pos=selected_pos
-			_open("exertions")
+			# A type with no exertions has nothing to open.
+			var type = EXERTION_TYPES[selected_pos]
+			if not party_exertions[type].is_empty():
+				selected_type_pos=selected_pos
+				_build_exertion_list(type)
+				_open("exertions")
 		elif current_menu == "exertions":
 			choose_exertion($ExertionPanel/ExertionType.get_child(selected_type_pos).get_child(0).text, options[selected_pos].get_child(0).text)
 			back()
@@ -245,7 +383,7 @@ func _physics_process(delta: float) -> void:
 				_open("controls")
 		elif current_menu == "controls":
 			var button = options[selected_pos]
-			# Done does the same as Backspace.
+			# Done does the same as X or Esc: it goes back one panel.
 			if button == $ControlPanel/OptionsPanel/Done:
 				back()
 			elif button.get_parent() == $ControlPanel/FunctionAdjustingPanel/FunctionList:
@@ -255,8 +393,6 @@ func _physics_process(delta: float) -> void:
 			var function_button = _chosen_function_button()
 			rebind(function_button.text, options[selected_pos].text)
 			back()
-	if Input.is_action_just_pressed("ui_text_backspace"):
-		back()
 func back():
 	_clear_highlight(current_menu)
 	if current_menu in MENU_OPTION_INDEX:
@@ -314,20 +450,26 @@ func _items():
 		$ArticlePanel/ArticleList.add_child(item)
 		_disable_mouse(item)
 func move():
-	for i in len($ArticlePanel/ArticleList.get_children()):
-		if i < shown_pos:
-			$ArticlePanel/ArticleList.get_children()[i].hide()
-		elif i-shown_pos<11:
-			$ArticlePanel/ArticleList.get_children()[i].position=Vector2(4,4+80*(i-shown_pos))
-			$ArticlePanel/ArticleList.get_children()[i].show()
+	_scroll_list($ArticlePanel/ArticleList, shown_pos, 11)
+
+# Shows rows_shown rows of a list starting at first_shown, stacked 80px apart, and hides the rest.
+func _scroll_list(list, first_shown, rows_shown):
+	var rows = list.get_children()
+	for i in len(rows):
+		if i < first_shown:
+			rows[i].hide()
+		elif i-first_shown<rows_shown:
+			rows[i].position=Vector2(4,4+80*(i-first_shown))
+			rows[i].show()
 		else:
-			$ArticlePanel/ArticleList.get_children()[i].hide()
+			rows[i].hide()
 func quit():
 	get_tree().quit()
-# The detached template isn't in the scene tree, so free it manually to avoid a leak.
+# The detached templates aren't in the scene tree, so free them manually to avoid a leak.
 func _exit_tree() -> void:
-	if item_template != null and item_template.get_parent() == null:
-		item_template.queue_free()
+	for template in [item_template, exertion_template]:
+		if template != null and template.get_parent() == null:
+			template.queue_free()
 func use(item,player):
 	print("used %s on %s" % [item, player])
 	inventory[item]-=1

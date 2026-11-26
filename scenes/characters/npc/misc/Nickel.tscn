@@ -48,11 +48,12 @@ animations = [{
 size = Vector2(120, 120)
 
 [node name="Nickel" type="CharacterBody2D" unique_id=287630542]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_doqfp")
 
 [node name="CharacterBody2D" type="AnimatedSprite2D" parent="." unique_id=1455456758]
 sprite_frames = SubResource("SpriteFrames_doqfp")
-animation = &"right"
+animation = &"back"
 autoplay = "right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1865638893]

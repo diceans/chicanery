@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://q3bwpc78tutt" path="res://scenes/characters/ae/AE_placeholder.tscn" id="3_mnleo"]
 [ext_resource type="Script" uid="uid://bfe0254iquhfp" path="res://scenes/test/transition/transition_node_to_1.gd" id="4_kme14"]
 [ext_resource type="PackedScene" uid="uid://c1gywu3noqrhl" path="res://scenes/characters/npc/enemies/anfugel/anfugel.tscn" id="5_cunso"]
+[ext_resource type="FontFile" uid="uid://daep05kl8e0hm" path="res://uxui/font/Lora/static/Lora-Regular.ttf" id="5_ufyy3"]
 [ext_resource type="Texture2D" uid="uid://dudk4kgi571d5" path="res://assets/characters/npc/allies/Elizyka.png" id="6_6d06a"]
 [ext_resource type="PackedScene" uid="uid://bqqb0nqa3jh3m" path="res://scenes/characters/npc/enemies/lignolus/lignolus.tscn" id="6_7w2d8"]
-[ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="8_cunso"]
 [ext_resource type="Texture2D" uid="uid://cbj3y68jiag0u" path="res://assets/characters/npc/allies/elizyka_visualization-removebg-preview.png" id="8_kme14"]
 [ext_resource type="PackedScene" uid="uid://p27dujolrsvj" path="res://scenes/characters/npc/misc/Nickel.tscn" id="11_06r44"]
 [ext_resource type="PackedScene" uid="uid://53bowmrlb2l2" path="res://scenes/test/pause_menu/pause_menu.tscn" id="12_ufyy3"]
@@ -78,7 +78,7 @@ grow_horizontal = 2
 grow_vertical = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(18, 18)
-theme_override_fonts/font = ExtResource("8_cunso")
+theme_override_fonts/font = ExtResource("5_ufyy3")
 theme_override_font_sizes/font_size = 56
 text = "Lorem ipsum dolor sit amet consectetur adipiscing elit iusto excepteur. Mollit quis deserunt aute, labore tempor eu est consectetur dolore non."
 autowrap_mode = 3
@@ -96,7 +96,7 @@ offset_right = -7.0
 offset_bottom = -7.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_fonts/font = ExtResource("8_cunso")
+theme_override_fonts/font = ExtResource("5_ufyy3")
 theme_override_font_sizes/font_size = 48
 text = ">"
 
@@ -210,6 +210,8 @@ y_sort_enabled = true
 position = Vector2(994, 2149)
 
 [node name="Goose" type="Node2D" parent="." unique_id=719321835]
+z_index = 1
+y_sort_enabled = true
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="Goose" unique_id=1584874222]
 navigation_polygon = SubResource("NavigationPolygon_i7okt")

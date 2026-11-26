@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bid2884t2nusl"
-path="res://.godot/imported/Exertionarticle_menu_pointer.png-14364acb2b2bbf414d7b82e8e6cdf490.ctex"
+uid="uid://cr8jpep74fed4"
+path="res://.godot/imported/unalive.png-6c5c32f9a6618ba92481c9562d997e86.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/misc/Exertionarticle_menu_pointer.png"
-dest_files=["res://.godot/imported/Exertionarticle_menu_pointer.png-14364acb2b2bbf414d7b82e8e6cdf490.ctex"]
+source_file="res://assets/misc/unalive.png"
+dest_files=["res://.godot/imported/unalive.png-6c5c32f9a6618ba92481c9562d997e86.ctex"]
 
 [params]
 

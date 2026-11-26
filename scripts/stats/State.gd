@@ -10,3 +10,8 @@ var return_player_to_enemy = false
 var active_enemy_id: StringName = &""
 var active_enemy_position: Vector2 = Vector2.ZERO
 var defeated_enemy_positions: Dictionary = {}
+# Set when the party leaves a battle by disengaging, so the outside scene puts AE back near that enemy.
+var disengaged_from_enemy = false
+# The tile AE was stepping from and the direction AE was moving when it touched the enemy.
+var player_tile_position: Vector2 = Vector2.ZERO
+var player_direction: Vector2 = Vector2.ZERO

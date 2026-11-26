@@ -1,10 +1,13 @@
 [gd_resource type="Resource" script_class="StatusEffect" format=3 uid="uid://ci548khg3eyeo"]
 
+[ext_resource type="Texture2D" uid="uid://cr8jpep74fed4" path="res://assets/misc/unalive.png" id="1_j57qt"]
 [ext_resource type="Script" uid="uid://ccoh04a0ph3n6" path="res://scripts/stats/status_effect.gd" id="1_su8rs"]
 
 [resource]
 script = ExtResource("1_su8rs")
 effect_name = "UNALIVE"
+icon = ExtResource("1_j57qt")
+icon_pos = "center"
 duration_turns = 1000
 custom_properties = {
 "is_unalive": false

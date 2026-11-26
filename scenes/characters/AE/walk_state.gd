@@ -56,6 +56,7 @@ func _try_start_step(direction: Vector2) -> void:
 	if player.test_move(player.global_transform, offset):
 		animate_sprite_2d.stop()
 		return
+	player.tile_position = player.global_position
 	target_position = player.global_position + offset
 	is_stepping = true
 

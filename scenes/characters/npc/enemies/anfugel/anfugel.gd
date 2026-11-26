@@ -15,6 +15,10 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 		State.active_enemy_id = enemy_id
 		State.active_enemy_position = global_position
+		# Remember where AE stepped from and which way it was moving, in case the party disengages.
+		if body is AE:
+			State.player_tile_position = body.tile_position
+			State.player_direction = body.ae_direction
 		var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/battle/battle.tscn")
 		if scene_change_error != OK:
 			State.active_enemy_id = &""

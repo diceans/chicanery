@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://6wchkbuvjdmx" path="res://scripts/res/enemies/anfugel.tres" id="2_iw1lj"]
 [ext_resource type="Texture2D" uid="uid://bb7gaowvmiwqa" path="res://assets/background/taiwan3.jpg" id="3_uuwk3"]
 [ext_resource type="FontFile" uid="uid://cjed4d02nrwc5" path="res://uxui/font/Courier Prime/Courier Prime Bold.ttf" id="4_uuwk3"]
+[ext_resource type="FontFile" uid="uid://daep05kl8e0hm" path="res://uxui/font/Lora/static/Lora-Regular.ttf" id="6_3u3hm"]
 [ext_resource type="Texture2D" uid="uid://q77krs3skau6" path="res://assets/characters/ae/AE.png" id="7_3u3hm"]
 [ext_resource type="FontFile" uid="uid://c6mwkd1n8xig3" path="res://uxui/font/Courier Prime/Courier Prime.ttf" id="7_yq2ln"]
 [ext_resource type="Texture2D" uid="uid://dudk4kgi571d5" path="res://assets/characters/npc/allies/Elizyka.png" id="8_ce6at"]
@@ -795,7 +796,7 @@ offset_top = 81.0
 offset_right = 1518.0
 offset_bottom = 324.0
 size_flags_vertical = 3
-theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_fonts/font = ExtResource("6_3u3hm")
 theme_override_font_sizes/font_size = 48
 theme_override_styles/normal = SubResource("StyleBoxFlat_647dl")
 text = "I don't want to talk to you no more, you empty-headed animal food trough wiper! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries!"
@@ -854,7 +855,7 @@ offset_left = 34.0
 offset_top = 23.0
 offset_right = 543.0
 offset_bottom = 115.0
-theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_fonts/font = ExtResource("6_3u3hm")
 theme_override_font_sizes/font_size = 67
 text = "STINKY appears"
 
@@ -895,7 +896,7 @@ size_flags_vertical = 3
 texture = ExtResource("7_3u3hm")
 expand_mode = 1
 
-[node name="ConditionIcon" type="TextureRect" parent="AeContainer" unique_id=438492608]
+[node name="SideCondition" type="TextureRect" parent="AeContainer" unique_id=438492608]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -903,13 +904,13 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -46.0
-offset_top = -107.5
-offset_right = -6.0
-offset_bottom = -67.5
+offset_top = -155.5
+offset_right = 34.0
+offset_bottom = -75.5
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ConditionIcon2" type="TextureRect" parent="AeContainer" unique_id=1000647456]
+[node name="SideCondition2" type="TextureRect" parent="AeContainer" unique_id=1000647456]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -917,10 +918,24 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -46.0
-offset_top = -53.5
-offset_right = -6.0
-offset_bottom = -13.5
+offset_top = -75.5
+offset_right = 34.0
+offset_bottom = 4.5
 grow_horizontal = 0
+grow_vertical = 2
+
+[node name="CenterCondition" type="TextureRect" parent="AeContainer" unique_id=990548685]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Damage" type="Label" parent="AeContainer" unique_id=1942044942]
@@ -1047,7 +1062,7 @@ size_flags_vertical = 3
 texture = ExtResource("8_ce6at")
 expand_mode = 1
 
-[node name="ConditionIcon" type="TextureRect" parent="Elizyka" unique_id=1824712516]
+[node name="SideCondition" type="TextureRect" parent="Elizyka" unique_id=1824712516]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1055,12 +1070,13 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -40.0
-offset_top = -107.5
-offset_bottom = -67.5
+offset_top = -155.5
+offset_right = 40.0
+offset_bottom = -75.5
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ConditionIcon2" type="TextureRect" parent="Elizyka" unique_id=433537636]
+[node name="SideCondition2" type="TextureRect" parent="Elizyka" unique_id=433537636]
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -1068,9 +1084,24 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -40.0
-offset_top = -53.5
-offset_bottom = -13.5
+offset_top = -75.5
+offset_right = 40.0
+offset_bottom = 4.5
 grow_horizontal = 0
+grow_vertical = 2
+
+[node name="CenterCondition" type="TextureRect" parent="Elizyka" unique_id=1682208916]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Damage2" type="Label" parent="Elizyka" unique_id=1401232373]
@@ -1341,7 +1372,7 @@ offset_left = 4.0
 offset_top = 5.0
 offset_right = 361.0
 offset_bottom = 491.0
-theme_override_fonts/font = ExtResource("9_yq2ln")
+theme_override_fonts/font = ExtResource("6_3u3hm")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_j0ler")
 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."

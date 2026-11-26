@@ -57,6 +57,7 @@ const TEXTBOX_AUTO_CLOSE_SECONDS := 2.0
 var textbox_id: int = 0
 const ENEMY_DAMAGE_OFFSET := Vector2(0, 0)
 const UNALIVE_CONDITION_PATH := "res://scripts/res/conditions/unalive.tres"
+const DISENGAGED_CONDITION_PATH := "res://scripts/res/conditions/disengaged.tres"
 # The HUD container for each ally, keyed by the id in the ally's resource file.
 const ALLY_CONTAINERS := {0: "AeContainer", 1: "Elizyka"}
 # Condition values that belong to one ally. They are copied into the variables above while that ally is active.
@@ -66,8 +67,6 @@ var party: Array[Dictionary] = []
 # The party entry and resource file of the ally the battle is currently resolving.
 var active_ally: Dictionary = {}
 var ally: Resource = null
-var condition_icon: TextureRect
-var condition_icon_2: TextureRect
 # The enemy's condition, counted down at the end of each enemy turn like an ally's.
 var enemy_condition: StatusEffect = null
 var enemy_condition_turns_remaining: int = 0
@@ -79,6 +78,10 @@ const CONFLAGRANT_CONDITION_PATH := "res://scripts/res/conditions/conflagrant.tr
 const ASH_EM := 1.1
 const JEST_DAMAGE := 0
 const JEST_LINE := "What do you call an alligator wearing a vest? An investigator!"
+# COUNTERSTROKE puts the ally in COUNTERING until the end of the next enemy turn. If the enemy hits
+# that ally, the ally takes no damage and hits back for COUNTER_FACTOR of the enemy's damage output.
+const COUNTERING_CONDITION_PATH := "res://scripts/res/conditions/countering.tres"
+const COUNTER_FACTOR := 0.7
 # The combat dialogue holds longer lines than the textbox, so it stays up longer before closing itself.
 const DIALOGUE_AUTO_CLOSE_SECONDS := 4.0
 
@@ -134,7 +137,7 @@ func _ready():
 	display_text("%s appears" % enemy.name.to_upper())
 	await textbox_closed
 	if _living_allies().is_empty():
-		await player_defeated()
+		await _party_out_of_battle()
 		return
 
 	# The ally who would act first races the enemy on ERL.
@@ -166,8 +169,9 @@ func _build_party() -> void:
 			"container": container,
 			"portrait": _first_existing_node(container, ["Portrait", "TextureRect"]),
 			"damage_label": _first_existing_node(container, ["Damage", "Damage2"]),
-			"condition_icon": container.get_node("ConditionIcon"),
-			"condition_icon_2": container.get_node("ConditionIcon2"),
+			# Conditions whose icon_pos is "side" fill these in order; "center" ones use CenterCondition.
+			"side_condition_icons": [container.get_node("SideCondition"), container.get_node("SideCondition2")],
+			"center_condition_icon": container.get_node("CenterCondition"),
 			"wn_label": data.get_node("Wholeness/Stat"),
 			"mt_label": data.get_node("Mentality/Stat"),
 			"condition_label": _first_existing_node(data, ["Condition", "Panel/Condition"]),
@@ -177,12 +181,20 @@ func _build_party() -> void:
 			"secondary_condition_turns_remaining": 0,
 			"bracing_pending": false,
 			"conflagrant_burn_applied_this_turn": false,
+			# Set by FORSAKE. A disengaged ally keeps its WN but is out of the battle for good.
+			"disengaged": false,
 		}
 		ally_resource.turns = 0
 		if ally_resource.texture != null:
 			member["portrait"].texture = ally_resource.texture
 		member["damage_label"].visible = false
 		member["damage_label"].modulate.a = 1.0
+		# The icon slots keep the size and spot they have in the editor, and each icon is fitted inside its slot.
+		for icon_slot: TextureRect in member["side_condition_icons"] + [member["center_condition_icon"]]:
+			icon_slot.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			icon_slot.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			icon_slot.hide()
 		_update_ally_stats(member)
 		party.append(member)
 
@@ -207,8 +219,6 @@ func _select_ally(member: Dictionary) -> void:
 	_store_active_ally()
 	active_ally = member
 	ally = member["resource"]
-	condition_icon = member["condition_icon"]
-	condition_icon_2 = member["condition_icon_2"]
 	for key in ALLY_CONDITION_KEYS:
 		set(key, member[key])
 
@@ -219,13 +229,21 @@ func _store_active_ally() -> void:
 	for key in ALLY_CONDITION_KEYS:
 		active_ally[key] = get(key)
 
-# Returns the allies who still have WN left.
+# Returns the allies still in the fight: those with WN left who haven't disengaged.
 func _living_allies() -> Array[Dictionary]:
 	var living: Array[Dictionary] = []
 	for member in party:
-		if member["resource"].current_WN > 0:
+		if member["resource"].current_WN > 0 and not member["disengaged"]:
 			living.append(member)
 	return living
+
+# Ends the battle once no ally is left in the fight. If anyone disengaged, the party got away;
+# if every ally is unalive, the party is defeated.
+func _party_out_of_battle() -> void:
+	if party.any(func(member): return member["disengaged"]):
+		await party_disengaged()
+	else:
+		await player_defeated()
 
 # Returns the first standing ally whose turn count is 0, or an empty entry if nobody is standing.
 func _next_ally() -> Dictionary:
@@ -244,7 +262,7 @@ func _next_ally() -> Dictionary:
 func _start_party_turn() -> void:
 	var next_ally := _next_ally()
 	if next_ally.is_empty():
-		await player_defeated()
+		await _party_out_of_battle()
 		return
 	_select_ally(next_ally)
 	check_condition()
@@ -523,6 +541,9 @@ func _check_enemy_condition() -> void:
 		enemy_condition_icon.hide()
 		return
 	_condition_icon_for_status(enemy_condition_icon, enemy_condition)
+	enemy_condition_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+	enemy_condition_icon.size = Vector2(48, 48)
+	enemy_condition_icon.scale = Vector2(0.6, 0.6)
 	var enemy_rect: Rect2 = $EnemyContainer/Enemy.get_global_rect()
 	enemy_condition_icon.global_position = enemy_rect.position + Vector2(enemy_rect.size.x - 48 * 0.6, 0) + ENEMY_CONDITION_ICON_OFFSET
 
@@ -606,20 +627,79 @@ func _apply_condition(condition_path: String) -> void:
 		condition_turns_remaining = condition.duration_turns if condition != null else 0
 	check_condition()
 
-# Marks the active ally as unalive once its WN reaches 0. Every other condition is cleared, and
-# unalive never counts down because fallen allies are skipped when conditions tick each enemy turn.
+# Puts the active ally in COUNTERING. Like bracing, it sits beside a condition the ally already has
+# (such as CONFLAGRANT) as the second icon, or takes the main slot if the ally has none.
+# The resource is copied so each ally's COUNTERING flag is its own, since load() shares one instance.
+func _apply_countering() -> void:
+	var countering_effect := load(COUNTERING_CONDITION_PATH) as StatusEffect
+	if countering_effect == null:
+		push_error("Failed to load status effect: %s" % COUNTERING_CONDITION_PATH)
+		return
+	countering_effect = countering_effect.duplicate(true)
+	if condition != null:
+		_set_condition_active(secondary_condition, false)
+		secondary_condition = countering_effect
+		secondary_condition_turns_remaining = countering_effect.duration_turns
+	else:
+		condition = countering_effect
+		condition_turns_remaining = countering_effect.duration_turns
+	_set_condition_active(countering_effect, true)
+	check_condition()
+
+# Whether the active ally is COUNTERING, in either condition slot.
+func _is_countering() -> bool:
+	for status_effect in [condition, secondary_condition]:
+		if status_effect != null and status_effect.custom_properties.get("is_countering", false):
+			return true
+	return false
+
+# Ends the active ally's COUNTERING, whether or not the enemy attacked them.
+func _clear_countering() -> void:
+	if secondary_condition != null and secondary_condition.custom_properties.get("is_countering", false):
+		_set_condition_active(secondary_condition, false)
+		secondary_condition = null
+		secondary_condition_turns_remaining = 0
+	if condition != null and condition.custom_properties.get("is_countering", false):
+		_set_condition_active(condition, false)
+		condition = null
+		condition_turns_remaining = 0
+	check_condition()
+
+# The countering ally hits back for COUNTER_FACTOR of the damage the enemy dealt this turn.
+func _counter_enemy() -> void:
+	player_damage = roundi(COUNTER_FACTOR * enemy_DO)
+	display_text("%s countered" % ally.name)
+	await textbox_closed
+	_apply_enemy_damage(player_damage)
+	$AnimationPlayer.play("enemy_damaged")
+	await $AnimationPlayer.animation_finished
+	display_text("%s dealt %d damage" % [ally.name, player_damage])
+	await textbox_closed
+
+# Marks the active ally as unalive once its WN reaches 0.
 func _apply_unalive() -> void:
-	var unalive := load(UNALIVE_CONDITION_PATH) as StatusEffect
-	if unalive == null:
-		push_error("Failed to load the unalive status effect")
+	_lock_out_active_ally(UNALIVE_CONDITION_PATH)
+
+# Marks the active ally as disengaged after FORSAKE. It keeps its WN, but like unalive it is out of the battle for good.
+func _apply_disengaged() -> void:
+	active_ally["disengaged"] = true
+	_lock_out_active_ally(DISENGAGED_CONDITION_PATH)
+
+# Replaces every condition on the active ally with one that keeps it out of the battle, such as unalive
+# or disengaged. The condition never counts down, because allies out of the fight are skipped when
+# conditions tick each enemy turn.
+func _lock_out_active_ally(condition_path: String) -> void:
+	var lock_out := load(condition_path) as StatusEffect
+	if lock_out == null:
+		push_error("Failed to load status effect: %s" % condition_path)
 		return
 	_set_condition_active(condition, false)
 	_set_condition_active(secondary_condition, false)
 	secondary_condition = null
 	secondary_condition_turns_remaining = 0
 	bracing_pending = false
-	condition = unalive
-	condition_turns_remaining = unalive.duration_turns
+	condition = lock_out
+	condition_turns_remaining = lock_out.duration_turns
 	_set_condition_active(condition, true)
 	check_condition()
 
@@ -627,7 +707,7 @@ func _apply_unalive() -> void:
 func _set_condition_active(status_effect: StatusEffect, is_active: bool) -> void:
 	if status_effect == null:
 		return
-	for property_name in ["is_bracing", "is_constricted", "is_conflagrant"]:
+	for property_name in ["is_bracing", "is_constricted", "is_conflagrant", "is_countering"]:
 		if status_effect.custom_properties.has(property_name):
 			status_effect.custom_properties[property_name] = is_active
 	status_effect.locked = is_active and status_effect.duration_turns > 0
@@ -644,21 +724,54 @@ func check_condition() -> void:
 		condition = null
 		condition_turns_remaining = 0
 		set_condition(condition_label, primary_name)
-		condition_icon.hide()
-		condition_icon_2.hide()
 	else:
 		condition.locked = true
 		set_condition(condition_label, primary_name)
-		_condition_icon_for_status(condition_icon, condition)
-		if secondary_condition != null and secondary_condition_turns_remaining > 0:
-			_condition_icon_for_status(condition_icon_2, secondary_condition)
-		else:
-			condition_icon_2.hide()
-		_position_condition_icon()
+	_show_condition_icons()
+	_update_portrait_opacity()
 	_refresh_menu_selection()
 
-# Attaches a status effect sprite to the given icon slot and keeps the slot usable for a
-# secondary effect without duplicating the same icon in both positions.
+# The conditions currently on the active ally: its main condition, then its second one.
+func _active_conditions() -> Array[StatusEffect]:
+	var active: Array[StatusEffect] = []
+	if condition != null and condition_turns_remaining > 0:
+		active.append(condition)
+		if secondary_condition != null and secondary_condition_turns_remaining > 0:
+			active.append(secondary_condition)
+	return active
+
+# Fades the active ally's portrait while it has a condition with a "portrait_opacity" custom property,
+# such as DISENGAGED (0.3). With several, the lowest opacity is used; with none, the portrait is fully opaque.
+func _update_portrait_opacity() -> void:
+	var opacity := 1.0
+	for status_effect in _active_conditions():
+		if status_effect.custom_properties.has("portrait_opacity"):
+			opacity = min(opacity, float(status_effect.custom_properties["portrait_opacity"]))
+	var portrait: TextureRect = active_ally["portrait"]
+	portrait.modulate.a = opacity
+
+# Shows the active ally's condition icons in the slots their icon_pos asks for. "center" conditions
+# (UNALIVE, DISENGAGED) go in CenterCondition; "side" conditions fill SideCondition, then SideCondition2,
+# in the order main condition, second condition.
+func _show_condition_icons() -> void:
+	var side_icons: Array = active_ally["side_condition_icons"]
+	var center_icon: TextureRect = active_ally["center_condition_icon"]
+	for icon_slot: TextureRect in side_icons:
+		icon_slot.hide()
+	center_icon.hide()
+
+	var side_index := 0
+	for status_effect in _active_conditions():
+		if status_effect.icon_pos == "center":
+			_condition_icon_for_status(center_icon, status_effect)
+			continue
+		if status_effect.icon_pos != "side":
+			push_error("%s has icon_pos \"%s\"; expected \"side\" or \"center\", so it is shown on the side" % [status_effect.effect_name, status_effect.icon_pos])
+		if side_index < side_icons.size():
+			_condition_icon_for_status(side_icons[side_index], status_effect)
+			side_index += 1
+
+# Puts a status effect's sprite, trimmed to its visible pixels, into the given icon slot and shows it.
 func _condition_icon_for_status(icon_slot: TextureRect, status_effect: StatusEffect) -> void:
 	if icon_slot == null or status_effect == null:
 		if icon_slot != null:
@@ -676,27 +789,7 @@ func _condition_icon_for_status(icon_slot: TextureRect, status_effect: StatusEff
 	icon_texture.atlas = status_effect.icon
 	icon_texture.region = Rect2(icon_image.get_used_rect())
 	icon_slot.texture = icon_texture
-	icon_slot.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	icon_slot.size = Vector2(48, 48)
-	icon_slot.scale = Vector2(0.6, 0.6)
 	icon_slot.show()
-
-# Positions the condition icons over the active ally's portrait so its statuses are visible in the battle UI.
-func _position_condition_icon() -> void:
-	var avatar_rect: TextureRect = active_ally["portrait"]
-	var base_position := avatar_rect.position + Vector2(
-		avatar_rect.size.x - 48 * 0.6,
-		0
-	)
-	condition_icon.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-	condition_icon.size = Vector2(48, 48)
-	condition_icon.scale = Vector2(0.6, 0.6)
-	condition_icon.position = base_position + Vector2(-20, -20)
-	if condition_icon_2 != null:
-		condition_icon_2.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
-		condition_icon_2.size = Vector2(48, 48)
-		condition_icon_2.scale = Vector2(0.6, 0.6)
-		condition_icon_2.position = base_position + Vector2(-20, 32)
 
 # Resolves the conflagrant burn tick once per active turn using the extra_dmg_factor value from the status effect.
 func _apply_conflagrant_burn() -> void:
@@ -732,9 +825,9 @@ func _advance_condition_turn(condition_at_turn_start: StatusEffect) -> void:
 func _is_accept(event: InputEvent) -> bool:
 	return event.is_action_pressed("ui_accept") or event.is_action_pressed("interact")
 
-# X (open_pause_menu) or Esc (ui_cancel) backs out of a sub-panel.
+# X (menu_back) or Esc (ui_cancel) backs out of a sub-panel.
 func _is_back(event: InputEvent) -> bool:
-	return event.is_action_pressed("open_pause_menu") or event.is_action_pressed("ui_cancel")
+	return event.is_action_pressed("menu_back") or event.is_action_pressed("ui_cancel")
 
 # Handles accept-key dismissal and keyboard navigation across the battle menu panels.
 func _input(event: InputEvent) -> void:
@@ -863,7 +956,7 @@ func enemy_turn():
 		member["conflagrant_burn_applied_this_turn"] = false
 	var living := _living_allies()
 	if living.is_empty():
-		await player_defeated()
+		await _party_out_of_battle()
 		return
 	# A conflagrant enemy burns at the start of its turn, and may burn out before it can act.
 	if enemy_condition != null and enemy_condition.custom_properties.get("is_conflagrant", false):
@@ -906,6 +999,8 @@ func enemy_turn():
 	var was_bracing = bracing_pending or (
 		condition != null and condition.custom_properties.get("is_bracing", false)
 	)
+	# Checked before the exertion resolves, because PINK and RIVE clear the target's main condition slot.
+	var was_countering := _is_countering()
 	# ROCK applies constriction but is not an offensive, damaging exertion.
 	if enemy_exertion == "ROCK":
 		_apply_condition("res://scripts/res/conditions/constricted.tres")
@@ -933,23 +1028,34 @@ func enemy_turn():
 		bracing_effect.flat_modifiers["pi_tDIM"] = randf_range(0.46, 0.54)
 		enemy_DI = int(enemy_DO * bracing_effect.flat_modifiers["pi_tDIM"])
 		bracing_pending = false
+	# A countering target takes none of the hit and strikes back. ROCK deals no damage, so there is nothing to counter.
+	var countered := was_countering and enemy_DO > 0
+	if countered:
+		enemy_DI = 0
 	if enemy_DI > 0:
 		_apply_player_damage(enemy_DI)
+	if countered:
+		await _counter_enemy()
+		if current_enemy_WN == 0:
+			await _enemy_defeated()
+			return
 	if not conflagrant_burn_applied_this_turn and condition != null and condition.custom_properties.get("is_conflagrant", false):
 		_apply_conflagrant_burn()
 	# Allies who weren't targeted still take their own burn tick, and every standing ally's conditions count down.
+	# COUNTERING lasts one enemy turn, so it ends here whether or not the enemy attacked that ally.
 	for i in party.size():
 		var member: Dictionary = party[i]
-		if member["resource"].current_WN <= 0:
+		if member["resource"].current_WN <= 0 or member["disengaged"]:
 			continue
 		_select_ally(member)
 		if not is_same(member, target):
 			_apply_conflagrant_burn()
+		_clear_countering()
 		_advance_condition_turn(conditions_at_turn_start[i])
 	_advance_enemy_condition_turn()
 	_advance_enemy_lock()
 	if _living_allies().is_empty():
-		await player_defeated()
+		await _party_out_of_battle()
 		return
 	_start_party_turn()
 
@@ -964,6 +1070,23 @@ func player_defeated() -> void:
 	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/act1/test_scene_player_house_first_floor.tscn")
 	if scene_change_error != OK:
 		push_error("Failed to load the first-floor scene: %s" % scene_change_error)
+
+# Ends the battle after every ally still standing has disengaged. Disengaged allies keep their WN,
+# while unalive allies (0 WN) are restored to their max WN so the party leaves with nobody at 0.
+# The enemy isn't recorded as defeated; the outside scene puts AE back near the enemy, a step away from it.
+func party_disengaged() -> void:
+	display_text("The party disengaged")
+	await textbox_closed
+
+	for member in party:
+		if not member["disengaged"] and member["resource"].current_WN <= 0:
+			member["resource"].current_WN = member["resource"].max_WN
+		member["resource"].turns = 0
+	State.disengaged_from_enemy = true
+	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
+	if scene_change_error != OK:
+		State.disengaged_from_enemy = false
+		push_error("Failed to load the outside scene: %s" % scene_change_error)
 
 # Resolves the active ally's assault action, applies damage, and transitions back to the outside scene when the enemy is slain.
 func _on_assault_pressed() -> void:
@@ -1078,6 +1201,8 @@ func _on_mt_exertion_pressed(exertion_name: String, cost: int) -> void:
 			await _exert_jest()
 		"ASH":
 			await _exert_ash()
+		"COUNTERSTROKE":
+			await _exert_counterstroke()
 	if current_enemy_WN == 0:
 		await _enemy_defeated()
 		return
@@ -1110,6 +1235,12 @@ func _exert_ash() -> void:
 	display_text("%s is %s" % [enemy.name, enemy_condition.effect_name.to_lower()])
 	await textbox_closed
 
+# COUNTERSTROKE: the active ally starts COUNTERING, which is resolved and cleared on the enemy's turn.
+func _exert_counterstroke() -> void:
+	_apply_countering()
+	display_text("%s is countering" % ally.name)
+	await textbox_closed
+
 # Resolves the FORBEAR exertion, restoring some MT, and ends the active ally's turn without attacking.
 func _on_forbear_pressed() -> void:
 	_hide_exert_panel()
@@ -1118,11 +1249,15 @@ func _on_forbear_pressed() -> void:
 	await textbox_closed
 	_end_ally_turn()
 
-# Resolves the FORSAKE exertion, restoring some MT, and intentionally gives up the active ally's turn.
+# Resolves the FORSAKE exertion: the active ally restores some MT and disengages, leaving the battle for good.
+# Once every ally still standing has disengaged, the enemy turn that follows ends the battle.
 func _on_forsake_pressed() -> void:
 	_hide_exert_panel()
 	_restore_standard_exertion_MT()
 	display_text("%s forsook" % ally.name)
+	await textbox_closed
+	_apply_disengaged()
+	display_text("%s disengaged" % ally.name)
 	await textbox_closed
 	_end_ally_turn()
 
@@ -1135,6 +1270,6 @@ func _on_foredoom_pressed() -> void:
 	if foredoom_damage > 0:
 		_apply_player_damage(foredoom_damage)
 	if _living_allies().is_empty():
-		await player_defeated()
+		await _party_out_of_battle()
 		return
 	_end_ally_turn()
