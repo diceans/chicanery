@@ -296,6 +296,9 @@ func _open(menu):
 # C opens the menu. It opens from _unhandled_input, so a scene can keep it shut by handling C in its
 # own _input first, as the outside scene does while Elizyka's dialogue is open.
 func _unhandled_input(event: InputEvent) -> void:
+	# The menu stays shut during the blink between scenes.
+	if TransitionAnimation.is_transitioning:
+		return
 	if not visible and event.is_action_pressed("open_pause_menu") and not event.is_echo():
 		get_viewport().set_input_as_handled()
 		open_menu()

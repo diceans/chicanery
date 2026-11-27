@@ -249,10 +249,15 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Enemy" type="TextureRect" parent="EnemyContainer" unique_id=1696506467]
-layout_mode = 0
-offset_top = 36.0
-offset_right = 364.0
-offset_bottom = 36.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 38.0
+offset_right = 150.0
+offset_bottom = 338.0
+grow_horizontal = 2
 stretch_mode = 3
 
 [node name="Damage" type="Label" parent="EnemyContainer" unique_id=91439474]

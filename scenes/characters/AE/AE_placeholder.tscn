@@ -134,7 +134,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ixrrj"]
-size = Vector2(33, 65)
+size = Vector2(60, 60)
 
 [node name="AePlaceholder" type="CharacterBody2D" unique_id=2014605289]
 y_sort_enabled = true
@@ -147,7 +147,7 @@ sprite_frames = SubResource("SpriteFrames_i7okt")
 animation = &"walk_front"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1415920983]
-position = Vector2(0.5, 65.5)
+position = Vector2(1, 50)
 shape = SubResource("RectangleShape2D_ixrrj")
 
 [node name="StateMachine" type="Node" parent="." unique_id=879886051 node_paths=PackedStringArray("initial_node_state")]

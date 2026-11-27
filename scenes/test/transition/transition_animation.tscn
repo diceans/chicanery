@@ -1,0 +1,169 @@
+[gd_scene format=3 uid="uid://cuwo5g07vocd4"]
+
+[ext_resource type="Script" uid="uid://cw5jj4jdo50dp" path="res://scenes/test/transition/transition_animation.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cmwujisueqwut" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0000.png" id="f_0000"]
+[ext_resource type="Texture2D" uid="uid://cdlwa3wdll3ft" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0001.png" id="f_0001"]
+[ext_resource type="Texture2D" uid="uid://dr0r8hohcxmnd" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0002.png" id="f_0002"]
+[ext_resource type="Texture2D" uid="uid://cp0li7wktar66" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0003.png" id="f_0003"]
+[ext_resource type="Texture2D" uid="uid://cgcdcog5evybt" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0004.png" id="f_0004"]
+[ext_resource type="Texture2D" uid="uid://1ewl5mmh1jpu" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0005.png" id="f_0005"]
+[ext_resource type="Texture2D" uid="uid://ucdjhg6encni" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0006.png" id="f_0006"]
+[ext_resource type="Texture2D" uid="uid://deeq2pw3mmnu5" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0007.png" id="f_0007"]
+[ext_resource type="Texture2D" uid="uid://l58rf26pwqp5" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0008.png" id="f_0008"]
+[ext_resource type="Texture2D" uid="uid://dip1x47bjlnt" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0009.png" id="f_0009"]
+[ext_resource type="Texture2D" uid="uid://dxkbw18a4btmk" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0010.png" id="f_0010"]
+[ext_resource type="Texture2D" uid="uid://w3eltfmutrnh" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0011.png" id="f_0011"]
+[ext_resource type="Texture2D" uid="uid://3l5d86smy4uj" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0012.png" id="f_0012"]
+[ext_resource type="Texture2D" uid="uid://cis2lwjao3xq1" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0013.png" id="f_0013"]
+[ext_resource type="Texture2D" uid="uid://clh7ibcwdh6od" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0014.png" id="f_0014"]
+[ext_resource type="Texture2D" uid="uid://bca3efit1vmd5" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0015.png" id="f_0015"]
+[ext_resource type="Texture2D" uid="uid://dkdg1fmy2muqd" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0016.png" id="f_0016"]
+[ext_resource type="Texture2D" uid="uid://cuwvcp3tykxbb" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0017.png" id="f_0017"]
+[ext_resource type="Texture2D" uid="uid://c6ig82lnndrix" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0018.png" id="f_0018"]
+[ext_resource type="Texture2D" uid="uid://bbcjylhkihqo7" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0019.png" id="f_0019"]
+[ext_resource type="Texture2D" uid="uid://lg0tyitc3eyi" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0020.png" id="f_0020"]
+[ext_resource type="Texture2D" uid="uid://bii1jg2rcv6o1" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0021.png" id="f_0021"]
+[ext_resource type="Texture2D" uid="uid://cubr5ww72tvms" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0022.png" id="f_0022"]
+[ext_resource type="Texture2D" uid="uid://bnl735sdmtcfm" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0023.png" id="f_0023"]
+[ext_resource type="Texture2D" uid="uid://coidi32ojopng" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0024.png" id="f_0024"]
+[ext_resource type="Texture2D" uid="uid://bc3u3aiahqv5m" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0025.png" id="f_0025"]
+[ext_resource type="Texture2D" uid="uid://dh1qb2j8rry5s" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0026.png" id="f_0026"]
+[ext_resource type="Texture2D" uid="uid://b7cni8hirfb8m" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0027.png" id="f_0027"]
+[ext_resource type="Texture2D" uid="uid://3l6xwsaqrlal" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0028.png" id="f_0028"]
+[ext_resource type="Texture2D" uid="uid://c82n0amhgxb5l" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0029.png" id="f_0029"]
+[ext_resource type="Texture2D" uid="uid://clwvue844g5j" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0030.png" id="f_0030"]
+[ext_resource type="Texture2D" uid="uid://nbq566ftjmdo" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0031.png" id="f_0031"]
+[ext_resource type="Texture2D" uid="uid://ciwbdelnik4or" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0032.png" id="f_0032"]
+[ext_resource type="Texture2D" uid="uid://dx0sl7hc06rsn" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0033.png" id="f_0033"]
+[ext_resource type="Texture2D" uid="uid://dajt0qjks87a2" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0034.png" id="f_0034"]
+[ext_resource type="Texture2D" uid="uid://bd7mvkmgn1hrp" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0035.png" id="f_0035"]
+[ext_resource type="Texture2D" uid="uid://o722rd48rbyq" path="res://uxui/blinkanims/Blink Transition Animation/blink_animation_0036.png" id="f_0036"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_blink"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("f_0000")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0009")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0010")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0011")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0012")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0013")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0014")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0015")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0016")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0017")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0018")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0019")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0020")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0021")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0022")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0023")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0024")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0025")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0026")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0027")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0028")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0029")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0030")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0031")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0032")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0033")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0034")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0035")
+}, {
+"duration": 1.0,
+"texture": ExtResource("f_0036")
+}],
+"loop": 0,
+"name": &"blink",
+"speed": 72.0
+}]
+
+[node name="TransitionAnimation" type="CanvasLayer" unique_id=1432401821]
+process_mode = 3
+layer = 20
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1432401822]
+sprite_frames = SubResource("SpriteFrames_blink")
+animation = &"blink"
+centered = false

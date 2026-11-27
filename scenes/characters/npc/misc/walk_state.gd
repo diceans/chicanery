@@ -11,11 +11,14 @@ var speed: float
 var grid_origin: Vector2
 var walk_target: Vector2
 var step_target: Vector2
+# The tile the current step started from, where the NPC goes back to if it bumps into AE.
+var step_origin: Vector2
 var is_stepping: bool = false
 
 # Remembers where the NPC was placed so every tile it walks to lines up with that starting spot.
 func _ready() -> void:
 	grid_origin = character.global_position
+	character.bumped.connect(_on_bumped)
 
 # Picks a random point inside the navigation region, snapped to the tile grid, as the next place to walk to.
 func set_movement_target() -> void:
@@ -30,6 +33,9 @@ func _on_process(_delta : float) -> void:
 # Walks toward the target one tile at a time, the same way AE moves. A walk cycle ends when the
 # target is reached or when the next tile is blocked, in which case the NPC stops where it is.
 func _on_physics_process(delta : float) -> void:
+	# After a bump the walk is over; wait for _on_next_transitions to switch to Idle instead of stepping again.
+	if not is_stepping and character.current_walk_cycles >= character.walk_cycles:
+		return
 	if not is_stepping:
 		var remaining_to_target: Vector2 = walk_target - character.global_position
 		if remaining_to_target.length() < 1.0 or not _try_start_step(_next_direction(remaining_to_target)):
@@ -43,9 +49,32 @@ func _on_physics_process(delta : float) -> void:
 		character.global_position = step_target
 		character.velocity = Vector2.ZERO
 		is_stepping = false
+		character.reserved_tiles.clear()
 	else:
 		character.velocity = remaining.normalized() * speed
 		character.move_and_slide()
+		_check_player_bump()
+
+# Fallback only: tile reservations should stop the NPC stepping into AE's path. If they somehow still
+# collide mid-step, both go back to where their steps began, as in AE's walk state.
+func _check_player_bump() -> void:
+	for i in character.get_slide_collision_count():
+		var other: Object = character.get_slide_collision(i).get_collider()
+		if other is AE:
+			_on_bumped()
+			other.bumped.emit()
+			return
+
+# Stops the current step, puts the NPC back on the tile it started from, and ends its walk so it
+# rests in Idle before picking a new target, instead of stepping straight back into AE.
+func _on_bumped() -> void:
+	if not is_stepping:
+		return
+	character.global_position = step_origin
+	character.velocity = Vector2.ZERO
+	is_stepping = false
+	character.reserved_tiles.clear()
+	character.current_walk_cycles = character.walk_cycles
 
 # Chooses the next grid direction toward the target, moving along the longer axis first.
 func _next_direction(remaining: Vector2) -> Vector2:
@@ -53,14 +82,19 @@ func _next_direction(remaining: Vector2) -> Vector2:
 		return Vector2.RIGHT if remaining.x > 0 else Vector2.LEFT
 	return Vector2.DOWN if remaining.y > 0 else Vector2.UP
 
-# Faces the given direction and starts a step to the neighbouring tile. Returns false if an obstacle is in the way.
+# Faces the given direction and starts a step to the neighbouring tile. Returns false if an obstacle is
+# in the way, or if AE (or another walking NPC) has reserved that tile for its current step, so the NPC
+# stops before walking into AE's next tile. A blocked step ends the walk cycle, as a wall does.
 func _try_start_step(direction: Vector2) -> bool:
 	character.facing = direction
 	animated_sprite_2d.play(_animation_for(direction))
 	var offset: Vector2 = direction * tile_size
-	if character.test_move(character.global_transform, offset):
+	var next_tile: Vector2 = character.global_position + offset
+	if character.test_move(character.global_transform, offset) or GridReservations.is_reserved(character, next_tile, tile_size):
 		return false
-	step_target = character.global_position + offset
+	step_origin = character.global_position
+	step_target = next_tile
+	character.reserved_tiles = [step_origin, step_target]
 	is_stepping = true
 	return true
 
@@ -84,9 +118,11 @@ func _on_enter() -> void:
 	character.current_walk_cycles = 0
 	character.walk_cycles = randi_range(character.min_walk_cycle, character.max_walk_cycle)
 	is_stepping = false
+	character.reserved_tiles.clear()
 	set_movement_target()
 
 
 func _on_exit() -> void:
 	is_stepping = false
+	character.reserved_tiles.clear()
 	animated_sprite_2d.stop()

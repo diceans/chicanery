@@ -27,10 +27,10 @@ limit_right = 2121
 limit_bottom = 1235
 editor_draw_limits = true
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1021333370]
+[node name="TransitionNode2to1" type="Area2D" parent="." unique_id=1021333370]
 script = ExtResource("3_f5yox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=455153197]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TransitionNode2to1" unique_id=455153197]
 position = Vector2(272.25, 544)
 shape = SubResource("RectangleShape2D_i7okt")
 
@@ -39,4 +39,4 @@ layer = 10
 
 [node name="PauseMenu" parent="PauseMenuLayer" unique_id=1347420937 instance=ExtResource("4_prlsu")]
 
-[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_entered" from="TransitionNode2to1" to="TransitionNode2to1" method="_on_body_entered"]
