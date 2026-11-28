@@ -134,6 +134,10 @@ func _ready():
 		_load_ally_menus()
 	_refresh_menu_selection()
 
+	# The battle opens behind the blink; wait for the eye to open so the first message isn't hidden or
+	# timed out underneath it.
+	if TransitionAnimation.is_transitioning:
+		await TransitionAnimation.finished
 	display_text("%s appears" % enemy.name.to_upper())
 	await textbox_closed
 	if _living_allies().is_empty():
@@ -1067,7 +1071,7 @@ func player_defeated() -> void:
 	for member in party:
 		member["resource"].current_WN = member["resource"].max_WN
 		member["resource"].turns = 0
-	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/act1/test_scene_player_house_first_floor.tscn")
+	var scene_change_error = TransitionAnimation.change_scene("res://scenes/test/act1/test_scene_player_house_first_floor.tscn")
 	if scene_change_error != OK:
 		push_error("Failed to load the first-floor scene: %s" % scene_change_error)
 
@@ -1083,7 +1087,7 @@ func party_disengaged() -> void:
 			member["resource"].current_WN = member["resource"].max_WN
 		member["resource"].turns = 0
 	State.disengaged_from_enemy = true
-	var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
+	var scene_change_error = TransitionAnimation.change_scene("res://scenes/test/act1/test_scene_player_house_outside.tscn")
 	if scene_change_error != OK:
 		State.disengaged_from_enemy = false
 		push_error("Failed to load the outside scene: %s" % scene_change_error)
@@ -1128,7 +1132,7 @@ func _enemy_defeated() -> void:
 	# already kept in its resource file, which State.party holds onto between battles.
 	State.return_player_to_enemy = true
 	State.defeated_enemy_positions[State.active_enemy_position] = true
-	var scene_change_error = scene_tree.change_scene_to_file("res://scenes/test/act1/test_scene_player_house_outside.tscn")
+	var scene_change_error = TransitionAnimation.change_scene("res://scenes/test/act1/test_scene_player_house_outside.tscn")
 	if scene_change_error != OK:
 		State.return_player_to_enemy = false
 		State.defeated_enemy_positions.erase(State.active_enemy_position)

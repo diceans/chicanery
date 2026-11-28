@@ -155,7 +155,7 @@ animations = [{
 }],
 "loop": 0,
 "name": &"blink",
-"speed": 72.0
+"speed": 108.0
 }]
 
 [node name="TransitionAnimation" type="CanvasLayer" unique_id=1432401821]

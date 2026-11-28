@@ -8,6 +8,9 @@ func _ready() -> void:
 
 # Starts a battle when the player touches this enemy and stores both its shared type ID and unique world position for battle/resource lookup and enemy cleanup.
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	# A blink is already playing (into this battle or elsewhere), so this contact is ignored.
+	if TransitionAnimation.is_transitioning:
+		return
 	if body.name == "AePlaceholder":
 		if enemy_id.is_empty():
 			push_error("Enemy %s is missing its unique enemy_id" % name)
@@ -19,7 +22,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		if body is AE:
 			State.player_tile_position = body.tile_position
 			State.player_direction = body.ae_direction
-		var scene_change_error = get_tree().change_scene_to_file("res://scenes/test/battle/battle.tscn")
+		# The blink plays, then the battle loads behind it.
+		var scene_change_error = TransitionAnimation.change_scene("res://scenes/test/battle/battle.tscn")
 		if scene_change_error != OK:
 			State.active_enemy_id = &""
 			State.active_enemy_position = Vector2.ZERO
